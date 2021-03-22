@@ -22,14 +22,16 @@ namespace JamesAPokemonDSSA.Controllers
 
         public IActionResult Index()
         {
-            var starters = _context.Pokedex.Where(e =>(e.DexID == 1 || e.DexID == 4 || e.DexID == 7));
-            List < DexEntry > model = starters.ToList();
+           var starters = _context.Pokemon.Where(e =>(e.PokedexNum == 1 || e.PokedexNum == 4 || e.PokedexNum == 7));
+           List < Pokemon > model = starters.ToList();
             return View(model);
         }
 
         public IActionResult Pokedex()
         {
-            return View(_context.Pokedex.ToList());
+            var allPokemon = _context.Pokemon.OrderBy(e => e.PokedexNum);
+            List<Pokemon> model = allPokemon.ToList();
+            return View(model);
         }
         public IActionResult Areas()
         {

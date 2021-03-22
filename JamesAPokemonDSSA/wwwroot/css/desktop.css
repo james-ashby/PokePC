@@ -45,16 +45,14 @@ h1  {
 .site-nav li:last-child {
     box-shadow:none;
 }
-.site-nav li:nth-child(4)
+.site-nav li:nth-child(4),
+.site-nav li:nth-child(5),
+.site-nav li:nth-child(6),
+.site-nav li:nth-child(7)
 {
-    padding-left: 20em;
+    float: right;
 }
-@media  only screen and (max-width: 1400px) {
-    .site-nav li:nth-child(4)
-    {
-        padding-left: 3em;
-    }
-}
+
 .split {
     flex-direction: row;
     justify-content: center;

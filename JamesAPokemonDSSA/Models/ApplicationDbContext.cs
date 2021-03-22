@@ -12,9 +12,9 @@ namespace JamesAPokemonWAD.Models
         {
 
         }
-        public DbSet<DexEntry> Pokedex { get; set; }
+        public DbSet<Pokemon> Pokemon { get; set; }
 
-        public DbSet<Pokemon> AllPokemon { get; set; }
-
+        public DbSet<CaughtPokemon> CaughtPokemon { get; set; }
+        
     }
 }
