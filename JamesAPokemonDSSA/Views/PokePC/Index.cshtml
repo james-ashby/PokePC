@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+<div class="container container--indexhead"> @*css class modifier *@
+    <section>
+        <h1 class="pageh1">Welcome to PokéPC, your Pokémon storage companion!</h1>
+        <div class="splitcol">
+            <img src="https://source.unsplash.com/random/700x400" alt="Alternate Text" />
+            <div class="indexinfo-txt">
+                <p>PokéPC is a site that lets you capture, collect, and store all of your favourite Pokémon!</p>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="split">
+            @foreach (var entry in Model)
+            {
+                <div class="poke-info">
+                    <img class="pokemonImg" src="@entry.DexImage" alt="Charmander">
+                    <p class="txt-pokename">@entry.DexName</p>
+                </div>
+            }
+
+        </div>
+        <div class="index-info"><p>To get started, <a class="text-link" asp-controller="Account" asp-action="Register">register</a> an account and choose your first Pokémon!</p></div>
+
+    </section>
+</div>
+<div class="container">
+    <section>
+        <h2>Catch and store your Pokémon!</h2>
+    </section>
+</div>

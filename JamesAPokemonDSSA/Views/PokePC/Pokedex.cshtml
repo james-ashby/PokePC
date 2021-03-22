@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Pokédex";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>This page will show all of the Pokémon available.</p>
+<div class="flextest container">
+    @foreach (var entry in Model)
+    {
+        <div>
+            <img class="pokemonImg" src="@entry.DexImage" alt="A picture of the Pokémon @entry.DexName">
+            <p class="txt-pokename">@entry.DexName</p>
+        </div>
+    }
+</div>
+

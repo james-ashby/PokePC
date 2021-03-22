@@ -1,0 +1,74 @@
+﻿header {
+    background: var(--clr-primary-standard);
+    color: #000;
+    padding: 0em 0;
+    width: 100%;
+    position: fixed;
+}
+h1  {
+    font-size: 1.75em;
+}
+
+.logo {
+    margin: 0;
+    width: 13em;
+    height: 4em;
+    margin-right: 1.5em;
+}
+.menu-toggle {
+    display: none;
+}
+.site-nav {
+    height: auto;
+    position: relative;
+    background: transparent;
+    white-space: nowrap;
+
+}
+.site-nav li {
+    display: inline-block;
+    border: none;
+}
+.site-nav ul {
+    margin-top: .2em;
+}
+.site-nav a {
+    padding: .6em;
+    font-size: 1.3em;
+}
+.site-nav a:hover,
+.site-nav a:focus {
+    background: var(--clr-accent-light);
+    border-radius: 2%;
+    color: var(--clr-primary-standard);
+}
+.site-nav li:last-child {
+    box-shadow:none;
+}
+.site-nav li:nth-child(4)
+{
+    padding-left: 20em;
+}
+@media  only screen and (max-width: 1400px) {
+    .site-nav li:nth-child(4)
+    {
+        padding-left: 3em;
+    }
+}
+.split {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.splitcol
+.poke-info {
+    width: 20%;
+    min-width: 150px;
+    max-width: 210px;
+    margin-top: 10px;
+}
+.container--indexhead {
+    max-width: 75%;
+    min-width: 0.6vh;
+}
