@@ -1,0 +1,114 @@
+﻿@model JamesAPokemonWAD.Models.AddPokemon
+
+@{
+    var areas = ViewData["Areas"] as List<JamesAPokemonWAD.Models.Area>;
+}
+<form asp-controller="Admin" asp-action="AddPokemon" enctype="multipart/form-data">
+    <div class="container container--register">
+        <h1 class="txt-title">Add Pokemon</h1>
+
+        <div>
+            <label class="required" asp-for="PokemonName">Pokémon Name</label>
+            <input type="text" asp-for="PokemonName" />
+        </div>
+        <span asp-validation-for="PokemonName" class="txt-error"></span>
+
+        @Html.ValidationMessage("Custom")
+        <div>
+            <label class="required" asp-for="PokedexNum">Pokédex Number</label>
+            <input type="number" min="1" max="5000" asp-for="PokedexNum" />
+        </div>
+        <span asp-validation-for="PokedexNum" class="txt-error"></span>
+
+        <div>
+            <label class="required" asp-for="Classification">Classification</label>
+            <input type="text" asp-for="Classification" />
+        </div>
+        <span asp-validation-for="Classification" class="txt-error"></span>
+
+        <div>
+            <label class="required" asp-for="Description">Pokédex Entry Text</label>
+        </div>
+        <span asp-validation-for="Description" class="txt-error"></span>
+
+        <div>
+            <textarea asp-for="Description"></textarea>
+        </div>
+        <div>
+            <label class="required" asp-for="Type_1">Type 1</label>
+            <select asp-for="Type_1">
+                @foreach (var type in (List<string>)ViewData["Types"])
+                {
+                    <option value="@type">@type</option>
+                }
+            </select>
+        </div>
+
+        <div>
+            <label asp-for="Type_2">Type 2</label>
+            <select asp-for="Type_2">
+                <option value="@null">-none-</option>
+                @foreach (var type in (List<string>)ViewData["Types"])
+                {
+                    <option value="@type">@type</option>
+                }
+            </select>
+        </div>
+
+        <div>
+            <label class="required" asp-for="Height">Height (m)</label>
+            <input type="number" min="0" step="0.1" asp-for="Height" />
+        </div>
+        <span asp-validation-for="Height" class="txt-error"></span>
+
+        <div>
+            <label class="required" asp-for="Weight">Weight (Kg)</label>
+            <input type="number" min="0" step="0.1" asp-for="Weight" />
+        </div>
+        <span asp-validation-for="Weight" class="txt-error"></span>
+
+        <div>
+            <label class="required" asp-for="Generation">Generation Number</label>
+            <input type="number" max="8" min="1" asp-for="Generation" />
+        </div>
+        <span asp-validation-for="Generation" class="txt-error"></span>
+
+        <label asp-for="UploadImage" class="required"> Upload Standard Image</label>
+        <div class="custom-file">
+            <input asp-for="UploadImage"id="standardFile">
+            <label for="standardFile">Choose file</label>
+        </div>
+        <span asp-validation-for="UploadImage" class="txt-error"></span>
+
+
+        <label asp-for="UploadShinyImage" class="required">Upload Shiny Image</label>
+        <div >
+            <input asp-for="UploadShinyImage" id="shinyFile">
+            <label for="shinyFile">Choose file</label>
+        </div>
+        <span asp-validation-for="UploadShinyImage" class="txt-error"></span>
+
+        <div>
+            <label asp-for="Rarity">Rarity</label>
+            <select asp-for="Rarity">
+                <option value="Common">Common</option>
+                <option value="Uncommon">Uncommon</option>
+                <option value="Rare">Rare</option>
+                <option value="Legendary">Legendary</option>
+
+            </select>
+        </div>
+        <div>
+            <label asp-for="SelectedAreas">Areas: <br /></label>
+            @Html.ListBoxFor(m => m.AreaIds, new MultiSelectList(areas, "AreaId", "Name"), new { @class = "multi-list", multiple = "multiple" })
+            <span asp-validation-for="SelectedAreas" class="txt-error"></span>
+        </div>
+    </div>
+    <div class="split split--pages">
+        <a href="javascript:void(0)" id="historyBackBtn"
+           class="btn">
+            Back
+        </a>
+        <input type="submit" class="btn btn--update" value="Add Pokémon" />
+    </div>
+</form>

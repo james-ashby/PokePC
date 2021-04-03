@@ -2,25 +2,46 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
+    <meta name="description"
+          content="PokéPC is a Pokémon capturing and storage website, featuring a full Pokédex 
+          of up to generation 5 and capabilities for adding new and custom pokemon. Find random Pokémon in
+          areas and get lucky for a shiny or a legendary Pokémon!">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="~/css/mobile.css" />
-    <link rel="stylesheet" media="only screen and (min-width : 1100px)" href="~/css/desktop.css" />
-    
+    <link rel="stylesheet" media="only screen and (min-width : 800px)" href="~/css/desktop.css" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     <title>@ViewData["Title"]</title>
 </head>
+
 <body>
     <header>
-        <a asp-controller="PokePC" asp-action="Index"><img class="logo" src="~/images/logo.png" /> </a>
+        <a asp-controller="PokePC" asp-action="Index"><img class="logo" src="~/images/logo.png" alt="Site logo for PokePC" /> </a>
         <nav class="site-nav">
             <ul>
                 <li><a asp-controller="PokePC" asp-action="Index">Home</a></li>
                 <li><a asp-controller="PokePC" asp-action="Pokedex">Pokédex</a></li>
                 <li><a asp-controller="PokePC" asp-action="Areas">Wild Areas</a></li>
-                <li><a asp-controller="Account" asp-action="Register">Register</a></li>
-                <li><a asp-controller="Account" asp-action="Login">Log in</a></li>
-                <li><a asp-controller="Account" asp-action="Pokemon">My Pokémon</a></li>
-                <li><a asp-controller="Account" asp-action="Details">Account</a></li>
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <li><a asp-controller="Account" asp-action="Register">Register</a></li>
+                    <li><a asp-controller="Account" asp-action="Login">Log in</a></li>
+                }
+                else
+                {
+                    <li>
+                        <form id="logoutForm" asp-controller="Account" asp-action="Logout" method="post">
+                            <a href="javascript:void(0)" id="logoutBtn">Log out</a>
+                        </form>
+                    </li>
+                    <li><a asp-controller="Account" asp-action="Details">@User.Identity.Name</a></li>
+                    <li><a asp-controller="Account" asp-action="Pokemon">My Pokémon</a></li>
+                }
+                @if (User.IsInRole("Admin"))
+                {
+                    <li><a asp-controller="Admin" asp-action="Index">Admin Panel</a></li>
+                }
+
             </ul>
         </nav>
         <div class="menu-toggle">
@@ -30,9 +51,10 @@
 
     <main class="body">@RenderBody()</main>
 
-    <footer>James Ashby - Sheffield Hallam University 2021</footer>
+    <footer>James Ashby - Sheffield Hallam University 2021 -- This site is not affiliated with Nintendo, Creatures, or GameFreak.</footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="~/js/site.js"></script>
 </body>
 </html>

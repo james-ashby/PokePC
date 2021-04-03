@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JamesAPokemonWAD.Security;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,8 +13,11 @@ namespace JamesAPokemonWAD.Models
         [Key]
         public int PokemonID { get; set; }
 
-        public int UserID { get; set; }
-        public Pokemon Pokemon { get; set; }
+
+        [Column(TypeName = "nvarchar(450)")]
+        public string UserID { get; set; }
+
+        public string PokemonName { get; set; }
         public bool IsShiny { get; set; }
 
         [DataType(DataType.DateTime)]

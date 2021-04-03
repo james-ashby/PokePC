@@ -1,34 +1,55 @@
 ﻿@{
     ViewData["Title"] = "Home";
 }
-<div class="container container--indexhead"> @*css class modifier *@
+<div class="container container--indexhead">
+    @*css class modifier *@
     <section>
-        <h1 class="pageh1">Welcome to PokéPC, your Pokémon storage companion!</h1>
+        <h1 class="txt-title">Your new Pokémon storage companion...</h1>
         <div class="splitcol">
-            <img src="https://source.unsplash.com/random/700x400" alt="Alternate Text" />
-            <div class="indexinfo-txt">
-                <p>PokéPC is a site that lets you capture, collect, and store all of your favourite Pokémon!</p>
-            </div>
+            <img src="~/images/indeximg.png" alt="Image of PokePC Logo with Mew and Wartortle graphics" />
         </div>
     </section>
-    <section>
+
+
+    @if (User.IsInRole("Standard") || User.IsInRole("Admin"))
+    {
+
+    }
+    else
+    {
+
         <div class="split">
             @foreach (var entry in Model)
             {
-                <div class="poke-info">
-                    <img class="pokemonImg" src="@entry.Image" alt="Charmander">
+                <div class="poke-info poke-info--index">
+                    <a asp-controller="PokePC" asp-action="PokedexEntry" asp-route-id="@entry.PokemonId"><img class="pokemonImg" src="@entry.Image" alt="A picture of the Pokémon @entry.PokemonName"></a>
                     <p class="txt-pokename">@entry.PokemonName</p>
-                    
+
                 </div>
             }
 
         </div>
         <div class="index-info"><p>To get started, <a class="text-link" asp-controller="Account" asp-action="Register">register</a> an account and choose your first Pokémon!</p></div>
+    }
+</div>
+@if (User.IsInRole("Standard") || User.IsInRole("Admin"))
+{
+    <div class="container container--indexbody">
+            <h2 class="txt-title">Check out the Pokédex!</h2>
+            <div class="splitcol">
+                <img class="indeximg" src="~/images/pokedeximg.png" alt="Image of PokePC Pokedex search containing Bulbasaur and other starter pokemon" />
+                <p class="index-info"> The <a class="text-link" asp-controller="PokePC" asp-action="Pokedex">Pokédex</a> page is your first stop for information about the Pokémon that can be found on PokéPC! </p>
+                <p> Find out Pokémon types, shiny variants, heights, weights, and much more!</p>
+                <img class="indeximg" src="~/images/dexentryimg.png" alt="Bulbasaur Pokédex entry" />
+            </div>
+    </div>
+    <div class="container container--indexbody">
+            <h2 class="txt-title">Discover Pokémon areas!</h2>
+            <div class="splitcol">
+                <img class="indeximg" src="~/images/areaimg.png" alt="Image of PokePC area Viridian Forest" />
+                <p class="index-info"> The <a class="text-link" asp-controller="PokePC" asp-action="Areas">Areas</a> page is where you'll find wild Pokémon! </p>
+                <p> Start by searching in Viridian Forest or Mt.Moon and see what Pokémon you can find and collect!</p>
+            </div>
+    </div>
+}
 
-    </section>
-</div>
-<div class="container">
-    <section>
-        <h2>Catch and store your Pokémon!</h2>
-    </section>
-</div>

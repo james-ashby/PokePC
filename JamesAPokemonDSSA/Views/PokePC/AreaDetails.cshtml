@@ -1,0 +1,93 @@
+﻿@{
+    ViewData["Title"] = ViewData["AreaName"];
+    List<JamesAPokemonWAD.Models.AreasPokemon> pokemon = Model;
+}
+<div class="container container--areadetails">
+    <h1 class="txt-title">@ViewData["AreaName"]</h1>
+    <img class="areaImg" src="@ViewData["AreaImage"]" alt="An image depicting @ViewData["AreaName"]" />
+    <p>Pokémon to be found in @ViewData["AreaName"]...</p>
+    <div class="split split--areararities">
+        @if (pokemon.Any(pokemon => pokemon.Rarity.Contains("Common")))
+        {
+            <div class="wrapper-areapoke wrapper-areapoke--common">
+                <p class="txt-rarity"> Common</p>
+                <div class="split split--mypoke">
+                    @foreach (var pokemonInArea in pokemon.Where(p => p.Rarity == "Common"))
+                    {
+                        <div>
+                            <img class="pokemonImg" src="@(pokemonInArea.Pokemon.Image.Contains("upload") ? "/images/pokemon/" : "")@pokemonInArea.Pokemon.Image" alt="A picture of the Pokémon @pokemonInArea.Pokemon.PokemonName">
+                            <p class="txt-pokename">@pokemonInArea.Pokemon.PokemonName</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+        }
+
+        @if (pokemon.Any(pokemon => pokemon.Rarity.Contains("Uncommon")))
+        {
+            <div class="wrapper-areapoke wrapper-areapoke--uncommon">
+                <p class="txt-rarity"> Uncommon</p>
+                <div class="split split--mypoke">
+                    @foreach (var pokemonInArea in pokemon.Where(p => p.Rarity == "Uncommon"))
+                    {
+                        <div>
+                            <img class="pokemonImg" src="@(pokemonInArea.Pokemon.Image.Contains("upload") ? "/images/pokemon/" : "")@pokemonInArea.Pokemon.Image" alt="A picture of the Pokémon @pokemonInArea.Pokemon.PokemonName">
+                            <p class="txt-pokename">@pokemonInArea.Pokemon.PokemonName</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+        }
+
+        @if (pokemon.Any(pokemon => pokemon.Rarity.Contains("Rare")))
+        {
+            <div class="wrapper-areapoke wrapper-areapoke--rare">
+                <p class="txt-rarity"> Rare</p>
+                <div class="split split--mypoke">
+                    @foreach (var pokemonInArea in pokemon.Where(p => p.Rarity == "Rare"))
+                    {
+                        <div>
+                            <img class="pokemonImg" src="@(pokemonInArea.Pokemon.Image.Contains("upload") ? "/images/pokemon/" : "")@pokemonInArea.Pokemon.Image" alt="A picture of the Pokémon @pokemonInArea.Pokemon.PokemonName">
+                            <p class="txt-pokename">@pokemonInArea.Pokemon.PokemonName</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+        }
+        @if (pokemon.Any(pokemon => pokemon.Rarity.Contains("Legendary")))
+        {
+            <div class="wrapper-areapoke wrapper-areapoke--legendary">
+                <p class="txt-rarity"> Legendary</p>
+                <div class="split split--mypoke">
+                    @foreach (var pokemonInArea in pokemon.Where(p => p.Rarity == "Legendary"))
+                    {
+                        <div>
+                            <img class="pokemonImg pokemonImg--legend" src="@(pokemonInArea.Pokemon.Image.Contains("upload") ? "/images/pokemon/" : "")@pokemonInArea.Pokemon.Image" alt="A picture of the Pokémon @pokemonInArea.Pokemon.PokemonName">
+                            <p class="txt-pokename">???</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+   
+    <div>
+        @if (User.IsInRole("Admin") || User.IsInRole("Standard"))
+        {
+            <a class="btn btn--small" asp-controller="PokePC" asp-action="Area" asp-route-id=@Model[1].AreaId>Look for Pokémon!</a>
+        }
+        else
+        {
+            <a class="btn btn--small" asp-controller="Account" asp-action="Register" asp-route-id=@Model[1].AreaId>Register to catch Pokémon!</a>
+        }
+    </div>
+</div>
+<div class="split">
+    <a href="javascript:void(0)" id="historyBackBtn"
+       class="btn">
+        Back
+    </a>
+</div>

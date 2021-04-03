@@ -1,6 +1,59 @@
-﻿@{
+﻿@model JamesAPokemonWAD.Models.Register;
+@{
     ViewData["Title"] = "Register";
+    IEnumerable<JamesAPokemonWAD.Models.Pokemon> starters = ViewData["Starters"] as IEnumerable<JamesAPokemonWAD.Models.Pokemon>;
+    var firstRadio = true;
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>This page will have a register account form.</p>
+<div class="container container--register">
+    <h2 class="txt-title">Create New User Account</h2>
+    <form method="post">
+        <table>
+            <tr>
+                <td><label class="required" asp-for="UserName">Username</label></td>
+                <td><input type="text" asp-for="UserName" /></td>
+            </tr>
+            <tr>
+                <td><label  class="required" asp-for="Password"></label></td>
+                <td><input type="password" asp-for="Password" /></td>
+            </tr>
+            <tr>
+                <td><label  class="required" asp-for="ConfirmPassword">Confirm Password</label></td>
+                <td><input type="password" asp-for="ConfirmPassword" /></td>
+            </tr>
+            <tr>
+                <td><label  class="required" asp-for="Email"></label></td>
+                <td><input type="text" asp-for="Email" /></td>
+            </tr>
+        </table>
+        <h2 class="txt-pokename"> Choose your starter Pokémon!</h2>
+        <div class="split">
+
+
+            @foreach (var starter in starters)
+            {
+            <div class="poke-info">
+                <img class="pokemonImg" src="@starter.Image" alt="Charmander">
+                <p class="txt-pokename">@starter.PokemonName</p>
+                @if (firstRadio)
+                {
+                    firstRadio = false;
+                    <input type="radio" asp-for="Starter" value="@starter.PokemonName" checked="checked" />
+
+                }
+                else
+                { <input type="radio" asp-for="Starter" value="@starter.PokemonName" />}
+            </div>
+            }
+
+
+        </div>
+        <button type="submit">Register</button>
+
+        <div asp-validation-summary="All" class="message"></div>
+
+        <h3 class="text-link"><a asp-controller="Account" asp-action="Login">Already got an account? <br /> Login here!</a></h3>
+
+    </form>
+
+</div>

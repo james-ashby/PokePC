@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = ViewData["AreaName"];
+    bool IsShiny = (bool)ViewData["IsShiny"];
+}
+<div class="container container--register">
+
+    <h1 class="txt-title">@ViewData["AreaName"]</h1>
+
+    @if (Model != null)
+    {
+        <img class="pokemonImg" src="@(IsShiny ? (Model.Pokemon.ShinyImage.Contains("upload") ? "/images/pokemon/" + Model.Pokemon.ShinyImage : Model.Pokemon.ShinyImage) : (Model.Pokemon.Image.Contains("upload") ? "/images/pokemon/" + Model.Pokemon.Image : Model.Pokemon.Image))" alt="A picture of the Pokémon @Model.Pokemon.PokemonName">
+        <p class="txt-pokename">
+            A wild @if (IsShiny)
+            {@: Shiny
+            } @Model.Pokemon.PokemonName appeared!
+        </p>
+        <div class="splitcol">
+            <a class="btn btn--small btn--catch" id="caughtPoke" href="javascript:;" data-id="@Model.PokemonId" data-isshiny="@IsShiny">Catch!</a>
+            <a class="btn btn--small" asp-controller="PokePC" asp-action="Area" asp-route-id=@Model.AreaId>Find more!</a>
+        </div>
+
+    }
+    else
+    {
+        <p class="txt-pokename">No wild Pokémon appeared!</p>
+        <a class="btn btn--small" asp-controller="PokePC" asp-action="Area" asp-route-id=@ViewData["AreaId"]>Keep searching for Pokémon!</a>
+    }
+</div>
+<div class="split">
+    <a href="javascript:void(0)" id="historyBackBtn"
+       class="btn">
+        Back
+    </a>
+</div>
+<div class="center">
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <div id="myModalContent"></div>
+            <div id="modelClose">
+                <span id="closeBtn" class="btn">Close</span>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,6 +1,35 @@
-﻿@{
+﻿@model JamesAPokemonWAD.Models.Login;
+
+@{
     ViewData["Title"] = "Log in";
 }
-<h1>@ViewData["Title"]</h1>
+<div class="container container--register">
+    <h2 class="txt-title">Sign In</h2>
+    <section>
+        <form asp-controller="Account" asp-action="Login" method="post">
+            <table>
+                <tr>
+                    <td><label asp-for="UserName">Username</label></td>
+                    <td><input type="text" asp-for="UserName" /></td>
+                </tr>
+                <tr>
+                    <td><label asp-for="Password"></label></td>
+                    <td><input type="password" asp-for="Password" /></td>
+                </tr>
+                <tr>
+                    <td><label asp-for="RememberMe">Remember me</label></td>
+                    <td><input type="checkbox" asp-for="RememberMe" /></td>
+                </tr>
+            </table>
+            <div>
+                <button type="submit">Login</button>
+            </div>
 
-<p>This page will have login and register account panels.</p>
+            
+            <div asp-validation-summary="All" class="message"></div>
+
+            <h3 class="text-link"><a asp-controller="Account" asp-action="Register">Create New User Account</a></h3>
+
+        </form>
+    </section>
+</div>

@@ -1,16 +1,77 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Pokédex";
 }
-<h1>@ViewData["Title"]</h1>
-
-<p>This page will show all of the Pokémon available.</p>
-<div class="flextest container">
+<div class="container container--dexhead">
+    <div class="wrapperDexHead">
+        <h1 class="txt-title">@ViewData["Title"]</h1>
+        <p class="txt-pokename">Click on a Pokémon below to see more details!</p>
+        <form asp-action="Pokedex" method="get">
+            <div class="form-actions no-color">
+                <p class="txt-pokename">
+                    Filter by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+                    <input type="submit" value="Search" class="btn btn-default" />
+                </p>
+            </div>
+        </form>
+        <a class="btn btn--xsmall" asp-action="Pokedex">Show all</a>
+        <div class="split split--filter">
+            <a class="btn btn--small" asp-action="Pokedex" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Sort by Name</a>
+            <a class="btn btn--small" asp-action="Pokedex" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Sort by Date Added</a>
+        </div>
+    </div>
+</div>
+<div class="flex container container--dex">
     @foreach (var entry in Model)
     {
-        <div>
-            <img class="pokemonImg" src="@entry.Image" alt="A picture of the Pokémon @entry.PokemonName">
-            <p class="txt-pokename">@entry.PokemonName</p>
-        </div>
+            <div>
+                <a asp-controller="PokePC" asp-action="PokedexEntry" asp-route-id="@entry.PokemonId"><img class="pokemonImg" src="@(entry.Image.Contains("upload") ? "/images/pokemon/" : "")@entry.Image") alt="A picture of the Pokémon @entry.PokemonName"></a>
+                <p class="txt-pokename">@entry.PokemonName</p>
+            </div>
+        
     }
+</div>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<div class="split">
+    <p class="txt-pokename">@ViewData["Results"] results</p>
+    @if (ViewData["CurrentPage"] == null)
+    {
+        <p class="txt-pokename">
+            Page 1 - @ViewData["Pages"]
+        </p>
+    }
+    else
+    {
+        <p class="txt-pokename">
+            Page @ViewData["CurrentPage"] - @ViewData["Pages"]
+        </p>
+    }
+</div>
+
+<div class="split split--pages">
+    <div>
+        <a asp-action="Pokedex"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex - 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-@prevDisabled">
+            Previous
+        </a>
+    </div>
+
+    
+
+    <div>
+        <a asp-action="Pokedex"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex + 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-@nextDisabled">
+            Next
+        </a>
+    </div>
 </div>
 

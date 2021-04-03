@@ -1,6 +1,30 @@
 ﻿@{
     ViewData["Title"] = "Wild Areas";
 }
-<h1>@ViewData["Title"]</h1>
+<div class="container container--dexhead">
+    <h1 class="txt-title">@ViewData["Title"]</h1>
 
-<p>This page will show areas that Pokémon can be found in.</p>
+    <p>Choose an area below to search for some wild Pokémon!</p>
+
+</div>
+
+
+<div class="split split--areas">
+    @foreach (var area in Model)
+    {
+    <div class="container container-area">
+        <a asp-controller="PokePC" asp-action="AreaDetails" asp-route-id=@area.AreaId><img class="areaImg" src=@area.Image alt="A picture of @area.Name"></a>
+        <p class="txt-area" >@area.Name</p>
+
+        @if (area.LevelRequirement == 0)
+        {
+            <p class="txt-arealevel">No Level Requirement</p>
+
+        }
+        else
+        {
+            <p class="txt-arealevel">Level Requirement - @area.LevelRequirement</p>
+        }
+    </div>
+    }
+</div>

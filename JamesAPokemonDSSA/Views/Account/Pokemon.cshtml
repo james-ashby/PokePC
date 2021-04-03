@@ -1,6 +1,38 @@
 ﻿@{
     ViewData["Title"] = "My Pokémon";
 }
-<h1>@ViewData["Title"]</h1>
+<div class="container container--register">
+    <h1 class="txt-title">@ViewData["Title"]</h1>
+    <div class="split">
+        <p class="txt-pokename">Total Pokémon caught: @ViewData["TotalPokemon"]</p>
+    </div>
+</div>
+<div class="container container--dex">
+    <div class="split split--mypoke">
 
-<p>This page will show the user's Pokémon.</p>
+        @foreach (var pokemon in Model)
+        {
+        <div class="wrapper-pokemon">
+            <img class="pokemonImg" src="@(pokemon.Image.Contains("upload") ? "/images/pokemon/" : "")@pokemon.Image" alt="A picture of the Pokémon @pokemon.Name">
+            @if (pokemon.IsShiny)
+            {
+                <p class="txt-pokename">Shiny @pokemon.Name</p>
+            }
+            else
+            {
+                <p class="txt-pokename">@pokemon.Name</p>
+
+            }
+            <p class="txt-pokename">Caught on: @pokemon.CatchDate</p>
+        </div>
+            
+        }
+    </div>
+</div>
+
+<div class="split">
+    <a href="javascript:void(0)" id="historyBackBtn"
+       class="btn">
+        Back
+    </a>
+</div>
