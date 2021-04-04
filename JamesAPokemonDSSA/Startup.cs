@@ -3,6 +3,7 @@ using JamesAPokemonWAD.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +17,7 @@ namespace JamesAPokemonDSSA
 {
     public class Startup
     {
+        private string _connection = null;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,9 +28,14 @@ namespace JamesAPokemonDSSA
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var builder = new SqlConnectionStringBuilder(Configuration.GetConnectionString("OnlineConnection"));
+            builder.Password = Configuration["DbPassword"];
+            _connection = builder.ConnectionString;
             services.AddControllersWithViews();
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(_connection));
+            //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); ** Use this connection for local
+            //services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); ** Use this connection for local
+            services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(_connection));
             services.AddIdentity<PokePCUser, PokePCRoles>(options =>
             {options.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<AppIdentityDbContext>();
