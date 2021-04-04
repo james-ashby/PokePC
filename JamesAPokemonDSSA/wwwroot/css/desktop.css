@@ -104,6 +104,10 @@ h1 {
 .container--dex {
   width: 60rem;
 }
+.container--trainerlevel {
+  width: 15rem;
+  padding: 15px;
+}
 .container-area {
   position: relative;
   text-align: center;

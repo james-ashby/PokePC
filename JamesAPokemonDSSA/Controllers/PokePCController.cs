@@ -90,26 +90,53 @@ namespace JamesAPokemonDSSA.Controllers
         public IActionResult Areas()
         {
             List<Area> areas = _context.Areas.OrderBy(a => a.LevelRequirement).ToList();
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewData["UserLevel"] = _userContext.Users.Find(_userManager.GetUserId(User)).Level;
+            }
+            else
+            {
+                ViewData["UserLevel"] = -1;
+            }
             return View(areas);
         }
         public IActionResult AreaDetails(int id)
         {
-            List<AreasPokemon> area = _context.AreaPokemon.Include(p => p.Pokemon).Where(a => a.AreaId == id).OrderBy(p => p.Rarity == "Legendary")
+            var area = _context.Areas.Find(id);
+            var levelReq = area.LevelRequirement;
+            if (!User.Identity.IsAuthenticated)
+            {
+                TempData["Denied"] = "You need to be logged in to find Pokémon!";
+                return RedirectToAction("Areas", "PokePC");
+            }else if (_userContext.Users.Find(_userManager.GetUserId(User)).Level < levelReq)
+            {
+                TempData["Denied"] = "Level is too low for this area";
+                return RedirectToAction("Areas", "PokePC");
+            }
+
+            List<AreasPokemon> areaPoke = _context.AreaPokemon.Include(p => p.Pokemon).Where(a => a.AreaId == id).OrderBy(p => p.Rarity == "Legendary")
             .ThenBy(p => p.Rarity == "Rare").ThenBy(p => p.Rarity == "Uncommon").ThenBy(p => p.Rarity == "Common").ToList();
             ViewData["AreaImage"] = _context.Areas.Where(a => a.AreaId == id).First().Image;
             ViewData["AreaName"] = _context.Areas.Find(id).Name;
-            return View(area);
+            return View(areaPoke);
         }
         [Authorize(Roles = "Admin, Standard")]
         public IActionResult Area(int id)
         {
+            var area = _context.Areas.Find(id);
+            ViewData["AreaName"] = area.Name;
+            var levelReq = area.LevelRequirement;
+            if (_userContext.Users.Find(_userManager.GetUserId(User)).Level < levelReq)
+            {
+                TempData["Denied"] = "Level is too low for this area";
+                return RedirectToAction("Areas", "PokePC");
+            }
             Random rand = new Random(DateTime.Now.Millisecond);
             var roll = rand.Next(1, 101);
             var shinyRoll = rand.Next(1, 150);
             var model = _context.AreaPokemon.Include(c => c.Pokemon).Where(a=> a.AreaId == id);
             List<AreasPokemon> areaPoke = model.ToList();
             ViewData["IsShiny"] = (shinyRoll == 1 ? true : false);
-            ViewData["AreaName"] = _context.Areas.Find(id).Name;
             AreasPokemon legendaryPoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Rarity == "Legendary").FirstOrDefault(); // Guid for simple random choice (random global unique identifier)
             AreasPokemon rarePoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Rarity == "Rare").FirstOrDefault();
             AreasPokemon uncommonPoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Rarity == "Uncommon").FirstOrDefault();

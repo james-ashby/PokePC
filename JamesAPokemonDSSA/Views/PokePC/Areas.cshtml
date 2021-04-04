@@ -1,5 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Wild Areas";
+    var tempVal = TempData["Denied"];
+    var userlevel = (int)@ViewData["UserLevel"];
 }
 <div class="container container--dexhead">
     <h1 class="txt-title">@ViewData["Title"]</h1>
@@ -8,23 +10,42 @@
 
 </div>
 
+<div class="container--trainerlevel container">
+    @if (userlevel > 0)
+    {
+        <p class="txt-pokename">Trainer Level @userlevel</p>
+    }
+    else
+    {
+        <p>Make an account to search for Pokémon!</p>
+    }
+    @if (tempVal != null)
+    {
+        <p class="txt-error">@tempVal</p>
+    }
+</div>
+
 
 <div class="split split--areas">
     @foreach (var area in Model)
     {
-    <div class="container container-area">
-        <a asp-controller="PokePC" asp-action="AreaDetails" asp-route-id=@area.AreaId><img class="areaImg" src=@area.Image alt="A picture of @area.Name"></a>
-        <p class="txt-area" >@area.Name</p>
-
-        @if (area.LevelRequirement == 0)
+        @if (userlevel >= area.LevelRequirement)
         {
-            <p class="txt-arealevel">No Level Requirement</p>
+            <div class="container container-area">
+                <a asp-controller="PokePC" asp-action="AreaDetails" asp-route-id=@area.AreaId><img class="areaImg" src=@area.Image alt="A picture of @area.Name"></a>
+                <p class="txt-area">@area.Name</p>
+                <p class="txt-arealevel">Unlocked</p>
 
+            </div>
         }
-        else
+        else if (userlevel < area.LevelRequirement)
         {
-            <p class="txt-arealevel">Level Requirement - @area.LevelRequirement</p>
+            <div class="container container-area">
+                <a asp-controller="PokePC" asp-action="AreaDetails" asp-route-id=@area.AreaId><img class="areaImg" src=@area.Image alt="A picture of @area.Name"></a>
+
+                <p class="txt-area">@area.Name</p>
+                <p class="txt-arealevel">Unlocks at level @area.LevelRequirement</p>
+            </div>
         }
-    </div>
     }
 </div>

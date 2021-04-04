@@ -190,6 +190,10 @@ section {
   margin-bottom: 1rem;
   padding: 15px;
 }
+.container--trainerlevel {
+  width: 50%;
+  padding: 15px;
+}
 .container--areadetails{
   width: 90%;
   margin-bottom: 1rem;
