@@ -30,6 +30,7 @@ namespace JamesAPokemonDSSA
         {
             var builder = new SqlConnectionStringBuilder(Configuration.GetConnectionString("AzureDbConnectionString"));
             builder.Password = Configuration["DbPassword"];
+
             _connection = builder.ConnectionString;
             services.AddControllersWithViews();
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(_connection));
