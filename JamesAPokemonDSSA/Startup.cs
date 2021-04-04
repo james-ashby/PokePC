@@ -29,6 +29,7 @@ namespace JamesAPokemonDSSA
         public void ConfigureServices(IServiceCollection services)
         {
             var builder = new SqlConnectionStringBuilder(Configuration.GetConnectionString("AzureDbConnectionString"));
+
             builder.Password = Configuration["DbPassword"];
 
             _connection = builder.ConnectionString;
