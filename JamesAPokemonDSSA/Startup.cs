@@ -3,6 +3,8 @@ using JamesAPokemonWAD.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.Azure.KeyVault;
+using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -29,8 +31,15 @@ namespace JamesAPokemonDSSA
         public void ConfigureServices(IServiceCollection services)
         {
             var builder = new SqlConnectionStringBuilder(Configuration.GetConnectionString("AzureDbConnectionString"));
+            if (Configuration["LocalDbPassword"] == null)
+            {
+                builder.Password = Configuration["DbPassword"];
+            }
+            else
+            {
+                builder.Password = Configuration["LocalDbPassword"];
+            }
 
-            builder.Password = Configuration["DbPassword"];
 
             _connection = builder.ConnectionString;
             services.AddControllersWithViews();
@@ -41,7 +50,7 @@ namespace JamesAPokemonDSSA
             services.AddIdentity<PokePCUser, PokePCRoles>(options =>
             {options.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<AppIdentityDbContext>();
-
+            services.AddHealthChecks();
             services.ConfigureApplicationCookie(opt => { 
                 opt.LoginPath = "/Account/Login";
                 opt.AccessDeniedPath = "/Account/AccessDenied";
