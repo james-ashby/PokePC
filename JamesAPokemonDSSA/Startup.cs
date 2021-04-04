@@ -3,6 +3,7 @@ using JamesAPokemonWAD.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Data.SqlClient;
@@ -37,13 +38,13 @@ namespace JamesAPokemonDSSA
 
             _connection = builder.ConnectionString;
             services.AddControllersWithViews();
+            //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); //** Use this connection for local
+            //services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); //** Use this connection for local
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(_connection));
-            // services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); //** Use this connection for local
-            // services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); //** Use this connection for local
             services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(_connection));
             services.AddIdentity<PokePCUser, PokePCRoles>(options =>
             {options.User.RequireUniqueEmail = true;
-            }).AddEntityFrameworkStores<AppIdentityDbContext>();
+            }).AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
             services.AddHealthChecks();
             services.ConfigureApplicationCookie(opt => { 
                 opt.LoginPath = "/Account/Login";

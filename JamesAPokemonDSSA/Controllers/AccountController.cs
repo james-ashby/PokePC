@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -110,9 +111,58 @@ namespace JamesAPokemonDSSA.Controllers
         {
             return View();
         }
+        [Authorize(Roles = "Standard, Admin")]
         public IActionResult Details()
         {
+            var user = _userContext.Users.Find(userManager.GetUserId(User));
+            var userRoleID = _userContext.UserRoles.Where(u => u.UserId == user.Id).Select(r => r.RoleId).FirstOrDefault();
+            string userRole = _userContext.Roles.Where(r => r.Id == userRoleID).Select(r => r.Name).FirstOrDefault().ToString();
+            AccountDetails model = new AccountDetails {
+                UserId = user.Id,
+                Username = user.UserName,
+                Email = user.Email,
+                TotalPokemon = user.UniquePokemon,
+                TrainerLevel = user.Level,
+                Experience = user.Experience,
+                AccountType = userRole,
+                Created = user.CreationDate.ToString("dd/MM/yyyy")
+            };
+            return View(model);
+        }
+        [Authorize(Roles = "Standard, Admin")]
+
+        public IActionResult ChangePassword()
+        {
+            ViewData["UserId"] = userManager.GetUserId(User);
+            ViewData["Successful"] = false;
             return View();
+        }
+        [HttpPost]
+        [Authorize(Roles = "Standard, Admin")]
+        public async Task<IActionResult> ChangePassword(ChangePassword model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.FindByIdAsync(model.UserId);
+                var token = await userManager.GeneratePasswordResetTokenAsync(user);
+                var update = await userManager.ResetPasswordAsync(user, token, model.NewPassword);
+                if (!update.Succeeded)
+                {
+                    ModelState.AddModelError("Custom", "Unexpected error occurred!");
+                    ViewData["Successful"] = false;
+                    return View();
+                }
+                else
+                {
+                    ViewData["Successful"] = true;
+                    return View();
+                }
+            }
+            else
+            {
+                ViewData["Successful"] = false;
+                return View();
+            }
         }
         [Authorize(Roles = "Standard, Admin")]
         public IActionResult Pokemon()

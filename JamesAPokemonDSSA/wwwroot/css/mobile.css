@@ -177,6 +177,10 @@ section {
   margin-bottom: 1rem;
   padding-bottom: 20px;
 }
+.container--details {
+  width: 97%;
+  margin-bottom: 1rem;
+}
 .container--admin {
   width: 22rem;
   height: 30rem;
@@ -311,6 +315,7 @@ section {
   gap: 25px;
   align-items: center;
   margin: 1%;
+  margin-bottom: 2rem;
 }
 .split--areararities {
   flex-direction: column;
@@ -363,6 +368,10 @@ section {
 .txt-pokename--dex {
   font-size: 1.4em;
   font-weight: 600;
+  color: #000;
+  text-shadow: 1px 1px var(--clr-accent-light);
+}
+.txt-pokename--account {
   color: #000;
   text-shadow: 1px 1px var(--clr-accent-light);
 }
@@ -512,30 +521,36 @@ table {
   width: 70%;
   font-size: 1.8vh;
 }
-/* Input field */
+
 .select2-selection__rendered {
   font-size: 1.7vh;
 }
 .modal {
-  display: none; /* Hidden by default */
+  display: none; 
   left: 50%;
   top: 10%;
   transform: translate(-50%, 10%);
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  position: fixed; 
+  z-index: 1; 
 
-  width: 40vh; /* Full width */
-  height: 60%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
+  width: 40vh; 
+  height: 60%; 
+  overflow: auto; 
 }
-
-/* Modal Content/Box */
+.modal--account {
+  width: 60vh;
+  height: 50vh;
+}
+.modal--account .modal-content {
+  padding: 20px;
+  margin:5% auto;
+}
 .modal-content {
   background-color: #fefefe;
-  margin: 5% auto; /* 15% from the top and centered */
+  margin: 5% auto; 
   padding: 20px;
   border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
+  width: 80%; 
 }
 
 .center {
@@ -681,4 +696,19 @@ textarea {
   border: 3px solid var(--clr-accent-standard);
   border-radius: 10px;
   box-shadow: 1px 2px var(--clr-accent-shadow);
+}
+.tb-details {
+  margin: 0 auto;
+  text-align: center;
+  font-size: 2vh;
+  padding: 5px;
+  max-width: 100%;
+  table-layout: fixed;
+  width: 100%;
+}
+.tb-details td {
+  text-align: center;
+  border: solid 1px var(--clr-accent-shadow);
+  word-wrap: break-word;
+  width: 65%;
 }

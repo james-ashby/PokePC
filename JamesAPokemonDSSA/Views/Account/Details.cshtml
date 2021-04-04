@@ -1,6 +1,43 @@
-﻿@{
+﻿@model JamesAPokemonWAD.Models.AccountDetails
+@{
     ViewData["Title"] = "Details";
 }
-<h1>@ViewData["Title"]</h1>
-
-<p>This page will show account details and allow name change/password reset.</p>
+<div class="container container--details">
+    <h2 class="txt-title">Account Details</h2>
+    <table class="tb-details">
+        <tr>
+            <th><h3 class="txt-pokename--account">Username:</h3></th>
+            <td><h3 class="txt-pokename--account">@Model.Username</h3></td>
+        </tr>
+        <tr>
+            <th><h3 class="txt-pokename--account">Email:</h3></th>
+            <td><h3 class="txt-pokename--account">@Model.Email</h3></td>
+        </tr>
+        <tr>
+            <th><h3 class="txt-pokename--account">Account Type:</h3></th>
+            <td><h3 class="txt-pokename--account">@Model.AccountType</h3></td>
+        </tr>
+        <tr>
+            <th><h3 class="txt-pokename--account">Pokémon Caught:</h3></th>
+            <td><h3 class="txt-pokename--account">@Model.TotalPokemon</h3></td>
+        </tr>
+        <tr>
+            <th><h3 class="txt-pokename--account">Trainer Level:</h3></th>
+            <td><h3 class="txt-pokename--account">@Model.TrainerLevel</h3></td>
+        </tr>
+        <tr>
+            <th><h3 class="txt-pokename--account">Total Experience:</h3></th>
+            <td><h3 class="txt-pokename--account">@Model.Experience</h3></td>
+        </tr>
+        <tr>
+            <th><h3 class="txt-pokename--account">Creation Date:</h3></th>
+            <td><h3 class="txt-pokename--account">@Model.Created</h3></td>
+        </tr>
+    </table>
+    <div class="split">
+        <a asp-controller="Account" asp-action="ChangePassword" class="btn">Change Password</a>
+    </div>
+</div>
+<div class="split">
+<a href="javascript:void(0)" id="historyBackBtn" class="btn">Back</a>
+</div>

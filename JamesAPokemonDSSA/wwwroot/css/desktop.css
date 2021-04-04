@@ -112,3 +112,12 @@ h1 {
   width: 22rem;
   padding: 10px;
 }
+.container--details {
+  width: 40rem;
+  overflow: hidden;
+}
+.tb-details td {
+  text-align: center;
+  border: solid 1px var(--clr-accent-shadow);
+  padding: 5px;
+}

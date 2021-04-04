@@ -11,9 +11,6 @@
   $("#logoutBtn").on("click", function () {
     $("#logoutForm").submit();
   });
-  $("#deleteBtn").on("click", function () {
-    $("#deleteForm").submit();
-  });
   $(".multi-list").select2({
     theme: "classic",
     dropdownCssClass: "multi-list",
