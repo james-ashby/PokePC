@@ -28,7 +28,7 @@ namespace JamesAPokemonDSSA
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var builder = new SqlConnectionStringBuilder(Configuration.GetConnectionString("OnlineConnection"));
+            var builder = new SqlConnectionStringBuilder(Configuration.GetConnectionString("AzureDbConnectionString"));
             builder.Password = Configuration["DbPassword"];
             _connection = builder.ConnectionString;
             services.AddControllersWithViews();
