@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using JamesAPokemonWAD.Validation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -40,7 +41,12 @@ namespace JamesAPokemonWAD.Models
 
         [Required]
         public decimal Generation { get; set; }
+
+        [AllowedFileExtensions(".png")]
+        [MaxFileSize(100 * 250)]
         public IFormFile UploadImage { get; set; }
+        [AllowedFileExtensions(".png")]
+        [MaxFileSize(100 * 250)]
         public IFormFile UploadShinyImage { get; set; }
         public string ImageUrl { get; set; }
         public string Rarity { get; set; }
