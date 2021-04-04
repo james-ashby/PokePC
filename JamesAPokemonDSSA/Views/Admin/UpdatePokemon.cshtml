@@ -5,6 +5,7 @@
 }
 <form asp-controller="Admin" asp-action="UpdatePokemon" enctype="multipart/form-data">
     <div class="container container--register">
+        <input type="hidden" name="ImageUrl" value="@Model.ImageUrl" />
         @if (Model.ImageUrl.Contains("upload"))
         {
             <img class="pokemonImg" src="~/images/pokemon/@Model.ImageUrl" alt="A picture of the Pokémon @Model.PokemonName">

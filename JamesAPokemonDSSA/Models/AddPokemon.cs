@@ -43,12 +43,12 @@ namespace JamesAPokemonWAD.Models
         public decimal Generation { get; set; }
         [Required(ErrorMessage = "Please upload the Pokémon Image")]
         [AllowedFileExtensions(".png")]
-        [MaxFileSize(100 * 250)]
+        [MaxFileSize(1000 * 500)]
         public IFormFile UploadImage { get; set; }
 
         [Required(ErrorMessage = "Please upload the Shiny Pokémon Image")]
         [AllowedFileExtensions(".png")]
-        [MaxFileSize(100 * 250)]
+        [MaxFileSize(1000 * 500)]
         public IFormFile UploadShinyImage { get; set; }
         public string ImageUrl { get; set; }
         public string ShinyImageUrl { get; set; }
