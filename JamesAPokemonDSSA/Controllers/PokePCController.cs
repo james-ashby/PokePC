@@ -149,11 +149,22 @@ namespace JamesAPokemonDSSA.Controllers
             };
 
             PokePCUser user = _userContext.Users.Find(_userManager.GetUserId(User));
+            ViewData["PrevExperience"] = user.Experience;
+            var levelup = false;
+            user.Experience = user.Experience + 100;
+            if (user.Experience == user.Level * 1500)
+            {
+                user.Level = user.Level + 1;
+                levelup = true;
+            }
             user.UniquePokemon = user.UniquePokemon + 1;
             _userContext.SaveChanges();
             _context.Add(caught);
             _context.SaveChanges();
             ViewData["IsShiny"] = isShiny;
+            ViewData["NewExperience"] = user.Experience;
+            ViewData["LevelUp"] = levelup;
+            ViewData["Level"] = user.Level;
             return PartialView("_CaughtPokemon", model);
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

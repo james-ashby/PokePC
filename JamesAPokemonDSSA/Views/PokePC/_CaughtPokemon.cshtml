@@ -1,16 +1,33 @@
 ﻿@model JamesAPokemonWAD.Models.Pokemon;
-@{ bool IsShiny = (bool)ViewData["IsShiny"];}
+@{ bool IsShiny = (bool)ViewData["IsShiny"];
+    int level = (int)ViewData["Level"];
+    int prevLvl = level - 1;
+}
 
 @if (IsShiny)
 {
     <img class="pokemonImg" src="@(Model.ShinyImage.Contains("upload") ? "/images/pokemon/" : "")@Model.ShinyImage" alt="A picture of the shiny variant of the Pokémon @Model.PokemonName">
     <p class="txt-pokename">@Model.PokemonName</p>
     <p>You caught a shiny @Model.PokemonName!</p>
+    <p>100 Exp gained!</p>
+    <p>@ViewData["PrevExperience"] ➔ @ViewData["NewExperience"] Total Exp</p>
+    if ((bool)ViewData["LevelUp"])
+    {
+        <p>Level up!</p>
+        <p>@prevLvl ➔ @level</p>
+    }
 }
 else
 {
     <img class="pokemonImg" src="@(Model.Image.Contains("upload") ? "/images/pokemon/" : "")@Model.Image" alt="A picture of the Pokémon @Model.PokemonName">
     <p class="txt-pokename">@Model.PokemonName</p>
     <p>You caught @Model.PokemonName!</p>
+    <p>100 Exp gained!</p>
+    <p>@ViewData["PrevExperience"] ➔ @ViewData["NewExperience"] Total Exp</p>
+    if ((bool)ViewData["LevelUp"])
+    {
+        <p>Level up!</p>
+        <p>@prevLvl ➔ @level</p>
+    }
 }
 
