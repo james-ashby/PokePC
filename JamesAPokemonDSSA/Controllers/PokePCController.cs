@@ -105,7 +105,7 @@ namespace JamesAPokemonDSSA.Controllers
         {
             Random rand = new Random(DateTime.Now.Millisecond);
             var roll = rand.Next(1, 101);
-            var shinyRoll = rand.Next(1, 5);
+            var shinyRoll = rand.Next(1, 150);
             var model = _context.AreaPokemon.Include(c => c.Pokemon).Where(a=> a.AreaId == id);
             List<AreasPokemon> areaPoke = model.ToList();
             ViewData["IsShiny"] = (shinyRoll == 1 ? true : false);
