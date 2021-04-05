@@ -75,6 +75,13 @@ h1 {
   display: inline-block;
   width: 80%;
 }
+.split--caught {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 2px;
+  align-items: center;
+}
 .wrapper-areapoke {
   padding: 5px;
   border-radius: 2em;

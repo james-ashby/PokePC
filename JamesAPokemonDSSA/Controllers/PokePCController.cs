@@ -143,18 +143,34 @@ namespace JamesAPokemonDSSA.Controllers
             AreasPokemon commonPoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Rarity == "Common").FirstOrDefault();
             if (roll == 1 && legendaryPoke != null)
             {
+                if (_context.CaughtPokemon.Where(u => u.UserID == _userManager.GetUserId(User) && u.PokemonName == legendaryPoke.Pokemon.PokemonName).FirstOrDefault() != null)
+                {
+                    TempData["Caught"] = true;
+                }
                 return View(legendaryPoke);
             }
             else if (roll <= 5 && rarePoke != null)
             {
+                if (_context.CaughtPokemon.Where(u => u.UserID == _userManager.GetUserId(User) && u.PokemonName == rarePoke.Pokemon.PokemonName).FirstOrDefault() != null)
+                {
+                    TempData["Caught"] = true;
+                }
                 return View(rarePoke);
             }
             else if (roll <= 20 && uncommonPoke != null)
             {
+                if (_context.CaughtPokemon.Where(u => u.UserID == _userManager.GetUserId(User) && u.PokemonName == uncommonPoke.Pokemon.PokemonName).FirstOrDefault() != null)
+                {
+                    TempData["Caught"] = true;
+                }
                 return View(uncommonPoke);
             }
             else if (roll <= 70 && commonPoke != null)
             {
+                if (_context.CaughtPokemon.Where(u => u.UserID == _userManager.GetUserId(User) && u.PokemonName == commonPoke.Pokemon.PokemonName).FirstOrDefault() != null)
+                {
+                    TempData["Caught"] = true;
+                }
                 return View(commonPoke);
             }
             else

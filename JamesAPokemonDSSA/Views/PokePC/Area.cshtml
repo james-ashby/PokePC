@@ -1,6 +1,11 @@
 ﻿@{
     ViewData["Title"] = ViewData["AreaName"];
     bool IsShiny = (bool)ViewData["IsShiny"];
+    bool tempCaught = false;
+    if (TempData["Caught"] != null)
+    {
+        tempCaught = (bool)TempData["Caught"];
+    }
 }
 <div class="container container--register">
 
@@ -9,11 +14,19 @@
     @if (Model != null)
     {
         <img class="pokemonImg" src="@(IsShiny ? (Model.Pokemon.ShinyImage.Contains("upload") ? "/images/pokemon/" + Model.Pokemon.ShinyImage : Model.Pokemon.ShinyImage) : (Model.Pokemon.Image.Contains("upload") ? "/images/pokemon/" + Model.Pokemon.Image : Model.Pokemon.Image))" alt="A picture of the Pokémon @Model.Pokemon.PokemonName">
-        <p class="txt-pokename">
-            A wild @if (IsShiny)
-            {@: Shiny
-            } @Model.Pokemon.PokemonName appeared!
-        </p>
+        
+        <div class="split split--caught">
+            @if (tempCaught == true)
+            {
+            <img class="pokeballImg" src="~/images/pokeball.png" alt="Picture of a Pokéball to show that the Pokémon is captured" />
+            }
+            <p class="txt-pokename">
+                A wild @if (IsShiny)
+                {@: Shiny
+                } @Model.Pokemon.PokemonName appeared!
+            </p>
+        </div>
+        
         <div class="splitcol">
             <a class="btn btn--small btn--catch" id="caughtPoke" href="javascript:;" data-id="@Model.PokemonId" data-isshiny="@IsShiny">Catch!</a>
             <a class="btn btn--small" asp-controller="PokePC" asp-action="Area" asp-route-id=@Model.AreaId>Find more!</a>
