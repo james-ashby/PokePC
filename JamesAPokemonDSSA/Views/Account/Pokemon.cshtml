@@ -1,10 +1,20 @@
 ﻿@{
     ViewData["Title"] = "My Pokémon";
 }
+<div class="center">
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <div id="myModalContent"></div>
+            <div id="modelClose">
+                <span id="closeBtn" class="btn">Close</span>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container container--register">
     <h1 class="txt-title">@ViewData["Title"]</h1>
     <div class="split">
-        <p class="txt-pokename">Total Pokémon caught: @ViewData["TotalPokemon"]</p>
+        <p class="txt-pokename">Total Pokémon: @ViewData["TotalPokemon"]</p>
     </div>
 </div>
 <div class="container container--dex">
@@ -24,6 +34,7 @@
 
             }
             <p class="txt-pokename">Caught on: @pokemon.CatchDate</p>
+            <h3 class="txt-admin txt-admin--delete"><a href="javascript:;" class="releasePoke" data-id="@pokemon.PokemonId">Release</a></h3>
         </div>
             
         }

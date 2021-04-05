@@ -47,6 +47,34 @@
     });
   });
   $(function () {
+    $(".releasePoke").click(function () {
+      console.log("test");
+      var pokemonID = $(this).data("id");
+      var data = {
+        id: pokemonID,
+      };
+      $.ajax({
+        type: "POST",
+        url: "ConfirmReleasePokemon",
+        data: data,
+        dataType: "html",
+        success: function (response) {
+          $("#myModalContent").html(response);
+          $("#myModal").slideDown();
+        },
+        failure: function (response) {
+          alert(response.responseText);
+        },
+        error: function (response) {
+          alert(response.responseText);
+        },
+      });
+    });
+    $("#closeBtn").click(function () {
+      $("#myModal").slideUp();
+    });
+  });
+  $(function () {
     $(".deletePoke").click(function () {
       var pokemonID = $(this).data("id");
       var data = {
@@ -73,4 +101,5 @@
       $("#myModal").slideUp();
     });
   });
+  
 });

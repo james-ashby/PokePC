@@ -7,6 +7,7 @@ namespace JamesAPokemonWAD.Models
 {
     public class UserPokemonDetails
     {
+        public int PokemonId { get; set; }
         public string Name { get; set; }
         public bool IsShiny { get; set; }
         public DateTime CatchDate { get; set; }

@@ -170,6 +170,7 @@ namespace JamesAPokemonDSSA.Controllers
 
             List<UserPokemonDetails> caughtPokemon = _context.Pokemon.Join(_context.CaughtPokemon.Where(u => u.UserID == userManager.GetUserId(User)), pokemon => pokemon.PokemonName, caught => caught.PokemonName, (pokemon, caught) => new UserPokemonDetails
             {
+                PokemonId = caught.PokemonID,
                 CatchDate = caught.CatchDate,
                 Image = caught.IsShiny ? pokemon.ShinyImage : pokemon.Image,
                 Name = caught.PokemonName,
@@ -178,6 +179,33 @@ namespace JamesAPokemonDSSA.Controllers
             }).ToList();
             ViewData["TotalPokemon"] = _userContext.Users.Find(userManager.GetUserId(User)).UniquePokemon;
             return View(caughtPokemon);
+        }
+        [HttpPost]
+        [Authorize(Roles = "Standard, Admin")]
+        public IActionResult ConfirmReleasePokemon(int id)
+        {
+            UserPokemonDetails model = _context.Pokemon.Join(_context.CaughtPokemon.Where(p => p.PokemonID == id), pokemon => pokemon.PokemonName, caught => caught.PokemonName, (pokemon, caught) => new UserPokemonDetails
+            {
+                PokemonId = caught.PokemonID,
+                CatchDate = caught.CatchDate,
+                Image = caught.IsShiny ? pokemon.ShinyImage : pokemon.Image,
+                Name = caught.PokemonName,
+                PokedexNum = pokemon.PokedexNum,
+                IsShiny = caught.IsShiny
+            }).FirstOrDefault();
+            return PartialView("_ConfirmReleasePokemon", model);
+        }
+        [HttpPost]
+        [Authorize(Roles = "Standard, Admin")]
+        public IActionResult ReleasePokemon(CaughtPokemon id)
+        {
+            CaughtPokemon pokemon = _context.CaughtPokemon.Find(id.PokemonID);
+            var user = _userContext.Users.Find(userManager.GetUserId(User));
+            user.UniquePokemon = user.UniquePokemon - 1;
+            _context.CaughtPokemon.Remove(pokemon);
+            _userContext.SaveChanges();
+            _context.SaveChanges();
+            return RedirectToAction("Pokemon", "Account");
         }
     }
 }
