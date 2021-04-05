@@ -455,7 +455,8 @@ section {
 }
 .txt-error {
   color: red;
-  font-size: 2vh;
+  font-size: 1.5vh;
+  font-weight: 500;
 }
 .field-validation-error {
   color: red;

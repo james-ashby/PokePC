@@ -110,7 +110,7 @@ namespace JamesAPokemonDSSA.Controllers
                 return RedirectToAction("Areas", "PokePC");
             }else if (_userContext.Users.Find(_userManager.GetUserId(User)).Level < levelReq)
             {
-                TempData["Denied"] = "Level is too low for this area";
+                TempData["Denied"] = area.Name + " requires level " + levelReq;
                 return RedirectToAction("Areas", "PokePC");
             }
 
@@ -128,7 +128,7 @@ namespace JamesAPokemonDSSA.Controllers
             var levelReq = area.LevelRequirement;
             if (_userContext.Users.Find(_userManager.GetUserId(User)).Level < levelReq)
             {
-                TempData["Denied"] = "Level is too low for this area";
+                TempData["Denied"] = area.Name + " requires level " + levelReq;
                 return RedirectToAction("Areas", "PokePC");
             }
             Random rand = new Random(DateTime.Now.Millisecond);
