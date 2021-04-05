@@ -16,6 +16,7 @@
             </div>
             <div class="split split--filter">
                 <select name="typeFilter">
+                    <option value="@null" selected="selected">None</option>
                     @foreach (string type in typeList)
                     {
                         if (type == (string)ViewData["CurrentType"])
