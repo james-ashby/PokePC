@@ -1,6 +1,7 @@
 ﻿
 @{
     ViewData["Title"] = "Pokédex";
+    List<string> typeList = (List<string>)ViewData["Types"];
 }
 <div class="container container--dexhead">
     <div class="wrapperDexHead">
@@ -13,22 +14,40 @@
                     <input type="submit" value="Search" class="btn btn-default" />
                 </p>
             </div>
+            <div class="split split--filter">
+                <select name="typeFilter">
+                    @foreach (string type in typeList)
+                    {
+                        if (type == (string)ViewData["CurrentType"])
+                        {
+                            <option value="@type" selected="selected">@System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(type)</option>
+                        }
+                        else
+                        {
+                            <option value="@type">@System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(type)</option>
+                        }
+                    }
+                </select>
+                <div class="form-actions no-color">
+                    <input type="submit" value="Filter by type" class="btn btn--small" />
+                </div>
+            </div>
         </form>
-        <a class="btn btn--xsmall" asp-action="Pokedex">Show all</a>
         <div class="split split--filter">
-            <a class="btn btn--small" asp-action="Pokedex" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Sort by Name</a>
-            <a class="btn btn--small" asp-action="Pokedex" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Sort by Date Added</a>
+            <a class="btn btn--small" asp-action="Pokedex" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" asp-route-currentType="@ViewData["CurrentType"]">Sort Alphabetically</a>
+            <a class="btn btn--small" asp-action="Pokedex" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" asp-route-currentType="@ViewData["CurrentType"]">Sort by Date Added</a>
         </div>
+        <a class="btn btn--xsmall" asp-action="Pokedex">Reset Filter</a>
     </div>
 </div>
 <div class="flex container container--dex">
     @foreach (var entry in Model)
     {
-            <div>
-                <a asp-controller="PokePC" asp-action="PokedexEntry" asp-route-id="@entry.PokemonId"><img class="pokemonImg" src="@(entry.Image.Contains("upload") ? "/images/pokemon/" : "")@entry.Image") alt="A picture of the Pokémon @entry.PokemonName"></a>
-                <p class="txt-pokename">@entry.PokemonName</p>
-            </div>
-        
+        <div>
+            <a asp-controller="PokePC" asp-action="PokedexEntry" asp-route-id="@entry.PokemonId"><img class="pokemonImg pokemonImg--@entry.Type_1 pokemonImg--offset--@(entry.Type_2 == null || entry.Type_2 == "" ? entry.Type_1 : entry.Type_2)" src="@(entry.Image.Contains("upload") ? "/images/pokemon/" : "")@entry.Image" ) alt="A picture of the Pokémon @entry.PokemonName"></a>
+            <p class="txt-pokename">@entry.PokemonName</p>
+        </div>
+
     }
 </div>
 @{
@@ -57,18 +76,20 @@
            asp-route-sortOrder="@ViewData["CurrentSort"]"
            asp-route-pageNumber="@(Model.PageIndex - 1)"
            asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           asp-route-currentType="@ViewData["CurrentType"]"
            class="btn btn-@prevDisabled">
             Previous
         </a>
     </div>
 
-    
+
 
     <div>
         <a asp-action="Pokedex"
            asp-route-sortOrder="@ViewData["CurrentSort"]"
            asp-route-pageNumber="@(Model.PageIndex + 1)"
            asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           asp-route-currentType="@ViewData["CurrentType"]"
            class="btn btn-@nextDisabled">
             Next
         </a>

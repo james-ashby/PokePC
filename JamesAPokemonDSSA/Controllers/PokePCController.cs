@@ -35,24 +35,29 @@ namespace JamesAPokemonDSSA.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Pokedex(string sortOrder, string searchString, string currentFilter, int? pageNumber)
+        public async Task<IActionResult> Pokedex(string sortOrder, string searchString, string currentFilter, int? pageNumber, string typeFilter, string currentType)
         {
             var allPokemon = _context.Pokemon.OrderBy(e => e.PokedexNum);
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = sortOrder == "name_asc" ? "name_desc" : "name_asc";
             ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
-            ViewData["TypeSortParm"] = sortOrder;
 
-            if (searchString != null)
+            if (searchString != null || typeFilter != null)
             {
                 pageNumber = 1;
             }
             else
             {
                 searchString = currentFilter;
+                typeFilter = currentType;
             }
             ViewData["CurrentFilter"] = searchString;
-            var pokemon = from p in _context.Pokemon select p;
+            ViewData["CurrentType"] = typeFilter;
+             var pokemon = from p in _context.Pokemon select p;
+            if (typeFilter != null)
+            {
+                pokemon = pokemon.Where(p => p.Type_1 == typeFilter || p.Type_2 == typeFilter);
+            }
             if (!string.IsNullOrEmpty(searchString))
             {
                 pokemon = pokemon.Where(p => p.PokemonName.Contains(searchString));

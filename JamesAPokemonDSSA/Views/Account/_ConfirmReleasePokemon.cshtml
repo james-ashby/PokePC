@@ -1,10 +1,9 @@
 ﻿@model JamesAPokemonWAD.Models.UserPokemonDetails;
 
-<img class="pokemonImg" src="@(Model.Image.Contains("upload") ? "/images/pokemon/" : "")@Model.Image" alt="A picture of the Pokémon @Model.Name">
+<img class="pokemonImg pokemonImg--@Model.Type_1 pokemonImg--offset--@(Model.Type_2 == null || Model.Type_2 == "" ? Model.Type_1 : Model.Type_2)" src="@(Model.Image.Contains("upload") ? "/images/pokemon/" : "")@Model.Image" alt="A picture of the Pokémon @Model.Name">
 <p class="txt-pokename">@Model.Name</p>
 <p>Caught on: @Model.CatchDate</p>
 <p>Are you sure you want to release @Model.Name?</p>
-<p>@Model.PokemonId</p>
 <div class="split">
         <form method="post" action="@Url.Action("ReleasePokemon", "Account")">
             <input type="hidden" name="PokemonId" value="@Model.PokemonId" />

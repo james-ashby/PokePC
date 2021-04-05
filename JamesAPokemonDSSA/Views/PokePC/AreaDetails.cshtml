@@ -30,7 +30,7 @@
                     @foreach (var pokemonInArea in pokemon.Where(p => p.Rarity == "Common"))
                     {
                         <div>
-                            <img class="pokemonImg" src="@(pokemonInArea.Pokemon.Image.Contains("upload") ? "/images/pokemon/" : "")@pokemonInArea.Pokemon.Image" alt="A picture of the Pokémon @pokemonInArea.Pokemon.PokemonName">
+                            <img class="pokemonImg  pokemonImg--@pokemonInArea.Pokemon.Type_1 pokemonImg--offset--@(pokemonInArea.Pokemon.Type_2 == null || pokemonInArea.Pokemon.Type_2 == "" ? pokemonInArea.Pokemon.Type_1 : pokemonInArea.Pokemon.Type_2)" src="@(pokemonInArea.Pokemon.Image.Contains("upload") ? "/images/pokemon/" : "")@pokemonInArea.Pokemon.Image" alt="A picture of the Pokémon @pokemonInArea.Pokemon.PokemonName">
                             <p class="txt-pokename">@pokemonInArea.Pokemon.PokemonName</p>
                         </div>
                     }
@@ -47,7 +47,7 @@
                     @foreach (var pokemonInArea in pokemon.Where(p => p.Rarity == "Uncommon"))
                     {
                         <div>
-                            <img class="pokemonImg" src="@(pokemonInArea.Pokemon.Image.Contains("upload") ? "/images/pokemon/" : "")@pokemonInArea.Pokemon.Image" alt="A picture of the Pokémon @pokemonInArea.Pokemon.PokemonName">
+                            <img class="pokemonImg  pokemonImg--@pokemonInArea.Pokemon.Type_1 pokemonImg--offset--@(pokemonInArea.Pokemon.Type_2 == null || pokemonInArea.Pokemon.Type_2 == "" ? pokemonInArea.Pokemon.Type_1 : pokemonInArea.Pokemon.Type_2)" src="@(pokemonInArea.Pokemon.Image.Contains("upload") ? "/images/pokemon/" : "")@pokemonInArea.Pokemon.Image" alt="A picture of the Pokémon @pokemonInArea.Pokemon.PokemonName">
                             <p class="txt-pokename">@pokemonInArea.Pokemon.PokemonName</p>
                         </div>
                     }
@@ -64,7 +64,7 @@
                     @foreach (var pokemonInArea in pokemon.Where(p => p.Rarity == "Rare"))
                     {
                         <div>
-                            <img class="pokemonImg" src="@(pokemonInArea.Pokemon.Image.Contains("upload") ? "/images/pokemon/" : "")@pokemonInArea.Pokemon.Image" alt="A picture of the Pokémon @pokemonInArea.Pokemon.PokemonName">
+                            <img class="pokemonImg pokemonImg--@pokemonInArea.Pokemon.Type_1 pokemonImg--offset--@(pokemonInArea.Pokemon.Type_2 == null || pokemonInArea.Pokemon.Type_2 == "" ? pokemonInArea.Pokemon.Type_1 : pokemonInArea.Pokemon.Type_2)" src="@(pokemonInArea.Pokemon.Image.Contains("upload") ? "/images/pokemon/" : "")@pokemonInArea.Pokemon.Image" alt="A picture of the Pokémon @pokemonInArea.Pokemon.PokemonName">
                             <p class="txt-pokename">@pokemonInArea.Pokemon.PokemonName</p>
                         </div>
                     }
@@ -80,7 +80,7 @@
                     @foreach (var pokemonInArea in pokemon.Where(p => p.Rarity == "Legendary"))
                     {
                         <div>
-                            <img class="pokemonImg pokemonImg--legend" src="@(pokemonInArea.Pokemon.Image.Contains("upload") ? "/images/pokemon/" : "")@pokemonInArea.Pokemon.Image" alt="A picture of the Pokémon @pokemonInArea.Pokemon.PokemonName">
+                            <img class="pokemonImg pokemonImg--legend pokemonImg--@pokemonInArea.Pokemon.Type_1 pokemonImg--offset--@(pokemonInArea.Pokemon.Type_2 == null || pokemonInArea.Pokemon.Type_2 == "" ? pokemonInArea.Pokemon.Type_1 : pokemonInArea.Pokemon.Type_2)" src="@(pokemonInArea.Pokemon.Image.Contains("upload") ? "/images/pokemon/" : "")@pokemonInArea.Pokemon.Image" alt="A picture of the Pokémon @pokemonInArea.Pokemon.PokemonName">
                             <p class="txt-pokename">???</p>
                         </div>
                     }

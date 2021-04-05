@@ -10,9 +10,12 @@ namespace JamesAPokemonWAD.Models
         public int PokemonId { get; set; }
         public string Name { get; set; }
         public bool IsShiny { get; set; }
-        public DateTime CatchDate { get; set; }
+        public string CatchDate { get; set; }
         public string Nickname { get; set; }
         public int PokedexNum { get; set; }
         public string Image { get; set; }
+        
+        public string Type_1 { get; set; }
+        public string Type_2 { get; set; }
     }
 }

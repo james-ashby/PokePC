@@ -32,7 +32,7 @@
     @foreach (var entry in Model)
     {
         <div>
-            <a asp-controller="PokePC" asp-action="PokedexEntry" asp-route-id="@entry.PokemonId"><img class="pokemonImg" src="@(entry.Image.Contains("upload") ? "/images/pokemon/" : "")@entry.Image" alt="A picture of the Pokémon @entry.PokemonName"></a>
+            <a asp-controller="PokePC" asp-action="PokedexEntry" asp-route-id="@entry.PokemonId"><img class="pokemonImg pokemonImg--@entry.Type_1 pokemonImg--offset--@(entry.Type_2 == null || entry.Type_2 == "" ? entry.Type_1 : entry.Type_2) " src="@(entry.Image.Contains("upload") ? "/images/pokemon/" : "")@entry.Image" alt="A picture of the Pokémon @entry.PokemonName"></a>
             <p class="txt-pokename">@entry.PokemonName</p>
             <div class="split">
                 <h3 class="txt-admin txt-admin--update"><a asp-controller="Admin" asp-action="UpdatePokemon" asp-route-id="@entry.PokemonId">Update</a></h3>

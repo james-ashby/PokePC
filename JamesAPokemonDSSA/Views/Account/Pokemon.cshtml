@@ -23,7 +23,7 @@
         @foreach (var pokemon in Model)
         {
         <div class="wrapper-pokemon">
-            <img class="pokemonImg" src="@(pokemon.Image.Contains("upload") ? "/images/pokemon/" : "")@pokemon.Image" alt="A picture of the Pokémon @pokemon.Name">
+            <img class="pokemonImg pokemonImg--@pokemon.Type_1 pokemonImg--offset--@(pokemon.Type_2 == null || pokemon.Type_2 == "" ? pokemon.Type_1 : pokemon.Type_2) " src="@(pokemon.Image.Contains("upload") ? "/images/pokemon/" : "")@pokemon.Image" alt="A picture of the Pokémon @pokemon.Name">
             @if (pokemon.IsShiny)
             {
                 <p class="txt-pokename">Shiny @pokemon.Name</p>

@@ -8,11 +8,11 @@
         <input type="hidden" name="ImageUrl" value="@Model.ImageUrl" />
         @if (Model.ImageUrl.Contains("upload"))
         {
-            <img class="pokemonImg" src="~/images/pokemon/@Model.ImageUrl" alt="A picture of the Pokémon @Model.PokemonName">
+            <img class="pokemonImg  pokemonImg--@Model.Type_1 pokemonImg--offset--@(Model.Type_2 == null || Model.Type_2 == "" ? Model.Type_1 : Model.Type_2)" src="~/images/pokemon/@Model.ImageUrl" alt="A picture of the Pokémon @Model.PokemonName">
         }
         else
         {
-            <img class="pokemonImg" src="@Model.ImageUrl" alt="A picture of the Pokémon @Model.PokemonName">
+            <img class="pokemonImg pokemonImg--@Model.Type_1 pokemonImg--offset--@(Model.Type_2 == null || Model.Type_2 == "" ? Model.Type_1 : Model.Type_2)" src="@Model.ImageUrl" alt="A picture of the Pokémon @Model.PokemonName">
         }
         <h1 class="txt-title">Update @Model.PokemonName</h1>
 

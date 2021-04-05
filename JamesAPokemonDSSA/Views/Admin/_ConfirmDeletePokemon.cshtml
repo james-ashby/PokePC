@@ -1,7 +1,7 @@
 ﻿@model JamesAPokemonWAD.Models.Pokemon;
 
 
-<img class="pokemonImg" src="@(Model.Image.Contains("upload") ? "/images/pokemon/" : "")@Model.Image" alt="A picture of the Pokémon @Model.PokemonName">
+<img class="pokemonImg pokemonImg--@Model.Type_1 pokemonImg--offset--@(Model.Type_2 == null || Model.Type_2 == "" ? Model.Type_1 : Model.Type_2) " src="@(Model.Image.Contains("upload") ? "/images/pokemon/" : "")@Model.Image" alt="A picture of the Pokémon @Model.PokemonName">
 <p class="txt-pokename">@Model.PokemonName</p>
 <p>Are you sure you want to delete @Model.PokemonName?</p>
 <div class="split">

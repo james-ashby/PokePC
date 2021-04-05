@@ -13,7 +13,7 @@
 
     @if (Model != null)
     {
-        <img class="pokemonImg" src="@(IsShiny ? (Model.Pokemon.ShinyImage.Contains("upload") ? "/images/pokemon/" + Model.Pokemon.ShinyImage : Model.Pokemon.ShinyImage) : (Model.Pokemon.Image.Contains("upload") ? "/images/pokemon/" + Model.Pokemon.Image : Model.Pokemon.Image))" alt="A picture of the Pokémon @Model.Pokemon.PokemonName">
+        <img class="pokemonImg  pokemonImg--@Model.Pokemon.Type_1 pokemonImg--offset--@(Model.Pokemon.Type_2 == null || Model.Pokemon.Type_2 == "" ? Model.Pokemon.Type_1 : Model.Pokemon.Type_2) " src="@(IsShiny ? (Model.Pokemon.ShinyImage.Contains("upload") ? "/images/pokemon/" + Model.Pokemon.ShinyImage : Model.Pokemon.ShinyImage) : (Model.Pokemon.Image.Contains("upload") ? "/images/pokemon/" + Model.Pokemon.Image : Model.Pokemon.Image))" alt="A picture of the Pokémon @Model.Pokemon.PokemonName">
         
         <div class="split split--caught">
             @if (tempCaught == true)

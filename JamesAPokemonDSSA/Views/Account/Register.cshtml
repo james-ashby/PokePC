@@ -33,7 +33,7 @@
             @foreach (var starter in starters)
             {
             <div class="poke-info">
-                <img class="pokemonImg" src="@starter.Image" alt="Charmander">
+                <img class="pokemonImg pokemonImg--@starter.Type_1 pokemonImg--offset--@(starter.Type_2 == null || starter.Type_2 == "" ? starter.Type_1 : starter.Type_2) " src="@starter.Image" alt="Charmander">
                 <p class="txt-pokename">@starter.PokemonName</p>
                 @if (firstRadio)
                 {

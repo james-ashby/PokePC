@@ -171,11 +171,13 @@ namespace JamesAPokemonDSSA.Controllers
             List<UserPokemonDetails> caughtPokemon = _context.Pokemon.Join(_context.CaughtPokemon.Where(u => u.UserID == userManager.GetUserId(User)), pokemon => pokemon.PokemonName, caught => caught.PokemonName, (pokemon, caught) => new UserPokemonDetails
             {
                 PokemonId = caught.PokemonID,
-                CatchDate = caught.CatchDate,
+                CatchDate = caught.CatchDate.ToString("dd/MM/yyyy"),
                 Image = caught.IsShiny ? pokemon.ShinyImage : pokemon.Image,
                 Name = caught.PokemonName,
                 PokedexNum = pokemon.PokedexNum,
-                IsShiny = caught.IsShiny
+                IsShiny = caught.IsShiny,
+                Type_1 = pokemon.Type_1,
+                Type_2 = pokemon.Type_2
             }).ToList();
             ViewData["TotalPokemon"] = _userContext.Users.Find(userManager.GetUserId(User)).UniquePokemon;
             return View(caughtPokemon);
@@ -187,11 +189,13 @@ namespace JamesAPokemonDSSA.Controllers
             UserPokemonDetails model = _context.Pokemon.Join(_context.CaughtPokemon.Where(p => p.PokemonID == id), pokemon => pokemon.PokemonName, caught => caught.PokemonName, (pokemon, caught) => new UserPokemonDetails
             {
                 PokemonId = caught.PokemonID,
-                CatchDate = caught.CatchDate,
+                CatchDate = caught.CatchDate.ToString("dd/MM/yyyy"),
                 Image = caught.IsShiny ? pokemon.ShinyImage : pokemon.Image,
                 Name = caught.PokemonName,
                 PokedexNum = pokemon.PokedexNum,
-                IsShiny = caught.IsShiny
+                IsShiny = caught.IsShiny,
+                Type_1 = pokemon.Type_1,
+                Type_2 = pokemon.Type_2
             }).FirstOrDefault();
             return PartialView("_ConfirmReleasePokemon", model);
         }

@@ -65,7 +65,7 @@ h1 {
   margin-top: 10px;
 }
 .split--filter {
-  justify-content:start;
+  justify-content:center;
   gap: 15px;
 }
 .split--mypoke {
