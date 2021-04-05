@@ -191,7 +191,7 @@ section {
   padding: 15px;
 }
 .container--trainerlevel {
-  width: 50%;
+  width: 80%;
   padding: 15px;
 }
 .container--areadetails{
@@ -455,7 +455,7 @@ section {
 }
 .txt-error {
   color: red;
-  font-size: 1.5vh;
+  font-size: 1.8vh;
   font-weight: 500;
 }
 .field-validation-error {
