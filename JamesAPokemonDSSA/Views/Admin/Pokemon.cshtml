@@ -1,4 +1,6 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Admin Pokemon";
+}
 <div class="center">
     <div id="myModal" class="modal">
         <div class="modal-content">
@@ -11,7 +13,7 @@
 </div>
 <div class="container container--dexhead">
     <div class="wrapperDexHead">
-        <h1>@ViewData["Title"]</h1>
+        <h1 class="txt-title">@ViewData["Title"]</h1>
         <p class="txt-pokename">Filter for specific Pokémon to edit</p>
         <form asp-action="Pokemon" method="get">
             <div class="form-actions no-color">

@@ -1,6 +1,8 @@
 ﻿@model JamesAPokemonWAD.Models.AddPokemon
 
 @{
+    ViewData["Title"] = "Add Pokemon";
+    
     var areas = ViewData["Areas"] as List<JamesAPokemonWAD.Models.Area>;
 }
 <form asp-controller="Admin" asp-action="AddPokemon" enctype="multipart/form-data">
@@ -75,14 +77,14 @@
 
         <label asp-for="UploadImage" class="required"> Upload Standard Image</label>
         <div class="custom-file">
-            <input asp-for="UploadImage"id="standardFile">
+            <input asp-for="UploadImage" id="standardFile">
             <label for="standardFile">Choose file</label>
         </div>
         <span asp-validation-for="UploadImage" class="txt-error"></span>
 
 
         <label asp-for="UploadShinyImage" class="required">Upload Shiny Image</label>
-        <div >
+        <div>
             <input asp-for="UploadShinyImage" id="shinyFile">
             <label for="shinyFile">Choose file</label>
         </div>

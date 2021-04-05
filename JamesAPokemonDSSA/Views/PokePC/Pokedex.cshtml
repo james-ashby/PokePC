@@ -9,10 +9,10 @@
         <p class="txt-pokename">Click on a Pokémon below to see more details!</p>
         <form asp-action="Pokedex" method="get">
             <div class="form-actions no-color">
-                <p class="txt-pokename">
-                    Filter by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+
+                    <label class="txt-pokename" for="SearchString">Filter by name: </label>
+                    <input type="text" name="SearchString" id="SearchString" value="@ViewData["CurrentFilter"]" />
                     <input type="submit" value="Search" class="btn btn-default" />
-                </p>
             </div>
             <div class="split split--filter">
                 <select name="typeFilter">
