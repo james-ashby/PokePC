@@ -5,7 +5,22 @@
 <div class="container container--areadetails">
     <h1 class="txt-title">@ViewData["AreaName"]</h1>
     <img class="areaImg" src="@ViewData["AreaImage"]" alt="An image depicting @ViewData["AreaName"]" />
-    <p>Pokémon to be found in @ViewData["AreaName"]...</p>
+
+    <div class="areaSearchWrapper">
+        @if (User.IsInRole("Admin") || User.IsInRole("Standard"))
+        {
+            <a class="btn btn--update" asp-controller="PokePC" asp-action="Area" asp-route-id=@Model[1].AreaId>Search for Pokémon!</a>
+        }
+        else
+        {
+            <a class="btn btn--update" asp-controller="Account" asp-action="Register" asp-route-id=@Model[1].AreaId>Register to catch Pokémon!</a>
+        }
+    </div>
+
+    <p>Pokémon to be found in @ViewData["AreaName"]... <br /></p>
+
+
+
     <div class="split split--areararities">
         @if (pokemon.Any(pokemon => pokemon.Rarity.Contains("Common")))
         {
@@ -73,17 +88,8 @@
             </div>
         }
     </div>
-   
-    <div>
-        @if (User.IsInRole("Admin") || User.IsInRole("Standard"))
-        {
-            <a class="btn btn--small" asp-controller="PokePC" asp-action="Area" asp-route-id=@Model[1].AreaId>Look for Pokémon!</a>
-        }
-        else
-        {
-            <a class="btn btn--small" asp-controller="Account" asp-action="Register" asp-route-id=@Model[1].AreaId>Register to catch Pokémon!</a>
-        }
-    </div>
+
+
 </div>
 <div class="split">
     <a href="javascript:void(0)" id="historyBackBtn"

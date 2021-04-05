@@ -716,3 +716,6 @@ textarea {
   word-wrap: break-word;
   width: 65%;
 }
+.areaSearchWrapper {
+  margin: 10px;
+}
