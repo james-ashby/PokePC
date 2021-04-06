@@ -102,12 +102,11 @@ namespace JamesAPokemonWAD.Controllers
                     _context.Add(newArea);
                     _context.SaveChanges();
                     List<AreasPokemon> wildPokemon = new List<AreasPokemon>();
-                    _context.AreaPokemon.Where(ap => ap.AreaId == newArea.AreaId).ToList().ForEach(a => _context.AreaPokemon.Remove(a));
                     if (model.PokemonIds != null)
                     {
                         foreach (int pokemonId in model.PokemonIds)
                         {
-                            wildPokemon.Add(new AreasPokemon { AreaId = model.AreaId, PokemonId = pokemonId });
+                            wildPokemon.Add(new AreasPokemon { AreaId = newArea.AreaId, PokemonId = pokemonId });
                         }
                         foreach (AreasPokemon wildPoke in wildPokemon)
                         {
