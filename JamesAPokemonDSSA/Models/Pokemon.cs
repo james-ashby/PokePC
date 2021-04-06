@@ -54,6 +54,9 @@ namespace JamesAPokemonWAD.Models
         [Column(TypeName = "varchar(255)")]
         public string ShinyImage { get; set; }
 
+        [Column(TypeName = "varchar(255)")]
+        public string Rarity { get; set; }
+
         public virtual ICollection<AreasPokemon> AreasPokemon { get; set; }
     }
 }

@@ -31,7 +31,7 @@ namespace JamesAPokemonDSSA.Controllers
         public IActionResult Index()
         {
            var starters = _context.Pokemon.Where(e =>(e.PokedexNum == 1 || e.PokedexNum == 4 || e.PokedexNum == 7));
-           List < Pokemon > model = starters.ToList();
+           List <Pokemon> model = starters.ToList();
             return View(model);
         }
 
@@ -119,9 +119,10 @@ namespace JamesAPokemonDSSA.Controllers
                 return RedirectToAction("Areas", "PokePC");
             }
 
-            List<AreasPokemon> areaPoke = _context.AreaPokemon.Include(p => p.Pokemon).Where(a => a.AreaId == id).OrderBy(p => p.Rarity == "Legendary")
-            .ThenBy(p => p.Rarity == "Rare").ThenBy(p => p.Rarity == "Uncommon").ThenBy(p => p.Rarity == "Common").ToList();
-            ViewData["AreaImage"] = _context.Areas.Where(a => a.AreaId == id).First().Image;
+            List<AreasPokemon> areaPoke = _context.AreaPokemon.Include(p => p.Pokemon).Where(a => a.AreaId == id).OrderBy(p => p.Pokemon.Rarity == "Legendary")
+            .ThenBy(p => p.Pokemon.Rarity == "Rare").ThenBy(p => p.Pokemon.Rarity == "Uncommon").ThenBy(p => p.Pokemon.Rarity == "Common").ToList();
+            string imageUrl = _context.Areas.Where(a => a.AreaId == id).First().Image;
+            ViewData["AreaImage"] = imageUrl.Contains("uploaded") ? "/images/areas/" + imageUrl : imageUrl;
             ViewData["AreaName"] = _context.Areas.Find(id).Name;
             return View(areaPoke);
         }
@@ -142,10 +143,10 @@ namespace JamesAPokemonDSSA.Controllers
             var model = _context.AreaPokemon.Include(c => c.Pokemon).Where(a=> a.AreaId == id);
             List<AreasPokemon> areaPoke = model.ToList();
             ViewData["IsShiny"] = (shinyRoll == 1 ? true : false);
-            AreasPokemon legendaryPoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Rarity == "Legendary").FirstOrDefault(); // Guid for simple random choice (random global unique identifier)
-            AreasPokemon rarePoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Rarity == "Rare").FirstOrDefault();
-            AreasPokemon uncommonPoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Rarity == "Uncommon").FirstOrDefault();
-            AreasPokemon commonPoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Rarity == "Common").FirstOrDefault();
+            AreasPokemon legendaryPoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Pokemon.Rarity == "Legendary").FirstOrDefault(); // Guid for simple random choice (random global unique identifier)
+            AreasPokemon rarePoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Pokemon.Rarity == "Rare").FirstOrDefault();
+            AreasPokemon uncommonPoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Pokemon.Rarity == "Uncommon").FirstOrDefault();
+            AreasPokemon commonPoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Pokemon.Rarity == "Common").FirstOrDefault();
             if (roll == 1 && legendaryPoke != null)
             {
                 if (_context.CaughtPokemon.Where(u => u.UserID == _userManager.GetUserId(User) && u.PokemonName == legendaryPoke.Pokemon.PokemonName).FirstOrDefault() != null)

@@ -1,5 +1,27 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<JamesAPokemonWAD.Models.Area>
+
 @{
+    ViewData["Title"] = "Admin Areas";
 }
+<div class="center">
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <div id="myModalContent"></div>
+            <div id="modelClose">
+                <span id="closeBtn" class="btn">Close</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div class="split split--areas">
+            @foreach (var area in Model)
+            {
+                <div class="container container-area">
+                    <a asp-controller="Admin" asp-action="UpdateArea" asp-route-id=@area.AreaId><img class="areaImg" src=@(area.Image.Contains("uploaded") ? "/images/areas/" : "")@area.Image alt="A picture of @area.Name"></a>
+                    <p class="txt-arealevel">@area.Name</p>
+                    <h3 class="txt-admin txt-admin--update"><a asp-controller="Admin" asp-action="UpdateArea" asp-route-id="@area.AreaId">Update</a></h3>
+                    <h3 class="txt-admin txt-admin--delete"><a href="javascript:;" class="deleteArea" data-id="@area.AreaId">Delete</a></h3>
+                </div>
+            }
+        </div>

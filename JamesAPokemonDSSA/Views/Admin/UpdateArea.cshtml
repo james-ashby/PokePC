@@ -1,0 +1,57 @@
+﻿@model JamesAPokemonWAD.Models.AreaForm
+
+@{
+    ViewData["Title"] = "Update Area";
+    List<string> selectedareas = new List<string>();
+}
+<form asp-controller="Admin" asp-action="UpdateArea" enctype="multipart/form-data">
+    <div class="container container--register">
+        <input type="hidden" name="ImageUrl" value="@Model.ImageUrl" />
+        @if (Model.ImageUrl.Contains("uploaded"))
+        {
+            <img class="areaImg" src=~/images/areas/@Model.ImageUrl alt="A picture of @Model.AreaName">
+        }
+        else
+        {
+            <img class="areaImg" src="@Model.ImageUrl" alt="A picture of @Model.AreaName">
+        }
+        <h1 class="txt-title">Update @Model.AreaName</h1>
+
+        <input type="hidden" name="AreaId" value="@Model.AreaId" />
+
+        <div>
+            <label class="required" asp-for="AreaName">Area Name</label>
+            <input type="text" asp-for="AreaName" />
+            <span asp-validation-for="AreaName" class="txt-error"></span>
+        </div>
+        @Html.ValidationMessage("Custom")
+        <div>
+            <label class="required" asp-for="ExpPerCatch">Experience Per Catch</label>
+            <input type="number" min="1" max="5000" asp-for="ExpPerCatch" />
+            <span asp-validation-for="ExpPerCatch" class="txt-error"></span>
+        </div>
+        <div>
+            <label class="required" asp-for="LevelRequirement">Level Requirement</label>
+            <input type="number" min="1" max="10000" asp-for="LevelRequirement" />
+            <span asp-validation-for="LevelRequirement" class="txt-error"></span>
+        </div>
+        <label asp-for="UploadImage" class="required"> Upload Area Image</label>
+        <div class="custom-file">
+            <input asp-for="UploadImage" id="areaFile">
+            <label for="standardFile">Choose file</label>
+        </div>
+        <span asp-validation-for="UploadImage" class="txt-error"></span>
+        <div>
+            <label asp-for="AllPoke">Wild Pokémon: <br /></label>
+            @Html.ListBoxFor(m => m.PokemonIds, new MultiSelectList(Model.AllPoke, "PokemonId", "PokemonName"), new { @class = "multi-list", multiple = "multiple" })
+        </div>
+        <span asp-validation-for="PokemonIds" class="txt-error"></span>
+    </div>
+    <div class="split split--pages">
+        <a href="javascript:void(0)" id="historyBackBtn"
+           class="btn">
+            Back
+        </a>
+        <input type="submit" class="btn--update btn" value="Update Area" />
+    </div>
+</form>

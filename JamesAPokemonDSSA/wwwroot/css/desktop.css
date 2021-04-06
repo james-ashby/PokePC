@@ -107,6 +107,7 @@ h1 {
 }
 .container--admin {
   width: 30rem;
+  height: 35rem;
 }
 .container--dex {
   width: 60rem;
@@ -119,7 +120,7 @@ h1 {
   position: relative;
   text-align: center;
   color: var(--clr-accent-standard);
-  z-index: 1;
+  z-index: 0;
   width: 22rem;
   padding: 10px;
 }
@@ -131,4 +132,8 @@ h1 {
   text-align: center;
   border: solid 1px var(--clr-accent-shadow);
   padding: 5px;
+}
+.areaImg {
+  width: 262px;
+  height: 166px;
 }

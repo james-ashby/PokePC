@@ -106,7 +106,6 @@
             <label asp-for="SelectedAreas">Areas: <br /></label>
             @Html.ListBoxFor(m => m.AreaIds, new MultiSelectList(Model.SelectedAreas, "AreaId", "Name"), new { @class = "multi-list", multiple = "multiple" })
             <span asp-validation-for="SelectedAreas" class="txt-error"></span>
-
         </div>
 
     </div>

@@ -47,8 +47,35 @@
     });
   });
   $(function () {
-    $(".releasePoke").click(function () {
+    $(".deleteArea").click(function () {
       console.log("test");
+      var areaID = $(this).data("id");
+      var data = {
+        id: areaID,
+      };
+      $.ajax({
+        type: "POST",
+        url: "ConfirmDeleteArea",
+        data: data,
+        dataType: "html",
+        success: function (response) {
+          $("#myModalContent").html(response);
+          $("#myModal").slideDown();
+        },
+        failure: function (response) {
+          alert(response.responseText);
+        },
+        error: function (response) {
+          alert(response.responseText);
+        },
+      });
+    });
+    $("#closeBtn").click(function () {
+      $("#myModal").slideUp();
+    });
+  });
+  $(function () {
+    $(".releasePoke").click(function () {
       var pokemonID = $(this).data("id");
       var data = {
         id: pokemonID,

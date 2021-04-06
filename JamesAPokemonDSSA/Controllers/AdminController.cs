@@ -72,6 +72,127 @@ namespace JamesAPokemonWAD.Controllers
             ViewData["Types"] = _context.Pokemon.Select(p => p.Type_1).Distinct().ToList();
             return View(await PaginatedList<Pokemon>.CreateAsync(pokemon.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
+        public IActionResult Areas()
+        {
+            List<Area> allAreas = _context.Areas.ToList();
+            return View(allAreas);
+        }
+        public IActionResult AddArea()
+        {
+            ViewData["Pokemon"] = _context.Pokemon.ToList();
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddArea(AreaForm model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    string imageUrl = UpdatedAreaImage(model);
+                    Area newArea = new Area
+                    {
+                        Name = model.AreaName,
+                        ExpPerCatch = model.ExpPerCatch,
+                        LevelRequirement = model.LevelRequirement,
+                        Image = imageUrl
+
+                    };
+                    _context.Add(newArea);
+                    _context.SaveChanges();
+                    List<AreasPokemon> wildPokemon = new List<AreasPokemon>();
+                    _context.AreaPokemon.Where(ap => ap.AreaId == newArea.AreaId).ToList().ForEach(a => _context.AreaPokemon.Remove(a));
+                    if (model.PokemonIds != null)
+                    {
+                        foreach (int pokemonId in model.PokemonIds)
+                        {
+                            wildPokemon.Add(new AreasPokemon { AreaId = model.AreaId, PokemonId = pokemonId });
+                        }
+                        foreach (AreasPokemon wildPoke in wildPokemon)
+                        {
+                            _context.Add(wildPoke);
+                        }
+                    }
+                    _context.SaveChanges();
+                    return RedirectToAction("Areas", "Admin");
+
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Custom", "Area name already exists!");
+                    return View(model);
+                }
+            }
+
+            return View(model);
+        }
+        public IActionResult UpdateArea(int id)
+        {
+            Area area = _context.Areas.Find(id);
+            var SelectedPokes = _context.AreaPokemon.Where(p => p.AreaId== id).Select(a => a.PokemonId).ToList();
+            List<Pokemon> allPokemon = _context.Pokemon.ToList();
+            AreaForm model = new AreaForm
+            {
+                AreaId = area.AreaId,
+                AreaName = area.Name,
+                ExpPerCatch = area.ExpPerCatch,
+                ImageUrl = area.Image,
+                LevelRequirement = area.LevelRequirement,
+                AllPoke = allPokemon,
+                PokemonIds = SelectedPokes
+            };
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateArea(AreaForm model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    string imageUrl = UpdatedAreaImage(model);
+                    Area area = _context.Areas.Find(model.AreaId);
+                    string filepath = Path.Combine(webEnvironment.WebRootPath, "images/areas");
+                    if (imageUrl != null)
+                    {
+                        var areaImgPath = Path.Combine(Directory.GetCurrentDirectory(), filepath, area.Image);
+                        if (System.IO.File.Exists(areaImgPath))
+                        {
+                            System.IO.File.Delete(areaImgPath);
+                        }
+                    }
+                    area.Name = model.AreaName;
+                    area.ExpPerCatch = model.ExpPerCatch;
+                    area.LevelRequirement = model.LevelRequirement;
+                    area.Image = imageUrl == null ? area.Image : imageUrl;
+                    List<AreasPokemon> wildPokemon = new List<AreasPokemon>();
+                    _context.AreaPokemon.Where(ap => ap.AreaId == area.AreaId).ToList().ForEach(a => _context.AreaPokemon.Remove(a));
+                    if (model.PokemonIds != null)
+                    {
+                        foreach (int pokemonId in model.PokemonIds)
+                        {
+                            wildPokemon.Add(new AreasPokemon { AreaId = model.AreaId, PokemonId = pokemonId});
+                        }
+                        foreach (AreasPokemon wildPoke in wildPokemon)
+                        {
+                            _context.Add(wildPoke);
+                        }
+                    }
+                    _context.SaveChanges();
+                    return RedirectToAction("Areas", "Admin");
+
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Custom", "Area name already exists!");
+                    return View(model);
+                }
+            }
+
+            return View(model);
+        }
         public IActionResult AddPokemon()
         {
             ViewData["Types"] = _context.Pokemon.Select(p => p.Type_1).Distinct().ToList();
@@ -103,6 +224,7 @@ namespace JamesAPokemonWAD.Controllers
                         Generation = model.Generation,
                         Image = standardUrl,
                         ShinyImage = shinyImageUrl,
+                        Rarity = model.Rarity
                     };
                     _context.Add(newPokemon);
                     _context.SaveChanges();
@@ -111,7 +233,7 @@ namespace JamesAPokemonWAD.Controllers
                     {
                         foreach (int areaId in model.AreaIds)
                         {
-                            newListOfAreas.Add(new AreasPokemon { AreaId = areaId, PokemonId = newPokemon.PokemonId, Rarity = model.Rarity });
+                            newListOfAreas.Add(new AreasPokemon { AreaId = areaId, PokemonId = newPokemon.PokemonId});
                         }
                         foreach (AreasPokemon area in newListOfAreas)
                         {
@@ -126,13 +248,13 @@ namespace JamesAPokemonWAD.Controllers
                     ModelState.AddModelError("Custom", "Pokémon Name or Number already exists!");
                     ViewData["Types"] = _context.Pokemon.Select(p => p.Type_1).Distinct().ToList();
                     ViewData["Areas"] = _context.Areas.ToList();
-                    return View();
+                    return View(model);
                 }
                 
             }
             ViewData["Types"] = _context.Pokemon.Select(p => p.Type_1).Distinct().ToList();
             ViewData["Areas"] = _context.Areas.ToList();
-            return View();
+            return View(model);
         }
         public IActionResult UpdatePokemon(int id)
         {
@@ -153,7 +275,8 @@ namespace JamesAPokemonWAD.Controllers
                 Generation = model.Generation,
                 ImageUrl = model.Image,
                 SelectedAreas = allAreas,
-                AreaIds = areaIDs
+                AreaIds = areaIDs,
+                Rarity = model.Rarity
             };
             ViewData["Types"] = _context.Pokemon.Select(p => p.Type_1).Distinct().ToList();
             ViewData["Areas"] = _context.Areas.Select(a => a.AreaId).ToList();
@@ -199,6 +322,7 @@ namespace JamesAPokemonWAD.Controllers
                     pokemon.Generation = model.Generation;
                     pokemon.Image = standardUrl == null ? pokemon.Image : standardUrl;
                     pokemon.ShinyImage = shinyImageUrl == null ? pokemon.ShinyImage : shinyImageUrl;
+                    pokemon.Rarity = model.Rarity;
                     // Removes areas that have been deselected
                     _context.AreaPokemon.Where(ap => ap.PokemonId == pokemon.PokemonId).ToList().ForEach(a => _context.AreaPokemon.Remove(a));
                     // Adds areas the have been selected
@@ -207,7 +331,7 @@ namespace JamesAPokemonWAD.Controllers
                     {
                         foreach (int areaId in model.AreaIds)
                         {
-                            newListOfAreas.Add(new AreasPokemon { AreaId = areaId, PokemonId = pokemon.PokemonId, Rarity = model.Rarity });
+                            newListOfAreas.Add(new AreasPokemon { AreaId = areaId, PokemonId = pokemon.PokemonId});
                         }
                         foreach (AreasPokemon area in newListOfAreas)
                         {
@@ -253,6 +377,27 @@ namespace JamesAPokemonWAD.Controllers
             _context.SaveChanges();
             return RedirectToAction("Pokemon", "Admin");
         }
+        [HttpPost]
+        public IActionResult ConfirmDeleteArea(int id)
+        {
+            Area model = _context.Areas.Find(id);
+            return PartialView("_ConfirmDeleteArea", model);
+        }
+        [HttpPost]
+        public IActionResult DeleteArea(Area id)
+        {
+            Area area = _context.Areas.Find(id.AreaId);
+            string filepath = Path.Combine(webEnvironment.WebRootPath, "images/areas");
+            var areaImgPath = Path.Combine(Directory.GetCurrentDirectory(), filepath, area.Image);
+
+            if (System.IO.File.Exists(areaImgPath))
+            {
+                System.IO.File.Delete(areaImgPath);
+            }
+            _context.Areas.Remove(area);
+            _context.SaveChanges();
+            return RedirectToAction("Areas", "Admin");
+        }
         private string[] UploadedPokemonImages(AddPokemon model)
         {
             string[] imageUrls = new string[2];
@@ -296,6 +441,21 @@ namespace JamesAPokemonWAD.Controllers
                 }
             }
             return imageUrls;
+        }
+        private string UpdatedAreaImage(AreaForm model)
+        {
+            string imageUrl = null;
+            if (model.UploadImage != null)
+            {
+                string uploadsFolder = Path.Combine(webEnvironment.WebRootPath, "images/areas");
+                imageUrl = "uploaded" + Guid.NewGuid().ToString() + "_" + model.UploadImage.FileName;
+                string imagePath = Path.Combine(uploadsFolder, imageUrl);
+                using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                {
+                    model.UploadImage.CopyTo(fileStream);
+                }
+            }
+            return imageUrl;
         }
     }
 }

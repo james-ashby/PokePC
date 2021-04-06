@@ -1,0 +1,12 @@
+﻿@model JamesAPokemonWAD.Models.Area;
+
+
+<img class="areaImg" src="@(Model.Image.Contains("uploaded") ? "/images/areas/" : "")@Model.Image" alt="A picture of the area @Model.Name">
+<p class="txt-pokename">@Model.Name</p>
+<p>Are you sure you want to delete @Model.Name?</p>
+<div class="split">
+        <form method="post" action="@Url.Action("DeleteArea", "Admin")">
+            <input type="hidden" name="AreaId" value="@Model.AreaId" />
+            <h3><input type="submit" value="Delete" class="btn btn-delete" /></h3>
+        </form>
+</div>

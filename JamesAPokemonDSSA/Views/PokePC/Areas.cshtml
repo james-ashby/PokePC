@@ -32,7 +32,7 @@
         @if (userlevel >= area.LevelRequirement)
         {
             <div class="container container-area">
-                <a asp-controller="PokePC" asp-action="AreaDetails" asp-route-id=@area.AreaId><img class="areaImg" src=@area.Image alt="A picture of @area.Name"></a>
+                <a asp-controller="PokePC" asp-action="AreaDetails" asp-route-id=@area.AreaId><img class="areaImg" src=@(area.Image.Contains("uploaded") ? "/images/areas/" : "")@area.Image alt="A picture of @area.Name"></a>
                 <p class="txt-area">@area.Name</p>
                 <p class="txt-arealevel">Unlocked</p>
 
@@ -41,7 +41,7 @@
         else if (userlevel < area.LevelRequirement)
         {
             <div class="container container-area">
-                <a asp-controller="PokePC" asp-action="AreaDetails" asp-route-id=@area.AreaId><img class="areaImg" src=@area.Image alt="A picture of @area.Name"></a>
+                <a asp-controller="PokePC" asp-action="AreaDetails" asp-route-id=@area.AreaId><img class="areaImg" src=@(area.Image.Contains("uploaded") ? "/images/areas/" : "")@area.Image alt="A picture of @area.Name"></a>
 
                 <p class="txt-area">@area.Name</p>
                 <p class="txt-arealevel">Unlocks at level @area.LevelRequirement</p>

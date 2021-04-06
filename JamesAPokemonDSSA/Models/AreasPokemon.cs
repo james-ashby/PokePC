@@ -14,8 +14,5 @@ namespace JamesAPokemonWAD.Models
 
         public int PokemonId { get; set; }
         public Pokemon Pokemon { get; set; }
-
-        [Column(TypeName = "varchar(50)")]
-        public string Rarity { get; set; }
     }
 }

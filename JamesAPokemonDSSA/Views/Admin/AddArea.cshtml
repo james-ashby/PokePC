@@ -1,0 +1,46 @@
+﻿@model JamesAPokemonWAD.Models.AreaForm
+
+@{
+    ViewData["Title"] = "Add Area";
+    var pokemon = ViewData["Pokemon"] as List<JamesAPokemonWAD.Models.Pokemon>;
+
+}
+<form asp-controller="Admin" asp-action="AddArea" enctype="multipart/form-data">
+    <div class="container container--register">
+        <h1 class="txt-title">Add a new Area</h1>
+        <div>
+            <label class="required" asp-for="AreaName">Area Name</label>
+            <input type="text" asp-for="AreaName" />
+            <span asp-validation-for="AreaName" class="txt-error"></span>
+        </div>
+        @Html.ValidationMessage("Custom")
+        <div>
+            <label class="required" asp-for="ExpPerCatch">Experience Per Catch</label>
+            <input type="number" min="1" max="5000" asp-for="ExpPerCatch" />
+            <span asp-validation-for="ExpPerCatch" class="txt-error"></span>
+        </div>
+        <div>
+            <label class="required" asp-for="LevelRequirement">Level Requirement</label>
+            <input type="number" min="1" max="10000" asp-for="LevelRequirement" />
+            <span asp-validation-for="LevelRequirement" class="txt-error"></span>
+        </div>
+        <label asp-for="UploadImage" class="required"> Upload Area Image</label>
+        <div class="custom-file">
+            <input asp-for="UploadImage" id="areaFile">
+            <label for="standardFile">Choose file</label>
+        </div>
+        <span asp-validation-for="UploadImage" class="txt-error"></span>
+        <div>
+            <label asp-for="AllPoke">Wild Pokémon: <br /></label>
+            @Html.ListBoxFor(m => m.PokemonIds, new MultiSelectList(pokemon, "PokemonId", "PokemonName"), new { @class = "multi-list", multiple = "multiple" })
+            <span asp-validation-for="AllPoke" class="txt-error"></span>
+        </div>
+    </div>
+    <div class="split split--pages">
+        <a href="javascript:void(0)" id="historyBackBtn"
+           class="btn">
+            Back
+        </a>
+        <input type="submit" class="btn--update btn" value="Add Area" />
+    </div>
+</form>
