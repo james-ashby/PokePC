@@ -98,6 +98,9 @@ h1 {
 .container--register {
   width: 30rem;
 }
+.container--dexentry {
+  width: 45rem;
+}
 .container--areadetails{
   width: 60rem;
 }
@@ -115,6 +118,11 @@ h1 {
 .container--trainerlevel {
   width: 15rem;
   padding: 15px;
+}
+.container--art {
+  width: 25rem;
+  height: 25rem;
+  margin-bottom: 0.4rem;
 }
 .container-area {
   position: relative;

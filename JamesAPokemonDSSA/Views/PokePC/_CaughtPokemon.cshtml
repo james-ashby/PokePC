@@ -9,7 +9,7 @@
     <img class="pokemonImg pokemonImg--@Model.Type_1 pokemonImg--offset--@(Model.Type_2 == null || Model.Type_2 == "" ? Model.Type_1 : Model.Type_2)" src="@(Model.ShinyImage.Contains("upload") ? "/images/pokemon/" : "")@Model.ShinyImage" alt="A picture of the shiny variant of the Pokémon @Model.PokemonName">
     <p class="txt-pokename">@Model.PokemonName</p>
     <p>You caught a shiny @Model.PokemonName!</p>
-    <p>100 Exp gained!</p>
+    <p>@ViewData["ExpGain"] Exp gained!</p>
     <p>@ViewData["PrevExperience"] ➔ @ViewData["NewExperience"] Total Exp</p>
     if ((bool)ViewData["LevelUp"])
     {
@@ -22,7 +22,7 @@ else
     <img class="pokemonImg pokemonImg--@Model.Type_1 pokemonImg--offset--@(Model.Type_2 == null || Model.Type_2 == "" ? Model.Type_1 : Model.Type_2)" src="@(Model.Image.Contains("upload") ? "/images/pokemon/" : "")@Model.Image" alt="A picture of the Pokémon @Model.PokemonName">
     <p class="txt-pokename">@Model.PokemonName</p>
     <p>You caught @Model.PokemonName!</p>
-    <p>100 Exp gained!</p>
+    <p>@ViewData["ExpGain"] Exp gained!</p>
     <p>@ViewData["PrevExperience"] ➔ @ViewData["NewExperience"] Total Exp</p>
     if ((bool)ViewData["LevelUp"])
     {

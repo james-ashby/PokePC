@@ -11,6 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using JamesAPokemonWAD.Security;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using System.Net.Http;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace JamesAPokemonDSSA.Controllers
 {
@@ -87,9 +90,30 @@ namespace JamesAPokemonDSSA.Controllers
             ViewData["Types"] = _context.Pokemon.Select(p => p.Type_1).Distinct().ToList();
             return View(await PaginatedList<Pokemon>.CreateAsync(pokemon.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
-        public IActionResult PokedexEntry(int id)
+        public async Task<IActionResult> PokedexEntry(int id)
         {
             Pokemon model = _context.Pokemon.Find(id);
+            try
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.GetAsync($"https://pokeapi.co/api/v2/pokemon/" + model.PokedexNum))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        JObject pokemonApiInfo = JObject.Parse(apiResponse);
+                        ViewBag.apiData = new Dictionary<string, string>
+                    {
+                        {"art", pokemonApiInfo["sprites"]["other"]["official-artwork"]["front_default"].ToString() },
+                    };
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return View(model);
+            }
+
+            
             return View(model);
         }
         public IActionResult Areas()
@@ -127,7 +151,7 @@ namespace JamesAPokemonDSSA.Controllers
             return View(areaPoke);
         }
         [Authorize(Roles = "Admin, Standard")]
-        public IActionResult Area(int id)
+        public async Task<IActionResult> Area(int id)
         {
             var area = _context.Areas.Find(id);
             ViewData["AreaName"] = area.Name;
@@ -143,50 +167,61 @@ namespace JamesAPokemonDSSA.Controllers
             var model = _context.AreaPokemon.Include(c => c.Pokemon).Where(a=> a.AreaId == id);
             List<AreasPokemon> areaPoke = model.ToList();
             ViewData["IsShiny"] = (shinyRoll == 1 ? true : false);
-            AreasPokemon legendaryPoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Pokemon.Rarity == "Legendary").FirstOrDefault(); // Guid for simple random choice (random global unique identifier)
-            AreasPokemon rarePoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Pokemon.Rarity == "Rare").FirstOrDefault();
-            AreasPokemon uncommonPoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Pokemon.Rarity == "Uncommon").FirstOrDefault();
-            AreasPokemon commonPoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Pokemon.Rarity == "Common").FirstOrDefault();
-            if (roll == 1 && legendaryPoke != null)
+            AreasPokemon rolledPoke = null;
+            if (roll == 1)
             {
-                if (_context.CaughtPokemon.Where(u => u.UserID == _userManager.GetUserId(User) && u.PokemonName == legendaryPoke.Pokemon.PokemonName).FirstOrDefault() != null)
-                {
-                    TempData["Caught"] = true;
-                }
-                return View(legendaryPoke);
+                rolledPoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Pokemon.Rarity == "Legendary").FirstOrDefault();
             }
-            else if (roll <= 5 && rarePoke != null)
+            else if (roll <= 5)
             {
-                if (_context.CaughtPokemon.Where(u => u.UserID == _userManager.GetUserId(User) && u.PokemonName == rarePoke.Pokemon.PokemonName).FirstOrDefault() != null)
-                {
-                    TempData["Caught"] = true;
-                }
-                return View(rarePoke);
+                rolledPoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Pokemon.Rarity == "Rare").FirstOrDefault();
             }
-            else if (roll <= 20 && uncommonPoke != null)
+            else if (roll <= 20)
             {
-                if (_context.CaughtPokemon.Where(u => u.UserID == _userManager.GetUserId(User) && u.PokemonName == uncommonPoke.Pokemon.PokemonName).FirstOrDefault() != null)
-                {
-                    TempData["Caught"] = true;
-                }
-                return View(uncommonPoke);
+                rolledPoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Pokemon.Rarity == "Uncommon").FirstOrDefault();
             }
-            else if (roll <= 70 && commonPoke != null)
+            else if (roll <= 70)
             {
-                if (_context.CaughtPokemon.Where(u => u.UserID == _userManager.GetUserId(User) && u.PokemonName == commonPoke.Pokemon.PokemonName).FirstOrDefault() != null)
-                {
-                    TempData["Caught"] = true;
-                }
-                return View(commonPoke);
+                
+                rolledPoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Pokemon.Rarity == "Common").FirstOrDefault();
             }
-            else
+            if (rolledPoke == null)
             {
                 ViewData["AreaId"] = id;
                 return View();
             }
+            else
+            {
+                if (_context.CaughtPokemon.Where(u => u.UserID == _userManager.GetUserId(User) && u.PokemonName == rolledPoke.Pokemon.PokemonName).FirstOrDefault() != null)
+                {
+                    TempData["Caught"] = true;
+                }
+                try
+                {
+                    using (var httpClient = new HttpClient())
+                    {
+                        using (var response = await httpClient.GetAsync($"https://pokeapi.co/api/v2/pokemon/" + rolledPoke.Pokemon.PokemonName.ToLower()))
+                        {
+                            string apiResponse = await response.Content.ReadAsStringAsync();
+                            JObject pokemonApiInfo = JObject.Parse(apiResponse);
+                            ViewBag.apiData = new Dictionary<string, string>
+                        {
+                            {"gif", pokemonApiInfo["sprites"]["versions"]["generation-v"]["black-white"]["animated"]["front_default"].ToString() },
+                            {"gifShiny", pokemonApiInfo["sprites"]["versions"]["generation-v"]["black-white"]["animated"]["front_shiny"].ToString() }
+                        };
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    return View(rolledPoke);
+                }
+
+                return View(rolledPoke);
+            }
         }
         [HttpPost]
-        public async Task<IActionResult> CaughtPokemon(int id, bool isShiny)
+        public async Task<IActionResult> CaughtPokemon(int id, bool isShiny, int areaId)
         {
             Pokemon model = _context.Pokemon.Find(id);
             CaughtPokemon caught = new CaughtPokemon
@@ -200,8 +235,9 @@ namespace JamesAPokemonDSSA.Controllers
             PokePCUser user = _userContext.Users.Find(_userManager.GetUserId(User));
             ViewData["PrevExperience"] = user.Experience;
             var levelup = false;
-            user.Experience = user.Experience + 100;
-            if (user.Experience == user.Level * 1500)
+            int areaExp = _context.Areas.Find(areaId).ExpPerCatch;
+            user.Experience = user.Experience + areaExp;
+            if (user.Experience >= (user.Level * 1000) * (1.5))
             {
                 user.Level = user.Level + 1;
                 levelup = true;
@@ -214,6 +250,7 @@ namespace JamesAPokemonDSSA.Controllers
             ViewData["NewExperience"] = user.Experience;
             ViewData["LevelUp"] = levelup;
             ViewData["Level"] = user.Level;
+            ViewData["ExpGain"] = areaExp;
             return PartialView("_CaughtPokemon", model);
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

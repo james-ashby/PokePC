@@ -16,15 +16,17 @@
     dropdownCssClass: "multi-list",
   });
   $(function () {
-    $("#caughtPoke").click(function () {
-      console.log("test");
+    $("#catchPoke").click(function () {
       var pokemonID = $(this).data("id");
       var IsShiny = $(this).data("isshiny");
+      var areaID = $(this).data("areaid");
       var data = {
         id: pokemonID,
         isshiny: IsShiny,
+        areaId: areaID
       };
-      $("#caughtPoke").hide();
+      console.log(areaID);
+      $("#catchPoke").hide();
       $.ajax({
         type: "POST",
         url: "/PokePC/CaughtPokemon",
@@ -48,7 +50,6 @@
   });
   $(function () {
     $(".deleteArea").click(function () {
-      console.log("test");
       var areaID = $(this).data("id");
       var data = {
         id: areaID,

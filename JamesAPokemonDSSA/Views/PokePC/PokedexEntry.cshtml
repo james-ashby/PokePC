@@ -1,42 +1,52 @@
 ﻿@model JamesAPokemonWAD.Models.Pokemon
 @{
     ViewData["Title"] = Model.PokemonName;
+    Dictionary<string, string> apiData = null;
+    if (ViewBag.apiData != null)
+    {
+        apiData = ViewBag.apiData;
+    }
 }
 
-<section>
-    <div class="container container--register">
-        <h1 class="txt-pokename txt-pokename--dex">@Model.PokemonName</h1>
-        <div class="split">
-                <div>
-                    <img class="pokemonImg pokemonImg--@Model.Type_1 pokemonImg--offset--@(Model.Type_2 == null || Model.Type_2 == "" ? Model.Type_1 : Model.Type_2)" src="@(Model.Image.Contains("upload") ? "/images/pokemon/" : "")@Model.Image" alt="A picture of the Pokémon @Model.PokemonName">
-                    <p>Normal</p>
-                </div>
-                <div>
-                    <img class="pokemonImg pokemonImg--@Model.Type_1 pokemonImg--offset--@(Model.Type_2 == null || Model.Type_2 == "" ? Model.Type_1 : Model.Type_2)" src="@(Model.ShinyImage.Contains("upload") ? "/images/pokemon/" : "")@Model.ShinyImage" alt="A picture of the shiny variant of the Pokémon @Model.PokemonName">
-                    <p>Shiny</p>
-                </div>
-        </div>
-        <p class="txt-pokename">Pokédex #@Model.PokedexNum</p>
-        <p class="txt-type txt-type--@Model.Type_1">
-            @Model.Type_1.ToUpper()
-        </p>
-        @if (Model.Type_2 != "" && Model.Type_2 != null)
-        {
-            <p class="txt-type txt-type--@Model.Type_2">
-                @Model.Type_2.ToUpper()
-            </p>
-        }
-
-        <h2 class="txt-pokename">@Model.Classification</h2>
-        <p class="txt-pokename">@Model.Description</p>
-        <p class="txt-pokename">Height - @Model.Height m</p>
-        <p class="txt-pokename">Weight - @Model.Weight kg</p>
-
+@if (apiData != null)
+{
+    <div class="container container--art">
+        <img src="@apiData["art"]" alt="Alternate Text" />
     </div>
+}
+
+<div class="container container--dexentry">
+    <h1 class="txt-pokename txt-pokename--dex">@Model.PokemonName</h1>
     <div class="split">
-        <a href="javascript:void(0)" id="historyBackBtn"
-           class="btn">
-            Back
-        </a>
+        <div>
+            <img class="pokemonImg pokemonImg--@Model.Type_1 pokemonImg--offset--@(Model.Type_2 == null || Model.Type_2 == "" ? Model.Type_1 : Model.Type_2)" src="@(Model.Image.Contains("upload") ? "/images/pokemon/" : "")@Model.Image" alt="A picture of the Pokémon @Model.PokemonName">
+            <p>Normal</p>
+        </div>
+        <div>
+            <img class="pokemonImg pokemonImg--@Model.Type_1 pokemonImg--offset--@(Model.Type_2 == null || Model.Type_2 == "" ? Model.Type_1 : Model.Type_2)" src="@(Model.ShinyImage.Contains("upload") ? "/images/pokemon/" : "")@Model.ShinyImage" alt="A picture of the shiny variant of the Pokémon @Model.PokemonName">
+            <p>Shiny</p>
+        </div>
     </div>
-</section>
+    <p class="txt-pokename">Pokédex #@Model.PokedexNum</p>
+    <p class="txt-type txt-type--@Model.Type_1">
+        @Model.Type_1.ToUpper()
+    </p>
+    @if (Model.Type_2 != "" && Model.Type_2 != null)
+    {
+        <p class="txt-type txt-type--@Model.Type_2">
+            @Model.Type_2.ToUpper()
+        </p>
+    }
+
+    <h2 class="txt-pokename">@Model.Classification</h2>
+    <p class="txt-pokename">@Model.Description</p>
+    <p class="txt-pokename">Height - @Model.Height m</p>
+    <p class="txt-pokename">Weight - @Model.Weight kg</p>
+
+</div>
+<div class="split">
+    <a href="javascript:void(0)" id="historyBackBtn"
+       class="btn">
+        Back
+    </a>
+</div>

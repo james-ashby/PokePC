@@ -1,11 +1,18 @@
-﻿@{
+﻿@model JamesAPokemonWAD.Models.AreasPokemon
+@{
     ViewData["Title"] = ViewData["AreaName"];
     bool IsShiny = (bool)ViewData["IsShiny"];
     bool tempCaught = false;
+    Dictionary<string, string> apiData = null;
     if (TempData["Caught"] != null)
     {
         tempCaught = (bool)TempData["Caught"];
     }
+    if (ViewBag.apiData != null)
+    {
+        apiData = ViewBag.apiData;
+    }
+
 }
 <div class="container container--register">
 
@@ -13,12 +20,14 @@
 
     @if (Model != null)
     {
-        <img class="pokemonImg  pokemonImg--@Model.Pokemon.Type_1 pokemonImg--offset--@(Model.Pokemon.Type_2 == null || Model.Pokemon.Type_2 == "" ? Model.Pokemon.Type_1 : Model.Pokemon.Type_2) " src="@(IsShiny ? (Model.Pokemon.ShinyImage.Contains("upload") ? "/images/pokemon/" + Model.Pokemon.ShinyImage : Model.Pokemon.ShinyImage) : (Model.Pokemon.Image.Contains("upload") ? "/images/pokemon/" + Model.Pokemon.Image : Model.Pokemon.Image))" alt="A picture of the Pokémon @Model.Pokemon.PokemonName">
-        
+        <div class="wildPokemonImg  pokemonImg--@Model.Pokemon.Type_1 pokemonImg--offset--@(Model.Pokemon.Type_2 == null || Model.Pokemon.Type_2 == "" ? Model.Pokemon.Type_1 : Model.Pokemon.Type_2) @(Model.Pokemon.Image.Contains("upload") ? "" : "wildPokemonImg--gif")">
+            <img src="@(IsShiny ? (Model.Pokemon.ShinyImage.Contains("upload") ? "/images/pokemon/" + Model.Pokemon.ShinyImage : apiData["gifShiny"]) : (Model.Pokemon.Image.Contains("upload") ? "/images/pokemon/" + Model.Pokemon.Image : apiData["gif"]))" alt="A picture of the Pokémon @Model.Pokemon.PokemonName">
+        </div>
+
         <div class="split split--caught">
             @if (tempCaught == true)
             {
-            <img class="pokeballImg" src="~/images/pokeball.png" alt="Picture of a Pokéball to show that the Pokémon is captured" />
+                <img class="pokeballImg" src="~/images/pokeball.png" alt="Picture of a Pokéball to show that the Pokémon is captured" />
             }
             <p class="txt-pokename">
                 A wild @if (IsShiny)
@@ -26,9 +35,9 @@
                 } @Model.Pokemon.PokemonName appeared!
             </p>
         </div>
-        
+
         <div class="splitcol">
-            <a class="btn btn--small btn--catch" id="caughtPoke" href="javascript:;" data-id="@Model.PokemonId" data-isshiny="@IsShiny">Catch!</a>
+            <a class="btn btn--small btn--catch" id="catchPoke" href="javascript:;" data-id="@Model.PokemonId" data-isshiny="@IsShiny" data-areaid="@Model.AreaId">Catch!</a>
             <a class="btn btn--small" asp-controller="PokePC" asp-action="Area" asp-route-id=@Model.AreaId>Find more!</a>
         </div>
 
