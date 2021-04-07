@@ -18,7 +18,7 @@
         <p class="txt-pokename">Total Pokémon: @ViewData["TotalPokemon"]</p>
         <p>@(Context.Request.Path + Context.Request.QueryString)</p>
         <p>
-            @TempData["test"]
+            @((string)ViewData["test"])
         </p>
 
         <form asp-action="Pokemon" method="get">
