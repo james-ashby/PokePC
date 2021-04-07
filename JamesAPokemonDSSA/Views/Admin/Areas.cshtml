@@ -13,15 +13,17 @@
         </div>
     </div>
 </div>
-
-        <div class="split split--areas">
-            @foreach (var area in Model)
-            {
-                <div class="container container-area">
-                    <a asp-controller="Admin" asp-action="UpdateArea" asp-route-id=@area.AreaId><img class="areaImg" src=@(area.Image.Contains("uploaded") ? "/images/areas/" : "")@area.Image alt="A picture of @area.Name"></a>
-                    <p class="txt-arealevel">@area.Name</p>
-                    <h3 class="txt-admin txt-admin--update"><a asp-controller="Admin" asp-action="UpdateArea" asp-route-id="@area.AreaId">Update</a></h3>
-                    <h3 class="txt-admin txt-admin--delete"><a href="javascript:;" class="deleteArea" data-id="@area.AreaId">Delete</a></h3>
-                </div>
-            }
-        </div>
+<div class="center">
+    <div class="split split--areas">
+        @foreach (var area in Model)
+        {
+            <div class="container container-area">
+                <a asp-controller="Admin" asp-action="UpdateArea" asp-route-id=@area.AreaId><img class="areaImg" src=@(area.Image.Contains("uploaded") ? "/images/areas/" : "")@area.Image alt="A picture of @area.Name"></a>
+                <p class="txt-arealevel">@area.Name</p>
+                <h3 class="txt-admin txt-admin--update"><a asp-controller="Admin" asp-action="UpdateArea" asp-route-id="@area.AreaId">Update</a></h3>
+                <h3 class="txt-admin txt-admin--delete"><a href="javascript:;" class="deleteArea" data-id="@area.AreaId">Delete</a></h3>
+            </div>
+        }
+    </div>
+</div>
+        

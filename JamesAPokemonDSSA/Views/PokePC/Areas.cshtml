@@ -33,27 +33,31 @@
     }
 </div>
 
-
-<div class="split split--areas">
-    @foreach (var area in Model)
-    {
-        @if (userlevel >= area.LevelRequirement)
+<div class="center">
+    <div class="split split--areas">
+        @foreach (var area in Model)
         {
-            <div class="container container-area">
-                <a asp-controller="PokePC" asp-action="AreaDetails" asp-route-id=@area.AreaId><img class="areaImg" src=@(area.Image.Contains("uploaded") ? "/images/areas/" : "")@area.Image alt="A picture of @area.Name"></a>
-                <p class="txt-area">@area.Name</p>
-                <p class="txt-arealevel">Unlocked</p>
+            @if (userlevel >= area.LevelRequirement)
+            {
+                <div class="container container-area">
+                    <a asp-controller="PokePC" asp-action="AreaDetails" asp-route-id=@area.AreaId><img class="areaImg" src=@(area.Image.Contains("uploaded") ? "/images/areas/" : "")@area.Image alt="A picture of @area.Name"></a>
+                    <p class="txt-area">@area.Name</p>
+                    <p class="txt-arealevel">Unlocked</p>
 
-            </div>
-        }
-        else if (userlevel < area.LevelRequirement)
-        {
-            <div class="container container-area">
-                <a asp-controller="PokePC" asp-action="AreaDetails" asp-route-id=@area.AreaId><img class="areaImg" src=@(area.Image.Contains("uploaded") ? "/images/areas/" : "")@area.Image alt="A picture of @area.Name"></a>
+                </div>
+            }
+            else if (userlevel < area.LevelRequirement)
+            {
+                <div class="container container-area">
+                    <a asp-controller="PokePC" asp-action="AreaDetails" asp-route-id=@area.AreaId><img class="areaImg" src=@(area.Image.Contains("uploaded") ? "/images/areas/" : "")@area.Image alt="A picture of @area.Name"></a>
 
-                <p class="txt-area">@area.Name</p>
-                <p class="txt-arealevel">Unlocks at level @area.LevelRequirement</p>
-            </div>
+                    <p class="txt-area">@area.Name</p>
+                    <p class="txt-arealevel">Unlocks at level @area.LevelRequirement</p>
+                </div>
+            }
         }
-    }
+    </div>
 </div>
+<section>
+
+</section>
