@@ -19,89 +19,136 @@
 
         <input type="hidden" name="PokemonId" value="@Model.PokemonId" />
 
-        <div>
-            <label class="required" asp-for="PokemonName">Pokémon Name</label>
-            <input type="text" asp-for="PokemonName" />
-            <span asp-validation-for="PokemonName" class="txt-error"></span>
-        </div>
-        @Html.ValidationMessage("Custom")
-        <div>
-            <label class="required" asp-for="PokedexNum">Pokédex Number</label>
-            <input type="number" min="1" max="5000" asp-for="PokedexNum" />
-            <span asp-validation-for="PokedexNum" class="txt-error"></span>
-        </div>
-        <div>
-            <label class="required" asp-for="Classification">Classification</label>
-            <input type="text" asp-for="Classification" />
-            <span asp-validation-for="Classification" class="txt-error"></span>
-        </div>
-        <div>
-            <label class="required" asp-for="Description">Pokédex Entry Text <br /></label>
-            <span asp-validation-for="Description" class="txt-error"></span>
-        </div>
-        <div>
-            <textarea asp-for="Description"></textarea>
-        </div>
-        <div>
-            <label class="required" asp-for="Type_1">Type 1</label>
-            <select asp-for="Type_1">
-                @foreach (var type in (List<string>)ViewData["Types"])
-                {
-                    <option value="@type">@type</option>
-                }
-            </select>
-        </div>
-
-        <div>
-            <label asp-for="Type_2">Type 2</label>
-            <select asp-for="Type_2">
-                <option value="@null">-none-</option>
-                @foreach (var type in (List<string>)ViewData["Types"])
-                {
-                    <option value="@type">@type</option>
-                }
-            </select>
-        </div>
-
-        <div>
-            <label class="required" asp-for="Height">Height (m)</label>
-            <input type="number" min="0" step="0.1" asp-for="Height" />
-            <span asp-validation-for="Height" class="txt-error"></span>
-        </div>
-
-        <div>
-            <label class="required" asp-for="Weight">Weight (Kg)</label>
-            <input type="number" min="0" step="0.1" asp-for="Weight" />
-            <span asp-validation-for="Weight" class="txt-error"></span>
-        </div>
-        <div>
-            <label class="required" asp-for="Generation">Generation Number</label>
-            <input type="number" max="8" min="1" asp-for="Generation" />
-            <span asp-validation-for="Generation" class="txt-error"></span>
-        </div>
-        <label asp-for="UploadImage" class="required"> Upload Standard Image</label>
-        <div class="custom-file">
-            <input asp-for="UploadImage" id="standardFile">
-            <label for="standardFile">Choose file</label>
-        </div>
-        <span asp-validation-for="UploadImage" class="txt-error"></span>
-
-
-        <label asp-for="UploadShinyImage" class="required">Upload Shiny Image</label>
-        <div>
-            <input asp-for="UploadShinyImage" id="shinyFile">
-            <label for="shinyFile">Choose file</label>
-        </div>
-        <span asp-validation-for="UploadShinyImage" class="txt-error"></span>
-        <div>
-            <label asp-for="Rarity">Rarity</label>
-            <select asp-for="Rarity">
-                <option value="Common">Common</option>
-                <option value="Uncommon">Uncommon</option>
-                <option value="Rare">Rare</option>
-                <option value="Legendary">Legendary</option>
-            </select>
-        </div>
+        <table class="inputForm">
+            <tr>
+                <td colspan="2" class="tdValidation"> @Html.ValidationMessage("Custom") </td>
+            </tr>
+            <tr>
+                <td> <label class="required" asp-for="PokemonName">Pokémon Name</label></td>
+                <td><input type="text" asp-for="PokemonName" /></td>
+            </tr>
+            <tr>
+                <td colspan="2" class="tdValidation"><span asp-validation-for="PokemonName" class="txt-error"></span></td>
+            </tr>
+            <tr>
+                <td><label class="required" asp-for="PokedexNum">Pokédex Number</label></td>
+                <td><input type="number" min="1" max="5000" asp-for="PokedexNum" /></td>
+            </tr>
+            <tr>
+                <td colspan="2" class="tdValidation"><span asp-validation-for="PokedexNum" class="txt-error"></span></td>
+            </tr>
+            <tr>
+                <td><label class="required" asp-for="Classification">Classification</label></td>
+                <td><input type="text" asp-for="Classification" /></td>
+            </tr>
+            <tr>
+                <td colspan="2" class="tdValidation"><span asp-validation-for="Classification" class="txt-error"></span></td>
+            </tr>
+            <tr>
+                <td colspan="2" class="tdValidation"><label class="required" asp-for="Description">Pokédex Entry Text</label></td>
+            </tr>
+            <tr>
+                <td colspan="2" class="tdValidation"><span asp-validation-for="Description" class="txt-error"></span></td>
+            </tr>
+            <tr>
+                <td colspan="2" class="tdValidation">
+                    <textarea asp-for="Description"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td class="tdValidation"><label class="required" asp-for="Type_1">Type 1</label></td>
+                <td class="tdValidation"><label asp-for="Type_2">Type 2</label></td>
+            </tr>
+            <tr>
+                <td class="tdValidation">
+                    <select asp-for="Type_1">
+                        @foreach (var type in (List<string>)ViewData["Types"])
+                        {
+                            <option value="@type">@System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(type)</option>
+                        }
+                    </select>
+                </td>
+                <td class="tdValidation">
+                    <select asp-for="Type_2">
+                        <option value="@null">None</option>
+                        @foreach (var type in (List<string>)ViewData["Types"])
+                        {
+                            <option value="@type">@System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(type)</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td> <label class="required" asp-for="Height">Height (m)</label> </td>
+                <td>
+                    <input type="number" min="0" step="0.1" asp-for="Height" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="tdValidation">
+                    <span asp-validation-for="Height" class="txt-error"></span>
+                </td>
+            </tr>
+            <tr>
+                <td> <label class="required" asp-for="Weight">Weight (Kg)</label> </td>
+                <td>
+                    <input type="number" min="0" step="0.1" asp-for="Weight" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="tdValidation">
+                    <span asp-validation-for="Weight" class="txt-error"></span>
+                </td>
+            </tr>
+            <tr>
+                <td> <label class="required" asp-for="Generation">Generation Number</label></td>
+                <td>
+                    <input type="number" max="8" min="1" asp-for="Generation" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="tdValidation">
+                    <span asp-validation-for="Generation" class="txt-error"></span>
+                </td>
+            </tr>
+            <tr>
+                <td> <label asp-for="UploadImage" class="required"> Pokémon Image</label> </td>
+                <td>
+                    <input asp-for="UploadImage" id="standardFile">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="tdValidation">
+                    <span asp-validation-for="UploadImage" class="txt-error"></span>
+                </td>
+            </tr>
+            <tr>
+                <td> <label asp-for="UploadShinyImage" class="required">Shiny Pokémon Image</label> </td>
+                <td>
+                    <input asp-for="UploadShinyImage" id="shinyFile">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="tdValidation">
+                    <span asp-validation-for="UploadShinyImage" class="txt-error"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="tdValidation">
+                    <label asp-for="Rarity">Rarity</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="tdValidation">
+                    <select asp-for="Rarity">
+                        <option value="Common">Common</option>
+                        <option value="Uncommon">Uncommon</option>
+                        <option value="Rare">Rare</option>
+                        <option value="Legendary">Legendary</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
         <div>
             <label asp-for="SelectedAreas">Areas: <br /></label>
             @Html.ListBoxFor(m => m.AreaIds, new MultiSelectList(Model.SelectedAreas, "AreaId", "Name"), new { @class = "multi-list", multiple = "multiple" })
@@ -117,3 +164,4 @@
         <input type="submit" class="btn--update btn" value="Update Pokémon" />
     </div>
 </form>
+

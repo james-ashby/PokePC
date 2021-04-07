@@ -225,7 +225,7 @@ namespace JamesAPokemonDSSA.Controllers
         [HttpPost]
         public async Task<IActionResult> CaughtPokemon(int id, bool isShiny, int areaId)
         {
-            Pokemon model = _context.Pokemon.Find(id);
+            Pokemon model = await _context.Pokemon.FindAsync(id);
             CaughtPokemon caught = new CaughtPokemon
             {
                 UserID = _userManager.GetUserId(User),
@@ -234,7 +234,7 @@ namespace JamesAPokemonDSSA.Controllers
                 CatchDate = DateTime.UtcNow,
             };
 
-            PokePCUser user = _userContext.Users.Find(_userManager.GetUserId(User));
+            PokePCUser user = await _userContext.Users.FindAsync(_userManager.GetUserId(User));
             ViewData["PrevExperience"] = user.Experience;
             var levelup = false;
             int areaExp = _context.Areas.Find(areaId).ExpPerCatch;

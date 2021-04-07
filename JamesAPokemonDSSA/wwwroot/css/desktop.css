@@ -141,3 +141,18 @@ h1 {
   width: 262px;
   height: 166px;
 }
+.inputForm{
+  width: 85%;
+}
+input[type=text],
+input[type=password],
+input[type=number] {
+  width: 12rem;
+}
+textarea {
+  width: 400px;
+}
+.center--areas{
+  margin-left: 15%;
+  margin-right: 15%;
+}

@@ -8,30 +8,63 @@
 <form asp-controller="Admin" asp-action="AddArea" enctype="multipart/form-data">
     <div class="container container--register">
         <h1 class="txt-title">Add a new Area</h1>
+        <table class="inputForm">
+            <tr>
+                <td colspan="2" class="tdValidation"> @Html.ValidationMessage("Custom") </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="required" asp-for="AreaName">Area Name</label>
+                </td>
+                <td>
+                    <input type="text" asp-for="AreaName" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="tdValidation"><span asp-validation-for="AreaName" class="txt-error"></span></td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="required" asp-for="ExpPerCatch">Experience Per Catch</label>
+                </td>
+                <td>
+                    <input type="number" min="1" max="5000" value="1"  asp-for="ExpPerCatch" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="tdValidation">
+                    <span asp-validation-for="ExpPerCatch" class="txt-error"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="required" asp-for="LevelRequirement">Level Requirement</label>
+                </td>
+                <td>
+                    <input type="number" min="1" max="10000" value="1" asp-for="LevelRequirement" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="tdValidation">
+                    <span asp-validation-for="LevelRequirement" class="txt-error"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="UploadImage" class="required"> Upload Area Image</label>
+                </td>
+                <td>
+                    <input asp-for="UploadImage" id="areaFile">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="tdValidation">
+                    <span asp-validation-for="UploadImage" class="txt-error"></span>
+                </td>
+            </tr>
+        </table>
         <div>
-            <label class="required" asp-for="AreaName">Area Name</label>
-            <input type="text" asp-for="AreaName" />
-            <span asp-validation-for="AreaName" class="txt-error"></span>
-        </div>
-        @Html.ValidationMessage("Custom")
-        <div>
-            <label class="required" asp-for="ExpPerCatch">Experience Per Catch</label>
-            <input type="number" min="1" max="5000" asp-for="ExpPerCatch" />
-            <span asp-validation-for="ExpPerCatch" class="txt-error"></span>
-        </div>
-        <div>
-            <label class="required" asp-for="LevelRequirement">Level Requirement</label>
-            <input type="number" min="1" max="10000" asp-for="LevelRequirement" />
-            <span asp-validation-for="LevelRequirement" class="txt-error"></span>
-        </div>
-        <label asp-for="UploadImage" class="required"> Upload Area Image</label>
-        <div class="custom-file">
-            <input asp-for="UploadImage" id="areaFile">
-            <label for="standardFile">Choose file</label>
-        </div>
-        <span asp-validation-for="UploadImage" class="txt-error"></span>
-        <div>
-            <label asp-for="AllPoke">Wild Pokémon: <br /></label>
+            <label asp-for="AllPoke">Wild Pokémon<br /></label>
             @Html.ListBoxFor(m => m.PokemonIds, new MultiSelectList(pokemon, "PokemonId", "PokemonName"), new { @class = "multi-list", multiple = "multiple" })
             <span asp-validation-for="AllPoke" class="txt-error"></span>
         </div>

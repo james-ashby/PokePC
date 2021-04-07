@@ -8,23 +8,36 @@
 <div class="container container--register">
     <h2 class="txt-title">Create New User Account</h2>
     <form method="post">
-        <table>
+        <table class="inputForm">
             <tr>
                 <td><label class="required" asp-for="UserName">Username</label></td>
                 <td><input type="text" asp-for="UserName" /></td>
             </tr>
             <tr>
-                <td><label  class="required" asp-for="Password"></label></td>
+                <td colspan="2" class="tdValidation"><span asp-validation-for="UserName" class="txt-error"></span></td>
+            </tr>
+            <tr>
+                <td><label class="required" asp-for="Password"></label></td>
                 <td><input type="password" asp-for="Password" /></td>
             </tr>
             <tr>
-                <td><label  class="required" asp-for="ConfirmPassword">Confirm Password</label></td>
+                <td colspan="2" class="tdValidation"><span asp-validation-for="Password" class="txt-error"></span></td>
+            </tr>
+            <tr>
+                <td><label class="required" asp-for="ConfirmPassword">Confirm Password</label></td>
                 <td><input type="password" asp-for="ConfirmPassword" /></td>
             </tr>
             <tr>
-                <td><label  class="required" asp-for="Email"></label></td>
+                <td colspan="2" class="tdValidation"><span asp-validation-for="ConfirmPassword" class="txt-error"></span></td>
+            </tr>
+            <tr>
+                <td><label class="required" asp-for="Email"></label></td>
                 <td><input type="text" asp-for="Email" /></td>
             </tr>
+            <tr>
+                <td colspan="2" class="tdValidation"><span asp-validation-for="Email" class="txt-error"></span></td>
+            </tr>
+
         </table>
         <h2 class="txt-pokename"> Choose your starter Pokémon!</h2>
         <div class="split">
@@ -49,8 +62,6 @@
 
         </div>
         <button class="btn btn--update" type="submit">Register</button>
-
-        <div asp-validation-summary="All" class="message"></div>
 
         <h3 class="text-link"><a asp-controller="Account" asp-action="Login">Already got an account? <br /> Login here!</a></h3>
 

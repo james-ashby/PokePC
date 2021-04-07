@@ -173,8 +173,9 @@ section {
   padding: 20px;
 }
 .container--register {
-  width: 90%;
+  width: 95%;
   margin-bottom: 1rem;
+  padding: 5px;
   padding-bottom: 20px;
 }
 .container--details {
@@ -229,7 +230,7 @@ section {
   text-align: center;
   color: var(--clr-accent-standard);
   z-index: 0;
-  width: 50vw;
+  width: 80vw;
   margin:0;
   padding: 5px;
 }
@@ -308,7 +309,7 @@ section {
 
 .txt-arealevel {
   text-shadow: 1px 1px var(--clr-accent-shadow);
-  font-size: 2.2vh;
+  font-size: 18px;
 }
 .pokemonImg {
   margin-top: 4px;
@@ -510,6 +511,7 @@ section {
   margin-left: auto;
   margin-right: auto;
   display: inline-flex;
+  justify-items: space-evenly;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 15px;
@@ -644,6 +646,7 @@ section {
 }
 .field-validation-error {
   color: red;
+  font-size: 14px;
 }
 .index-info {
   margin: 1em;
@@ -703,16 +706,23 @@ table {
 .validation-summary-errors ul {
   list-style-type: none;
   color: rgb(214, 60, 60);
+  font-size: 2vh;
 }
 
 
 .multi-list {
   width: 70%;
-  font-size: 1.8vh;
+  font-size: 1.5vh;
 }
 
 .select2-selection__rendered {
-  font-size: 1.7vh;
+  font-size: 1.5vh;
+}
+.select2-search__field,
+.select2-search__field:hover
+{
+  width: 0px;
+  background-color: var(--clr-primary-standard);
 }
 .modal {
   display: none; 
@@ -747,6 +757,9 @@ table {
   text-align: center;
   z-index: 3;
 }
+
+
+
 .txt-admin a {
   text-decoration: none;
   background: rgb(206, 206, 206);
@@ -755,7 +768,7 @@ table {
   border-radius: 10px;
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
     1px 1px 0 #000;
-  font-size: 2vh;
+  font-size: 16px;
 }
 .txt-title {
   font-size: 4vh;
@@ -867,16 +880,64 @@ input[type=number] {
     width: 4rem;
 }
 input[type=text],
-input[type=password] {
-  width: 10rem;
+input[type=password],
+input[type=number] {
+  width: 11rem;
+  background-color: var(--clr-primary-standard);
+  border: solid 2px var(--clr-accent-light);
+  box-shadow: 1px 2px var(--clr-accent-shadow);
+  padding: 5px;
+  outline: none;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: var(--ff-primary);
+}
+input[type=text]:active,
+input[type=text]:hover,
+input[type=password]:active,
+input[type=password]:hover,
+input[type=number]:active,
+input[type=number]:hover {
+  background-color: var(--clr-accent-light);
+  border: solid 2px var(--clr-accent-standard);
+}
+label {
+  color: var(--clr-accent-shadow);
+  font-size: 15px;
+  font-weight: 500;
+  pointer-events: none;
+}
+.inputForm{
+  width: 100%;
+}
+.inputForm td{
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+.tdValidation {
+  text-align: center;
+  line-height: 1em;
 }
 .required:after {
   content:" *";
   color: red;
 }
 textarea {
-  width: 259px;
-  height: 111px;
+  background-color: var(--clr-primary-standard);
+  width: 320px;
+  resize: vertical;
+  border: solid 2px var(--clr-accent-light);
+  box-shadow: 1px 2px var(--clr-accent-shadow);
+  outline: none;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: var(--ff-primary);
+  min-height: 120px;
+}
+textarea:hover,
+textarea:active {
+  background-color: var(--clr-accent-light);
+  border: solid 2px var(--clr-accent-standard);
 }
 .indeximg {
   border: 3px solid var(--clr-accent-standard);

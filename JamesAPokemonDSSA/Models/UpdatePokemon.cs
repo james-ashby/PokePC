@@ -17,29 +17,29 @@ namespace JamesAPokemonWAD.Models
         }
         [Key]
         public int PokemonId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Please enter a Pokémon name.")]
         public string PokemonName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please enter a Pokédex number.")]
         public int PokedexNum { get; set; }
 
         [Required]
         public string Type_1 { get; set; }
         public string Type_2 { get; set; } // Not required since some Pokémon do not have a secondary type
 
-        [Required]
+        [Required(ErrorMessage = "Please enter a classification/species, i.e 'Mouse Pokémon'")]
         public string Classification { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please enter a description of the Pokémon.")]
         public string Description { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please enter a height.")]
         public decimal Height { get; set; }      // Height in metres
 
-        [Required]
+        [Required(ErrorMessage = "Please enter a weight.")]
         public decimal Weight { get; set; }      // Weight in kilograms
 
-        [Required]
+        [Required(ErrorMessage = "Please enter a generation number.")]
         public decimal Generation { get; set; }
 
         [AllowedFileExtensions(".png, .gif")]

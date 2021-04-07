@@ -123,7 +123,7 @@ namespace JamesAPokemonWAD.Controllers
                     return RedirectToAction("Areas", "Admin");
 
                 }
-                catch (Exception ex)
+                catch (Exception )
                 {
                     ModelState.AddModelError("Custom", "Area name already exists!");
                     return View(model);
@@ -189,7 +189,7 @@ namespace JamesAPokemonWAD.Controllers
                     return RedirectToAction("Areas", "Admin");
 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     ModelState.AddModelError("Custom", "Area name already exists!");
                     return View(model);
@@ -248,7 +248,7 @@ namespace JamesAPokemonWAD.Controllers
                     }
                     return RedirectToAction("Pokemon", "Admin");
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     ModelState.AddModelError("Custom", "Pokémon Name or Number already exists!");
                     ViewData["Types"] = await _context.Pokemon.Select(p => p.Type_1).Distinct().ToListAsync();
@@ -346,7 +346,7 @@ namespace JamesAPokemonWAD.Controllers
                     _context.SaveChanges();
                     return RedirectToAction("Pokemon", "Admin");
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     ModelState.AddModelError("Custom", "Pokémon Name or Number already exists!");
                     ViewData["Types"] = await _context.Pokemon.Select(p => p.Type_1).Distinct().ToListAsync();
@@ -402,24 +402,30 @@ namespace JamesAPokemonWAD.Controllers
             _context.SaveChanges();
             return RedirectToAction("Areas", "Admin");
         }
-        private string[] UploadedPokemonImages(AddPokemon model)
+        private string[] UploadedPokemonImages( AddPokemon model)
         {
             string[] imageUrls = new string[2];
             
-            if (model.UploadImage != null && model.UploadShinyImage != null)
+            if (model.UploadImage != null || model.UploadShinyImage != null)
             {
                 string uploadsFolder = Path.Combine(webEnvironment.WebRootPath, "images/pokemon");
-                imageUrls[0] = "uploaded" + Guid.NewGuid().ToString() + "_" + model.UploadImage.FileName;
-                imageUrls[1] = "uploaded" + Guid.NewGuid().ToString() + "_" + model.UploadShinyImage.FileName;
-                string imagePath = Path.Combine(uploadsFolder, imageUrls[0]);
-                using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                if (model.UploadImage != null)
                 {
-                    model.UploadImage.CopyTo(fileStream);
+                    imageUrls[0] = "uploaded" + Guid.NewGuid().ToString() + "_" + model.UploadImage.FileName;
+                    string imagePath = Path.Combine(uploadsFolder, imageUrls[0]);
+                    using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                    {
+                        model.UploadImage.CopyTo(fileStream);
+                    }
                 }
-                string shinyImagePath = Path.Combine(uploadsFolder, imageUrls[1]);
-                using (var fileStream = new FileStream(shinyImagePath, FileMode.Create))
+                if (model.UploadShinyImage != null)
                 {
-                    model.UploadShinyImage.CopyTo(fileStream);
+                    imageUrls[1] = "uploaded" + Guid.NewGuid().ToString() + "_" + model.UploadShinyImage.FileName;
+                    string shinyImagePath = Path.Combine(uploadsFolder, imageUrls[1]);
+                    using (var fileStream = new FileStream(shinyImagePath, FileMode.Create))
+                    {
+                        model.UploadShinyImage.CopyTo(fileStream);
+                    }
                 }
             }
             return imageUrls;
@@ -428,20 +434,26 @@ namespace JamesAPokemonWAD.Controllers
         {
             string[] imageUrls = new string[2];
 
-            if (model.UploadImage != null && model.UploadShinyImage != null)
+            if (model.UploadImage != null || model.UploadShinyImage != null)
             {
                 string uploadsFolder = Path.Combine(webEnvironment.WebRootPath, "images/pokemon");
-                imageUrls[0] = "uploaded" + Guid.NewGuid().ToString() + "_" + model.UploadImage.FileName;
-                imageUrls[1] = "uploaded" + Guid.NewGuid().ToString() + "_" + model.UploadShinyImage.FileName;
-                string imagePath = Path.Combine(uploadsFolder, imageUrls[0]);
-                using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                if (model.UploadImage != null)
                 {
-                    model.UploadImage.CopyTo(fileStream);
+                    imageUrls[0] = "uploaded" + Guid.NewGuid().ToString() + "_" + model.UploadImage.FileName;
+                    string imagePath = Path.Combine(uploadsFolder, imageUrls[0]);
+                    using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                    {
+                        model.UploadImage.CopyTo(fileStream);
+                    }
                 }
-                string shinyImagePath = Path.Combine(uploadsFolder, imageUrls[1]);
-                using (var fileStream = new FileStream(shinyImagePath, FileMode.Create))
+                if (model.UploadShinyImage != null)
                 {
-                    model.UploadShinyImage.CopyTo(fileStream);
+                    imageUrls[1] = "uploaded" + Guid.NewGuid().ToString() + "_" + model.UploadShinyImage.FileName;
+                    string shinyImagePath = Path.Combine(uploadsFolder, imageUrls[1]);
+                    using (var fileStream = new FileStream(shinyImagePath, FileMode.Create))
+                    {
+                        model.UploadShinyImage.CopyTo(fileStream);
+                    }
                 }
             }
             return imageUrls;

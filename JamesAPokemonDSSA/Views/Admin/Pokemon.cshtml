@@ -44,8 +44,8 @@
             </div>
         </form>
         <div class="split split--filter">
-            <a class="btn btn--small" asp-action="Pokemon" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" asp-route-currentType="@ViewData["CurrentType"]">Sort Alphabetically</a>
-            <a class="btn btn--small" asp-action="Pokemon" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" asp-route-currentType="@ViewData["CurrentType"]">Sort by Date Added</a>
+            <a class="btn btn--small" asp-action="Pokemon" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" asp-route-currentType="@ViewData["CurrentType"]">Sort Alphabetically @((string)ViewData["NameSortParm"] == "name_asc" ? "🠕🠗" : "🠗🠕") </a>
+            <a class="btn btn--small" asp-action="Pokemon" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" asp-route-currentType="@ViewData["CurrentType"]">Sort by Date Added @((string)ViewData["DateSortParm"] == "date_desc" ? "🠕🠗" : "🠗🠕") </a>
         </div>
         <a class="btn btn--xsmall" asp-action="Pokemon">Reset Filter</a>
     </div>

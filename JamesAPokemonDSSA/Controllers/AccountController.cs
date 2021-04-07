@@ -44,7 +44,7 @@ namespace JamesAPokemonDSSA.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Invalid login details");
+                    ModelState.AddModelError("LoginFailed", "Invalid login details");
                 }
             }
             return View(obj);
