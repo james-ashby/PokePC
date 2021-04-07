@@ -1,7 +1,6 @@
 ﻿@{
     ViewData["Title"] = "My Pokémon";
     List<string> typeList = (List<string>)ViewData["Types"];
-    string test = (string)TempData["test"];
 }
 <div class="center">
     <div id="myModal" class="modal">
@@ -17,10 +16,6 @@
     <div class="wrapperDexHead">
         <h1 class="txt-title">@ViewData["Title"]</h1>
         <p class="txt-pokename">Total Pokémon: @ViewData["TotalPokemon"]</p>
-        <p>@(Context.Request.Path + Context.Request.QueryString)</p>
-        <p>
-            @test
-        </p>
 
         <form asp-action="Pokemon" method="get">
             <div class="form-actions no-color">

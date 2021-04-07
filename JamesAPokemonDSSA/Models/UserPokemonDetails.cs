@@ -17,6 +17,5 @@ namespace JamesAPokemonWAD.Models
         
         public string Type_1 { get; set; }
         public string Type_2 { get; set; }
-        public string queryString { get; set; }
     }
 }
