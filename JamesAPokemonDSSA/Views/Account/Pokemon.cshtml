@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "My Pokémon";
+    List<string> typeList = (List<string>)ViewData["Types"];
 }
 <div class="center">
     <div id="myModal" class="modal">
@@ -11,37 +12,109 @@
         </div>
     </div>
 </div>
-<div class="container container--register">
-    <h1 class="txt-title">@ViewData["Title"]</h1>
-    <p class="txt-pokename">Total Pokémon: @ViewData["TotalPokemon"]</p>
+<div class="container container--dexhead">
+    <div class="wrapperDexHead">
+        <h1 class="txt-title">@ViewData["Title"]</h1>
+        <p class="txt-pokename">Total Pokémon: @ViewData["TotalPokemon"]</p>
+        <form asp-action="Pokemon" method="get">
+            <div class="form-actions no-color">
+                <label class="txt-pokename" for="SearchString">Filter by name: </label>
+                <input type="text" name="SearchString" id="SearchString" value="@ViewData["CurrentFilter"]" />
+                <input type="submit" value="Search" class="btn btn-default" />
+            </div>
+            <div class="split split--filter">
+                <select name="typeFilter">
+                    <option value="@null" selected="selected">None</option>
+                    @foreach (string type in typeList)
+                    {
+                        if (type == (string)ViewData["CurrentType"])
+                        {
+                            <option value="@type" selected="selected">@System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(type)</option>
+                        }
+                        else
+                        {
+                            <option value="@type">@System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(type)</option>
+                        }
+                    }
+                </select>
+                <div class="form-actions no-color">
+                    <input type="submit" value="Filter by type" class="btn btn--small" />
+                </div>
+            </div>
+        </form>
+        <div class="split split--filter">
+            <a class="btn btn--small" asp-action="Pokemon" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" asp-route-currentType="@ViewData["CurrentType"]">Sort Alphabetically</a>
+            <a class="btn btn--small" asp-action="Pokemon" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" asp-route-currentType="@ViewData["CurrentType"]">Sort by Catch Date</a>
+        </div>
+        <a class="btn btn--xsmall" asp-action="Pokemon">Reset Filter</a>
+    </div>
 </div>
 <div class="container container--dex">
     <div class="split split--mypoke">
 
         @foreach (var pokemon in Model)
         {
-        <div class="wrapper-pokemon">
-            <img class="pokemonImg pokemonImg--@pokemon.Type_1 pokemonImg--offset--@(pokemon.Type_2 == null || pokemon.Type_2 == "" ? pokemon.Type_1 : pokemon.Type_2) " src="@(pokemon.Image.Contains("upload") ? "/images/pokemon/" : "")@pokemon.Image" alt="A picture of the Pokémon @pokemon.Name">
-            @if (pokemon.IsShiny)
-            {
-                <p class="txt-pokename">Shiny @pokemon.Name</p>
-            }
-            else
-            {
-                <p class="txt-pokename">@pokemon.Name</p>
+            <div class="wrapper-pokemon">
+                <img class="pokemonImg pokemonImg--@pokemon.Type_1 pokemonImg--offset--@(pokemon.Type_2 == null || pokemon.Type_2 == "" ? pokemon.Type_1 : pokemon.Type_2) " src="@(pokemon.Image.Contains("upload") ? "/images/pokemon/" : "")@pokemon.Image" alt="A picture of the Pokémon @pokemon.Name">
+                @if (pokemon.IsShiny)
+                {
+                    <p class="txt-pokename">Shiny @pokemon.Name</p>
+                }
+                else
+                {
+                    <p class="txt-pokename">@pokemon.Name</p>
 
-            }
-            <p class="txt-pokename">Caught on: @pokemon.CatchDate</p>
-            <h3 class="txt-admin txt-admin--delete"><a href="javascript:;" class="releasePoke" data-id="@pokemon.PokemonId">Release</a></h3>
-        </div>
-            
+                }
+                <p class="txt-pokename">Caught on: @pokemon.CatchDate.ToString("dd/MM/yyyy")</p>
+                <h3 class="txt-admin txt-admin--delete"><a href="javascript:;" class="releasePoke" data-id="@pokemon.PokemonId">Release</a></h3>
+            </div>
+
         }
     </div>
 </div>
 
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
 <div class="split">
-    <a href="javascript:void(0)" id="historyBackBtn"
-       class="btn">
-        Back
-    </a>
+    <p class="txt-pokename">@ViewData["Results"] results</p>
+    @if (ViewData["CurrentPage"] == null)
+    {
+        <p class="txt-pokename">
+            Page 1 - @ViewData["Pages"]
+        </p>
+    }
+    else
+    {
+        <p class="txt-pokename">
+            Page @ViewData["CurrentPage"] - @ViewData["Pages"]
+        </p>
+    }
+</div>
+
+<div class="split split--pages">
+    <div>
+        <a asp-action="Pokemon"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex - 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           asp-route-currentType="@ViewData["CurrentType"]"
+           class="btn btn-@prevDisabled">
+            Previous
+        </a>
+    </div>
+
+
+
+    <div>
+        <a asp-action="Pokemon"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex + 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           asp-route-currentType="@ViewData["CurrentType"]"
+           class="btn btn-@nextDisabled">
+            Next
+        </a>
+    </div>
 </div>

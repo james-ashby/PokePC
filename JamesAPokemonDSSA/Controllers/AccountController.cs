@@ -116,7 +116,7 @@ namespace JamesAPokemonDSSA.Controllers
         {
             var user = _userContext.Users.Find(userManager.GetUserId(User));
             var userRoleID = await _userContext.UserRoles.Where(u => u.UserId == user.Id).Select(r => r.RoleId).FirstOrDefaultAsync(); ;
-            string userRole = _userContext.Roles.Where(r => r.Id == userRoleID).Select(r => r.Name).FirstOrDefaultAsync().ToString();
+            string userRole = _userContext.Roles.Where(r => r.Id == userRoleID).Select(r => r.Name).FirstOrDefaultAsync().Result.ToString();
             AccountDetails model = new AccountDetails {
                 UserId = user.Id,
                 Username = user.UserName,
@@ -165,22 +165,69 @@ namespace JamesAPokemonDSSA.Controllers
             }
         }
         [Authorize(Roles = "Standard, Admin")]
-        public async Task<IActionResult> Pokemon()
+        public async Task<IActionResult> Pokemon(string sortOrder, string searchString, string currentFilter, int? pageNumber, string typeFilter, string currentType)
         {
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = sortOrder == "name_asc" ? "name_desc" : "name_asc";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
 
-            List<UserPokemonDetails> caughtPokemon = await _context.Pokemon.Join(_context.CaughtPokemon.Where(u => u.UserID == userManager.GetUserId(User)), pokemon => pokemon.PokemonName, caught => caught.PokemonName, (pokemon, caught) => new UserPokemonDetails
+            if (searchString != null || typeFilter != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+                typeFilter = currentType;
+            }
+            ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentType"] = typeFilter;
+
+            var caughtPokemon = _context.Pokemon.Join(_context.CaughtPokemon.Where(u => u.UserID == userManager.GetUserId(User)), pokemon => pokemon.PokemonName, caught => caught.PokemonName, (pokemon, caught) => new UserPokemonDetails
             {
                 PokemonId = caught.PokemonID,
-                CatchDate = caught.CatchDate.ToString("dd/MM/yyyy"),
+                CatchDate = caught.CatchDate,
                 Image = caught.IsShiny ? pokemon.ShinyImage : pokemon.Image,
                 Name = caught.PokemonName,
                 PokedexNum = pokemon.PokedexNum,
                 IsShiny = caught.IsShiny,
                 Type_1 = pokemon.Type_1,
                 Type_2 = pokemon.Type_2
-            }).ToListAsync();
+            });
+
+            if (typeFilter != null)
+            {
+                caughtPokemon = caughtPokemon.Where(p => p.Type_1 == typeFilter || p.Type_2 == typeFilter);
+            }
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                caughtPokemon = caughtPokemon.Where(p => p.Name.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    caughtPokemon = caughtPokemon.OrderByDescending(p => p.Name);
+                    break;
+                case "name_asc":
+                    caughtPokemon = caughtPokemon.OrderBy(p => p.Name);
+                    break;
+                case "Date":
+                    caughtPokemon = caughtPokemon.OrderBy(p => p.CatchDate);
+                    break;
+                case "date_desc":
+                    caughtPokemon = caughtPokemon.OrderByDescending(p => p.CatchDate);
+                    break;
+                default:
+                    caughtPokemon = caughtPokemon.OrderBy(p => p.PokedexNum);
+                    break;
+            }
+            int pageSize = 16;
+            ViewData["Results"] = caughtPokemon.Count();
+            ViewData["Pages"] = Math.Floor((decimal)caughtPokemon.Count() / 16) + 1;
+            ViewData["CurrentPage"] = pageNumber;
+            ViewData["Types"] = _context.Pokemon.Select(p => p.Type_1).Distinct().ToList();
             ViewData["TotalPokemon"] = _userContext.Users.Find(userManager.GetUserId(User)).UniquePokemon;
-            return View(caughtPokemon);
+            return View(await PaginatedList<UserPokemonDetails>.CreateAsync(caughtPokemon.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
         [HttpPost]
         [Authorize(Roles = "Standard, Admin")]
@@ -189,7 +236,7 @@ namespace JamesAPokemonDSSA.Controllers
             UserPokemonDetails model = await _context.Pokemon.Join(_context.CaughtPokemon.Where(p => p.PokemonID == id), pokemon => pokemon.PokemonName, caught => caught.PokemonName, (pokemon, caught) => new UserPokemonDetails
             {
                 PokemonId = caught.PokemonID,
-                CatchDate = caught.CatchDate.ToString("dd/MM/yyyy"),
+                CatchDate = caught.CatchDate,
                 Image = caught.IsShiny ? pokemon.ShinyImage : pokemon.Image,
                 Name = caught.PokemonName,
                 PokedexNum = pokemon.PokedexNum,

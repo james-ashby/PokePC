@@ -26,23 +26,29 @@ namespace JamesAPokemonWAD.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> Pokemon(string sortOrder, string searchString, string currentFilter, int? pageNumber)
+        public async Task<IActionResult> Pokemon(string sortOrder, string searchString, string currentFilter, int? pageNumber, string typeFilter, string currentType)
         {
-            var allPokemon = _context.Pokemon.OrderBy(e => e.PokedexNum);
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = sortOrder == "name_asc" ? "name_desc" : "name_asc";
             ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
-            ViewData["TypeSortParm"] = sortOrder;
-            if (searchString != null)
+
+            if (searchString != null || typeFilter != null)
             {
                 pageNumber = 1;
             }
             else
             {
                 searchString = currentFilter;
+                typeFilter = currentType;
             }
             ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentType"] = typeFilter;
+
             var pokemon = from p in _context.Pokemon select p;
+            if (typeFilter != null)
+            {
+                pokemon = pokemon.Where(p => p.Type_1 == typeFilter || p.Type_2 == typeFilter);
+            }
             if (!string.IsNullOrEmpty(searchString))
             {
                 pokemon = pokemon.Where(p => p.PokemonName.Contains(searchString));
@@ -69,7 +75,7 @@ namespace JamesAPokemonWAD.Controllers
             ViewData["Results"] = pokemon.Count();
             ViewData["Pages"] = Math.Floor((decimal)pokemon.Count() / 16) + 1;
             ViewData["CurrentPage"] = pageNumber;
-            ViewData["Types"] = await _context.Pokemon.Select(p => p.Type_1).Distinct().ToListAsync();
+            ViewData["Types"] = _context.Pokemon.Select(p => p.Type_1).Distinct().ToList();
             return View(await PaginatedList<Pokemon>.CreateAsync(pokemon.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
         public async Task<IActionResult> Areas()

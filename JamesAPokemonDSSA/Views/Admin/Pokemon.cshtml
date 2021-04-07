@@ -1,5 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Admin Pokemon";
+
+    List<string> typeList = (List<string>)ViewData["Types"];
 }
 <div class="center">
     <div id="myModal" class="modal">
@@ -14,20 +16,38 @@
 <div class="container container--dexhead">
     <div class="wrapperDexHead">
         <h1 class="txt-title">@ViewData["Title"]</h1>
-        <p class="txt-pokename">Filter for specific Pokémon to edit</p>
         <form asp-action="Pokemon" method="get">
             <div class="form-actions no-color">
-                <p>
-                    Find by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
-                    <input type="submit" value="Search" class="btn btn-default" />
-                </p>
+
+                <label class="txt-pokename" for="SearchString">Filter by name: </label>
+                <input type="text" name="SearchString" id="SearchString" value="@ViewData["CurrentFilter"]" />
+                <input type="submit" value="Search" class="btn btn-default" />
+            </div>
+            <div class="split split--filter">
+                <select name="typeFilter">
+                    <option value="@null" selected="selected">None</option>
+                    @foreach (string type in typeList)
+                    {
+                        if (type == (string)ViewData["CurrentType"])
+                        {
+                            <option value="@type" selected="selected">@System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(type)</option>
+                        }
+                        else
+                        {
+                            <option value="@type">@System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(type)</option>
+                        }
+                    }
+                </select>
+                <div class="form-actions no-color">
+                    <input type="submit" value="Filter by type" class="btn btn--small" />
+                </div>
             </div>
         </form>
-        <a class="btn btn--xsmall" asp-action="Pokemon">Show all</a>
         <div class="split split--filter">
-            <a class="btn btn--small" asp-action="Pokemon" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Sort by Name</a>
-            <a class="btn btn--small" asp-action="Pokemon" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Sort by Date Added</a>
+            <a class="btn btn--small" asp-action="Pokemon" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" asp-route-currentType="@ViewData["CurrentType"]">Sort Alphabetically</a>
+            <a class="btn btn--small" asp-action="Pokemon" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" asp-route-currentType="@ViewData["CurrentType"]">Sort by Date Added</a>
         </div>
+        <a class="btn btn--xsmall" asp-action="Pokemon">Reset Filter</a>
     </div>
 </div>
 <div class="flex container">
@@ -71,6 +91,7 @@
            asp-route-sortOrder="@ViewData["CurrentSort"]"
            asp-route-pageNumber="@(Model.PageIndex - 1)"
            asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           asp-route-currentType="@ViewData["CurrentType"]"
            class="btn btn-@prevDisabled">
             Previous
         </a>
@@ -83,6 +104,7 @@
            asp-route-sortOrder="@ViewData["CurrentSort"]"
            asp-route-pageNumber="@(Model.PageIndex + 1)"
            asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           asp-route-currentType="@ViewData["CurrentType"]"
            class="btn btn-@nextDisabled">
             Next
         </a>

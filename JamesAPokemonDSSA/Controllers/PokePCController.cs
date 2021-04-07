@@ -39,7 +39,6 @@ namespace JamesAPokemonDSSA.Controllers
 
         public async Task<IActionResult> Pokedex(string sortOrder, string searchString, string currentFilter, int? pageNumber, string typeFilter, string currentType)
         {
-            var allPokemon = _context.Pokemon.OrderBy(e => e.PokedexNum);
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = sortOrder == "name_asc" ? "name_desc" : "name_asc";
             ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
@@ -55,6 +54,7 @@ namespace JamesAPokemonDSSA.Controllers
             }
             ViewData["CurrentFilter"] = searchString;
             ViewData["CurrentType"] = typeFilter;
+
              var pokemon = from p in _context.Pokemon select p;
             if (typeFilter != null)
             {
