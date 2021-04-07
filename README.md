@@ -13,6 +13,8 @@ In addition to this, the website is secured and protected via Cloudflare and enc
 • Get lucky and find a rare Shiny Pokémon!
 
 • Catch 'em all!
+
+
 • New Areas and Pokémon added frequently!
 -------------------------
 
