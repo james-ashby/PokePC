@@ -7,6 +7,7 @@
 <div class="split">
     <form method="post" asp-action="ReleasePokemon" asp-controller="Account">
         <input type="hidden" name="PokemonId" value="@Model.PokemonId" />
+        <input type="hidden" name="queryString" value="@Model.queryString" />
         <h3><input type="submit" value="Release" class="btn btn-delete" /></h3>
     </form>
 </div>

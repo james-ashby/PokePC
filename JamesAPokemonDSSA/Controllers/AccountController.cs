@@ -242,7 +242,8 @@ namespace JamesAPokemonDSSA.Controllers
                 PokedexNum = pokemon.PokedexNum,
                 IsShiny = caught.IsShiny,
                 Type_1 = pokemon.Type_1,
-                Type_2 = pokemon.Type_2
+                Type_2 = pokemon.Type_2,
+                queryString = url
             }).FirstOrDefaultAsync();
             return PartialView("_ConfirmReleasePokemon", model);
         }
@@ -256,7 +257,7 @@ namespace JamesAPokemonDSSA.Controllers
             _context.CaughtPokemon.Remove(pokemon);
             _userContext.SaveChanges();
             _context.SaveChanges();
-            return RedirectToAction("Pokemon", "Account");
+            return Redirect("https://pokepc.tech" + model.queryString);
         }
     }
 }
