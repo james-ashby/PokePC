@@ -38,10 +38,10 @@ namespace JamesAPokemonDSSA
 
             _connection = builder.ConnectionString;
             services.AddControllersWithViews();
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); //** Use this connection for local
-            services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); //** Use this connection for local
-             //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(_connection));
-            //services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(_connection));
+            //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); //** Use this connection for local
+            //services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); //** Use this connection for local
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(_connection));
+            services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(_connection));
             services.AddIdentity<PokePCUser, PokePCRoles>(options =>
             {options.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
