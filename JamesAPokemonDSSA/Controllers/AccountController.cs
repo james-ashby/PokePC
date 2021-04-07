@@ -57,15 +57,15 @@ namespace JamesAPokemonDSSA.Controllers
             signinManager.SignOutAsync().Wait();
             return RedirectToAction("Index", "PokePC");
         }
-        public IActionResult Register()
+        public async Task<IActionResult> Register()
         {
-            ViewData["Starters"] = _context.Pokemon.Where(e => (e.PokedexNum == 1 || e.PokedexNum == 4 || e.PokedexNum == 7)).ToList();
+            ViewData["Starters"] = await _context.Pokemon.Where(e => (e.PokedexNum == 1 || e.PokedexNum == 4 || e.PokedexNum == 7)).ToListAsync();
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Register(Register obj)
+        public async Task<IActionResult> Register(Register obj)
         {
             if (ModelState.IsValid)
             {
@@ -104,7 +104,7 @@ namespace JamesAPokemonDSSA.Controllers
                     ModelState.AddModelError("", "Invalid user details");
                 }
             }
-            ViewData["Starters"] = _context.Pokemon.Where(e => (e.PokedexNum == 1 || e.PokedexNum == 4 || e.PokedexNum == 7)).ToList();
+            ViewData["Starters"] = await _context.Pokemon.Where(e => (e.PokedexNum == 1 || e.PokedexNum == 4 || e.PokedexNum == 7)).ToListAsync();
             return View(obj);
         }
         public IActionResult AccessDenied()
@@ -112,11 +112,11 @@ namespace JamesAPokemonDSSA.Controllers
             return View();
         }
         [Authorize(Roles = "Standard, Admin")]
-        public IActionResult Details()
+        public async Task<IActionResult> Details()
         {
             var user = _userContext.Users.Find(userManager.GetUserId(User));
-            var userRoleID = _userContext.UserRoles.Where(u => u.UserId == user.Id).Select(r => r.RoleId).FirstOrDefault();
-            string userRole = _userContext.Roles.Where(r => r.Id == userRoleID).Select(r => r.Name).FirstOrDefault().ToString();
+            var userRoleID = await _userContext.UserRoles.Where(u => u.UserId == user.Id).Select(r => r.RoleId).FirstOrDefaultAsync(); ;
+            string userRole = _userContext.Roles.Where(r => r.Id == userRoleID).Select(r => r.Name).FirstOrDefaultAsync().ToString();
             AccountDetails model = new AccountDetails {
                 UserId = user.Id,
                 Username = user.UserName,
@@ -165,10 +165,10 @@ namespace JamesAPokemonDSSA.Controllers
             }
         }
         [Authorize(Roles = "Standard, Admin")]
-        public IActionResult Pokemon()
+        public async Task<IActionResult> Pokemon()
         {
 
-            List<UserPokemonDetails> caughtPokemon = _context.Pokemon.Join(_context.CaughtPokemon.Where(u => u.UserID == userManager.GetUserId(User)), pokemon => pokemon.PokemonName, caught => caught.PokemonName, (pokemon, caught) => new UserPokemonDetails
+            List<UserPokemonDetails> caughtPokemon = await _context.Pokemon.Join(_context.CaughtPokemon.Where(u => u.UserID == userManager.GetUserId(User)), pokemon => pokemon.PokemonName, caught => caught.PokemonName, (pokemon, caught) => new UserPokemonDetails
             {
                 PokemonId = caught.PokemonID,
                 CatchDate = caught.CatchDate.ToString("dd/MM/yyyy"),
@@ -178,15 +178,15 @@ namespace JamesAPokemonDSSA.Controllers
                 IsShiny = caught.IsShiny,
                 Type_1 = pokemon.Type_1,
                 Type_2 = pokemon.Type_2
-            }).ToList();
+            }).ToListAsync();
             ViewData["TotalPokemon"] = _userContext.Users.Find(userManager.GetUserId(User)).UniquePokemon;
             return View(caughtPokemon);
         }
         [HttpPost]
         [Authorize(Roles = "Standard, Admin")]
-        public IActionResult ConfirmReleasePokemon(int id)
+        public async Task<IActionResult> ConfirmReleasePokemon(int id)
         {
-            UserPokemonDetails model = _context.Pokemon.Join(_context.CaughtPokemon.Where(p => p.PokemonID == id), pokemon => pokemon.PokemonName, caught => caught.PokemonName, (pokemon, caught) => new UserPokemonDetails
+            UserPokemonDetails model = await _context.Pokemon.Join(_context.CaughtPokemon.Where(p => p.PokemonID == id), pokemon => pokemon.PokemonName, caught => caught.PokemonName, (pokemon, caught) => new UserPokemonDetails
             {
                 PokemonId = caught.PokemonID,
                 CatchDate = caught.CatchDate.ToString("dd/MM/yyyy"),
@@ -196,7 +196,7 @@ namespace JamesAPokemonDSSA.Controllers
                 IsShiny = caught.IsShiny,
                 Type_1 = pokemon.Type_1,
                 Type_2 = pokemon.Type_2
-            }).FirstOrDefault();
+            }).FirstOrDefaultAsync();
             return PartialView("_ConfirmReleasePokemon", model);
         }
         [HttpPost]

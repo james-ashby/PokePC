@@ -69,17 +69,17 @@ namespace JamesAPokemonWAD.Controllers
             ViewData["Results"] = pokemon.Count();
             ViewData["Pages"] = Math.Floor((decimal)pokemon.Count() / 16) + 1;
             ViewData["CurrentPage"] = pageNumber;
-            ViewData["Types"] = _context.Pokemon.Select(p => p.Type_1).Distinct().ToList();
+            ViewData["Types"] = await _context.Pokemon.Select(p => p.Type_1).Distinct().ToListAsync();
             return View(await PaginatedList<Pokemon>.CreateAsync(pokemon.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
-        public IActionResult Areas()
+        public async Task<IActionResult> Areas()
         {
-            List<Area> allAreas = _context.Areas.ToList();
+            List<Area> allAreas = await _context.Areas.ToListAsync();
             return View(allAreas);
         }
-        public IActionResult AddArea()
+        public async Task<IActionResult> AddArea()
         {
-            ViewData["Pokemon"] = _context.Pokemon.ToList();
+            ViewData["Pokemon"] = await _context.Pokemon.ToListAsync();
             return View();
         }
         [HttpPost]
@@ -126,11 +126,11 @@ namespace JamesAPokemonWAD.Controllers
 
             return View(model);
         }
-        public IActionResult UpdateArea(int id)
+        public async Task<IActionResult> UpdateArea(int id)
         {
             Area area = _context.Areas.Find(id);
-            var SelectedPokes = _context.AreaPokemon.Where(p => p.AreaId== id).Select(a => a.PokemonId).ToList();
-            List<Pokemon> allPokemon = _context.Pokemon.ToList();
+            var SelectedPokes = await _context.AreaPokemon.Where(p => p.AreaId== id).Select(a => a.PokemonId).ToListAsync();
+            List<Pokemon> allPokemon = await _context.Pokemon.ToListAsync();
             AreaForm model = new AreaForm
             {
                 AreaId = area.AreaId,
@@ -192,10 +192,10 @@ namespace JamesAPokemonWAD.Controllers
 
             return View(model);
         }
-        public IActionResult AddPokemon()
+        public async Task<IActionResult> AddPokemon()
         {
-            ViewData["Types"] = _context.Pokemon.Select(p => p.Type_1).Distinct().ToList();
-            ViewData["Areas"] = _context.Areas.ToList();
+            ViewData["Types"] = await _context.Pokemon.Select(p => p.Type_1).Distinct().ToListAsync();
+            ViewData["Areas"] = await _context.Areas.ToListAsync();
             return View();
         }
         [HttpPost]
@@ -245,21 +245,21 @@ namespace JamesAPokemonWAD.Controllers
                 catch (Exception ex)
                 {
                     ModelState.AddModelError("Custom", "Pokémon Name or Number already exists!");
-                    ViewData["Types"] = _context.Pokemon.Select(p => p.Type_1).Distinct().ToList();
-                    ViewData["Areas"] = _context.Areas.ToList();
+                    ViewData["Types"] = await _context.Pokemon.Select(p => p.Type_1).Distinct().ToListAsync();
+                    ViewData["Areas"] = await _context.Areas.ToListAsync();
                     return View(model);
                 }
                 
             }
-            ViewData["Types"] = _context.Pokemon.Select(p => p.Type_1).Distinct().ToList();
-            ViewData["Areas"] = _context.Areas.ToList();
+            ViewData["Types"] = await _context.Pokemon.Select(p => p.Type_1).Distinct().ToListAsync();
+            ViewData["Areas"] = await _context.Areas.ToListAsync();
             return View(model);
         }
-        public IActionResult UpdatePokemon(int id)
+        public async Task<IActionResult> UpdatePokemon(int id)
         {
             Pokemon model = _context.Pokemon.Find(id);
-            var areaIDs = _context.AreaPokemon.Where(p => p.PokemonId == id).Select(a => a.AreaId).ToList();
-            List<Area> allAreas = _context.Areas.ToList();
+            var areaIDs = await _context.AreaPokemon.Where(p => p.PokemonId == id).Select(a => a.AreaId).ToListAsync();
+            List<Area> allAreas = await _context.Areas.ToListAsync();
             UpdatePokemon formModel = new UpdatePokemon
             {
                 PokemonId = model.PokemonId,
@@ -277,8 +277,8 @@ namespace JamesAPokemonWAD.Controllers
                 AreaIds = areaIDs,
                 Rarity = model.Rarity
             };
-            ViewData["Types"] = _context.Pokemon.Select(p => p.Type_1).Distinct().ToList();
-            ViewData["Areas"] = _context.Areas.Select(a => a.AreaId).ToList();
+            ViewData["Types"] = await _context.Pokemon.Select(p => p.Type_1).Distinct().ToListAsync();
+            ViewData["Areas"] = await _context.Areas.Select(a => a.AreaId).ToListAsync();
             return View(formModel);
         }
         [HttpPost]
@@ -343,14 +343,13 @@ namespace JamesAPokemonWAD.Controllers
                 catch (Exception ex)
                 {
                     ModelState.AddModelError("Custom", "Pokémon Name or Number already exists!");
-                    ViewData["Types"] = _context.Pokemon.Select(p => p.Type_1).Distinct().ToList();
-                    ViewData["Areas"] = _context.Areas.Select(a => a.Name).ToList();
+                    ViewData["Types"] = await _context.Pokemon.Select(p => p.Type_1).Distinct().ToListAsync();
+                    ViewData["Areas"] = await _context.Areas.Select(a => a.Name).ToListAsync();
                     return View(model);
                 }
-                
             }
-            ViewData["Types"] = _context.Pokemon.Select(p => p.Type_1).Distinct().ToList();
-            ViewData["Areas"] = _context.Areas.Select(a => a.Name).ToList();
+            ViewData["Types"] = await _context.Pokemon.Select(p => p.Type_1).Distinct().ToListAsync();
+            ViewData["Areas"] = await _context.Areas.Select(a => a.Name).ToListAsync();
             return View(model);
         }
         [HttpPost]

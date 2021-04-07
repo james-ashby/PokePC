@@ -1,6 +1,14 @@
 ﻿@{
     ViewData["Title"] = "Wild Areas";
-    var tempVal = TempData["Denied"];
+    var tempVal = "";
+    if (TempData["Denied"] != null)
+    {
+        tempVal = (string)TempData["Denied"];
+    }
+    if (TempData["Error"] != null)
+    {
+        tempVal = (string)TempData["Error"];
+    }
     var userlevel = (int)@ViewData["UserLevel"];
 }
 <div class="container container--dexhead">
@@ -19,7 +27,7 @@
     {
         <p>Make an account to search for Pokémon!</p>
     }
-    @if (tempVal != null)
+    @if (tempVal != "")
     {
         <p class="txt-error">@tempVal</p>
     }

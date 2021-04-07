@@ -31,10 +31,9 @@ namespace JamesAPokemonDSSA.Controllers
             _userContext = userContext;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-           var starters = _context.Pokemon.Where(e =>(e.PokedexNum == 1 || e.PokedexNum == 4 || e.PokedexNum == 7));
-           List <Pokemon> model = starters.ToList();
+            List<Pokemon> model = await _context.Pokemon.Where(e => (e.PokedexNum == 1 || e.PokedexNum == 4 || e.PokedexNum == 7)).ToListAsync();
             return View(model);
         }
 
@@ -116,9 +115,9 @@ namespace JamesAPokemonDSSA.Controllers
             
             return View(model);
         }
-        public IActionResult Areas()
+        public async Task<IActionResult> Areas()
         {
-            List<Area> areas = _context.Areas.OrderBy(a => a.LevelRequirement).ToList();
+            List<Area> areas = await _context.Areas.OrderBy(a => a.LevelRequirement).ToListAsync();
             if (User.Identity.IsAuthenticated)
             {
                 ViewData["UserLevel"] = _userContext.Users.Find(_userManager.GetUserId(User)).Level;
@@ -129,7 +128,7 @@ namespace JamesAPokemonDSSA.Controllers
             }
             return View(areas);
         }
-        public IActionResult AreaDetails(int id)
+        public async Task<IActionResult> AreaDetails(int id)
         {
             var area = _context.Areas.Find(id);
             var levelReq = area.LevelRequirement;
@@ -142,10 +141,14 @@ namespace JamesAPokemonDSSA.Controllers
                 TempData["Denied"] = area.Name + " requires level " + levelReq;
                 return RedirectToAction("Areas", "PokePC");
             }
-
-            List<AreasPokemon> areaPoke = _context.AreaPokemon.Include(p => p.Pokemon).Where(a => a.AreaId == id).OrderBy(p => p.Pokemon.Rarity == "Legendary")
-            .ThenBy(p => p.Pokemon.Rarity == "Rare").ThenBy(p => p.Pokemon.Rarity == "Uncommon").ThenBy(p => p.Pokemon.Rarity == "Common").ToList();
-            string imageUrl = _context.Areas.Where(a => a.AreaId == id).First().Image;
+            List<AreasPokemon> areaPoke = await _context.AreaPokemon.Include(p => p.Pokemon).Where(a => a.AreaId == id).OrderBy(p => p.Pokemon.Rarity == "Legendary")
+            .ThenBy(p => p.Pokemon.Rarity == "Rare").ThenBy(p => p.Pokemon.Rarity == "Uncommon").ThenBy(p => p.Pokemon.Rarity == "Common").ToListAsync();
+            if (areaPoke.Count == 0)
+            {
+                TempData["Error"] = "Area under construction, no wild Pokémon to be found here for now!";
+                return RedirectToAction("Areas", "PokePC");
+            }
+            string imageUrl = _context.Areas.Where(a => a.AreaId == id).FirstAsync().Result.Image;
             ViewData["AreaImage"] = imageUrl.Contains("uploaded") ? "/images/areas/" + imageUrl : imageUrl;
             ViewData["AreaName"] = _context.Areas.Find(id).Name;
             return View(areaPoke);
@@ -163,9 +166,8 @@ namespace JamesAPokemonDSSA.Controllers
             }
             Random rand = new Random(DateTime.Now.Millisecond);
             var roll = rand.Next(1, 101);
-            var shinyRoll = rand.Next(1, 150);
-            var model = _context.AreaPokemon.Include(c => c.Pokemon).Where(a=> a.AreaId == id);
-            List<AreasPokemon> areaPoke = model.ToList();
+            var shinyRoll = rand.Next(1, 150); 
+            List<AreasPokemon> areaPoke = await _context.AreaPokemon.Include(c => c.Pokemon).Where(a => a.AreaId == id).ToListAsync();
             ViewData["IsShiny"] = (shinyRoll == 1 ? true : false);
             AreasPokemon rolledPoke = null;
             if (roll == 1)
