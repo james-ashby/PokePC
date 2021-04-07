@@ -210,45 +210,43 @@ namespace JamesAPokemonWAD.Controllers
         {
             if (ModelState.IsValid)
             {
-                string[] imageUrls = UploadedPokemonImages(model);
-                string standardUrl = imageUrls[0];
-                string shinyImageUrl = imageUrls[1];
-
-                Pokemon newPokemon = new Pokemon
+                try
                 {
-                    PokemonName = model.PokemonName,
-                    PokedexNum = model.PokedexNum,
-                    Type_1 = model.Type_1,
-                    Type_2 = model.Type_2,
-                    Classification = model.Classification,
-                    Description = model.Description,
-                    Height = model.Height,
-                    Weight = model.Weight,
-                    Generation = model.Generation,
-                    Image = standardUrl,
-                    ShinyImage = shinyImageUrl,
-                    Rarity = model.Rarity
-                };
-                _context.Add(newPokemon);
-                _context.SaveChanges();
-                List<AreasPokemon> newListOfAreas = new List<AreasPokemon>();
-                if (model.AreaIds != null)
-                {
-                    foreach (int areaId in model.AreaIds)
-                    {
-                        newListOfAreas.Add(new AreasPokemon { AreaId = areaId, PokemonId = newPokemon.PokemonId });
-                    }
-                    foreach (AreasPokemon area in newListOfAreas)
-                    {
-                        _context.Add(area);
-                        _context.SaveChanges();
-                    }
-                }
-                return RedirectToAction("Pokemon", "Admin");
-                
-                /*try
-                {
+                    string[] imageUrls = UploadedPokemonImages(model);
+                    string standardUrl = imageUrls[0];
+                    string shinyImageUrl = imageUrls[1];
                     
+                    Pokemon newPokemon = new Pokemon
+                    {
+                        PokemonName = model.PokemonName,
+                        PokedexNum = model.PokedexNum,
+                        Type_1 = model.Type_1,
+                        Type_2 = model.Type_2,
+                        Classification = model.Classification,
+                        Description = model.Description,
+                        Height = model.Height,
+                        Weight = model.Weight,
+                        Generation = model.Generation,
+                        Image = standardUrl,
+                        ShinyImage = shinyImageUrl,
+                        Rarity = model.Rarity
+                    };
+                    _context.Add(newPokemon);
+                    _context.SaveChanges();
+                    List<AreasPokemon> newListOfAreas = new List<AreasPokemon>();
+                    if (model.AreaIds != null)
+                    {
+                        foreach (int areaId in model.AreaIds)
+                        {
+                            newListOfAreas.Add(new AreasPokemon { AreaId = areaId, PokemonId = newPokemon.PokemonId});
+                        }
+                        foreach (AreasPokemon area in newListOfAreas)
+                        {
+                            _context.Add(area);
+                            _context.SaveChanges();
+                        }
+                    }
+                    return RedirectToAction("Pokemon", "Admin");
                 }
                 catch (Exception)
                 {
@@ -256,7 +254,7 @@ namespace JamesAPokemonWAD.Controllers
                     ViewData["Types"] = await _context.Pokemon.Select(p => p.Type_1).Distinct().ToListAsync();
                     ViewData["Areas"] = await _context.Areas.ToListAsync();
                     return View(model);
-                }*/
+                }
                 
             }
             ViewData["Types"] = await _context.Pokemon.Select(p => p.Type_1).Distinct().ToListAsync();
