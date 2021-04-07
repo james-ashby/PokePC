@@ -257,8 +257,8 @@ namespace JamesAPokemonDSSA.Controllers
             _context.CaughtPokemon.Remove(pokemon);
             _userContext.SaveChanges();
             _context.SaveChanges();
-            ViewData["test"] = model.queryString;
-            return RedirectToAction("Pokemon","Account");
+            TempData["test"] = model.queryString;
+            return Redirect("https://pokepc.tech" + model.queryString);
         }
     }
 }
