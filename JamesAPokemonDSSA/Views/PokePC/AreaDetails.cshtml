@@ -7,17 +7,11 @@
     <img class="areaImg" src="@ViewData["AreaImage"]" alt="An image depicting @ViewData["AreaName"]" />
 
     <div class="areaSearchWrapper">
-        @if (User.IsInRole("Admin") || User.IsInRole("Standard"))
-        {
             <a class="btn btn--update" asp-controller="PokePC" asp-action="Area" asp-route-id=@Model[0].AreaId>Search for Pokémon!</a>
-        }
-        else
-        {
-            <a class="btn btn--update" asp-controller="Account" asp-action="Register" asp-route-id=@Model[0].AreaId>Register to catch Pokémon!</a>
-        }
     </div>
 
     <p>Pokémon to be found in @ViewData["AreaName"]... <br /></p>
+    <p>@(Model[0].Area.ExpPerCatch)xp per catch!</p>
 
 
 
