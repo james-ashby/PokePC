@@ -258,7 +258,7 @@ namespace JamesAPokemonDSSA.Controllers
             _userContext.SaveChanges();
             _context.SaveChanges();
             TempData["test"] = model.queryString;
-            return Redirect("https://pokepc.tech" + model.queryString);
+            return RedirectToAction("Pokemon","Account");
         }
     }
 }
