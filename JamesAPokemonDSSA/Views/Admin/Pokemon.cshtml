@@ -18,7 +18,6 @@
         <h1 class="txt-title">@ViewData["Title"]</h1>
         <form asp-action="Pokemon" method="get">
             <div class="form-actions no-color">
-
                 <label class="txt-pokename" for="SearchString">Filter by name: </label>
                 <input type="text" name="SearchString" id="SearchString" value="@ViewData["CurrentFilter"]" />
                 <input type="submit" value="Search" class="btn btn-default" />
