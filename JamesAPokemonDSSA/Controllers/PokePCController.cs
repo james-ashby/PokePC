@@ -165,24 +165,24 @@ namespace JamesAPokemonDSSA.Controllers
                 return RedirectToAction("Areas", "PokePC");
             }
             Random rand = new Random(DateTime.Now.Millisecond);
-            var roll = rand.Next(1, 101);
+            var roll = rand.Next(1, 1001);
             var shinyRoll = rand.Next(1, 150); 
             List<AreasPokemon> areaPoke = await _context.AreaPokemon.Include(c => c.Pokemon).Where(a => a.AreaId == id).ToListAsync();
             ViewData["IsShiny"] = (shinyRoll == 1 ? true : false);
             AreasPokemon rolledPoke = null;
-            if (roll == 1)
+            if (roll <= 10)
             {
                 rolledPoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Pokemon.Rarity == "Legendary").FirstOrDefault();
             }
-            else if (roll <= 5)
+            else if (roll <= 100)
             {
                 rolledPoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Pokemon.Rarity == "Rare").FirstOrDefault();
             }
-            else if (roll <= 20)
+            else if (roll <= 300)
             {
                 rolledPoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Pokemon.Rarity == "Uncommon").FirstOrDefault();
             }
-            else if (roll <= 70)
+            else if (roll <= 700)
             {
                 
                 rolledPoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Pokemon.Rarity == "Common").FirstOrDefault();

@@ -32,7 +32,7 @@ namespace JamesAPokemonWAD.Models
 
             public string GetErrorMessage()
             {
-                return $"The maximum file size is { _maxFileSize / 100} kilobytes.";
+                return $"The maximum file size is { _maxFileSize / 1000} kilobytes.";
             }
         }
 }

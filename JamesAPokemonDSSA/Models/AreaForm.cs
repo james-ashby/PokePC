@@ -20,7 +20,7 @@ namespace JamesAPokemonWAD.Models
         [Required(ErrorMessage ="Please enter an Area name.")]
         public string AreaName { get; set; }
         [AllowedFileExtensions(".png")]
-        [MaxFileSize(1000 * 500)]
+        [MaxFileSize(1000 * 750)]
         public IFormFile UploadImage { get; set; }
         public string ImageUrl { get; set; }
         [Required(ErrorMessage ="Please enter the experience gained per catch.")]
