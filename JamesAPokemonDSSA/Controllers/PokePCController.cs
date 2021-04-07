@@ -170,15 +170,15 @@ namespace JamesAPokemonDSSA.Controllers
             List<AreasPokemon> areaPoke = await _context.AreaPokemon.Include(c => c.Pokemon).Where(a => a.AreaId == id).ToListAsync();
             ViewData["IsShiny"] = (shinyRoll == 1 ? true : false);
             AreasPokemon rolledPoke = null;
-            if (roll <= 10)
+            if (roll <= 5)
             {
                 rolledPoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Pokemon.Rarity == "Legendary").FirstOrDefault();
             }
-            else if (roll <= 100)
+            else if (roll <= 60)
             {
                 rolledPoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Pokemon.Rarity == "Rare").FirstOrDefault();
             }
-            else if (roll <= 300)
+            else if (roll <= 200)
             {
                 rolledPoke = areaPoke.OrderBy(c => Guid.NewGuid()).Where(p => p.Pokemon.Rarity == "Uncommon").FirstOrDefault();
             }
