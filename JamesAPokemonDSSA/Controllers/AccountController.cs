@@ -231,7 +231,7 @@ namespace JamesAPokemonDSSA.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "Standard, Admin")]
-        public async Task<IActionResult> ConfirmReleasePokemon(int id)
+        public async Task<IActionResult> ConfirmReleasePokemon(int id, string url)
         {
             UserPokemonDetails model = await _context.Pokemon.Join(_context.CaughtPokemon.Where(p => p.PokemonID == id), pokemon => pokemon.PokemonName, caught => caught.PokemonName, (pokemon, caught) => new UserPokemonDetails
             {
@@ -242,21 +242,22 @@ namespace JamesAPokemonDSSA.Controllers
                 PokedexNum = pokemon.PokedexNum,
                 IsShiny = caught.IsShiny,
                 Type_1 = pokemon.Type_1,
-                Type_2 = pokemon.Type_2
+                Type_2 = pokemon.Type_2,
+                queryString = url
             }).FirstOrDefaultAsync();
             return PartialView("_ConfirmReleasePokemon", model);
         }
         [HttpPost]
         [Authorize(Roles = "Standard, Admin")]
-        public IActionResult ReleasePokemon(CaughtPokemon id)
+        public IActionResult ReleasePokemon(UserPokemonDetails model)
         {
-            CaughtPokemon pokemon = _context.CaughtPokemon.Find(id.PokemonID);
+            CaughtPokemon pokemon = _context.CaughtPokemon.Find(model.PokemonId);
             var user = _userContext.Users.Find(userManager.GetUserId(User));
             user.UniquePokemon = user.UniquePokemon - 1;
             _context.CaughtPokemon.Remove(pokemon);
             _userContext.SaveChanges();
             _context.SaveChanges();
-            return RedirectToAction("Pokemon", "Account");
+            return Redirect("https://pokepc.tech" + model.queryString);
         }
     }
 }
