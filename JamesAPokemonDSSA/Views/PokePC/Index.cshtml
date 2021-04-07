@@ -9,6 +9,12 @@
             <img src="~/images/indeximg.png" alt="Image of PokePC Logo with Mew and Wartortle graphics" />
         </div>
     </section>
+    @if (TempData["test"] != null)
+    {
+        <p>
+            @TempData["test"]
+        </p>
+    }
 
 
     @if (User.IsInRole("Standard") || User.IsInRole("Admin"))
