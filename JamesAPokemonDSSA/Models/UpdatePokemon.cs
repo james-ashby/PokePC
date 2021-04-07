@@ -42,10 +42,10 @@ namespace JamesAPokemonWAD.Models
         [Required]
         public decimal Generation { get; set; }
 
-        [AllowedFileExtensions(".png")]
+        [AllowedFileExtensions(".png, .gif")]
         [MaxFileSize(1000 * 500)]
         public IFormFile UploadImage { get; set; }
-        [AllowedFileExtensions(".png")]
+        [AllowedFileExtensions(".png, .gif")]
         [MaxFileSize(1000 * 500)]
         public IFormFile UploadShinyImage { get; set; }
         public string ImageUrl { get; set; }
