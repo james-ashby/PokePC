@@ -16,12 +16,11 @@
     <div class="wrapperDexHead">
         <h1 class="txt-title">@ViewData["Title"]</h1>
         <p class="txt-pokename">Total Pokémon: @ViewData["TotalPokemon"]</p>
-        @if (TempData["test"] != null)
-        {
-            <p>
-                @TempData["test"]
-            </p>
-        }
+        <p>@(Context.Request.Path + Context.Request.QueryString)</p>
+        <p>
+            @TempData["test"]
+        </p>
+
         <form asp-action="Pokemon" method="get">
             <div class="form-actions no-color">
                 <label class="txt-pokename" for="SearchString">Filter by name: </label>
