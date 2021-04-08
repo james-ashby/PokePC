@@ -231,7 +231,7 @@ namespace JamesAPokemonDSSA.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "Standard, Admin")]
-        public async Task<IActionResult> ConfirmReleasePokemon(int id, string url)
+        public async Task<IActionResult> ConfirmReleasePokemon(int id, string query)
         {
             UserPokemonDetails model = await _context.Pokemon.Join(_context.CaughtPokemon.Where(p => p.PokemonID == id), pokemon => pokemon.PokemonName, caught => caught.PokemonName, (pokemon, caught) => new UserPokemonDetails
             {
@@ -243,7 +243,7 @@ namespace JamesAPokemonDSSA.Controllers
                 IsShiny = caught.IsShiny,
                 Type_1 = pokemon.Type_1,
                 Type_2 = pokemon.Type_2,
-                queryString = url
+                queryString = query
             }).FirstOrDefaultAsync();
             return PartialView("_ConfirmReleasePokemon", model);
         }

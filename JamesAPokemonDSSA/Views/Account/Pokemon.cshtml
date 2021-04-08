@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "My Pokémon";
     List<string> typeList = (List<string>)ViewData["Types"];
+    string query = Context.Request.Path + Context.Request.QueryString.ToString();
 }
 <div class="center">
     <div id="myModal" class="modal">
@@ -67,7 +68,7 @@
 
                 }
                 <p class="txt-pokename">Caught on: @pokemon.CatchDate.ToString("dd/MM/yyyy")</p>
-                <h3 class="txt-admin txt-admin--delete"><a href="javascript:;" class="releasePoke" data-id="@pokemon.PokemonId" data-url="@(Context.Request.Path + Context.Request.QueryString)">Release</a></h3>
+                <h3 class="txt-admin txt-admin--delete"><a href="javascript:;" class="releasePoke" data-id="@pokemon.PokemonId" data-query="@query">Release</a></h3>
             </div>
 
         }
