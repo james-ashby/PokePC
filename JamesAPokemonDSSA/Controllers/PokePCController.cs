@@ -238,8 +238,10 @@ namespace JamesAPokemonDSSA.Controllers
             ViewData["PrevExperience"] = user.Experience;
             var levelup = false;
             int areaExp = _context.Areas.Find(areaId).ExpPerCatch;
+            double nextLvlExp = (user.Level * 1000) * (1.5);
             user.Experience = user.Experience + areaExp;
-            if (user.Experience >= (user.Level * 1000) * (1.5))
+            double expToLvl = nextLvlExp - user.Experience < 0 ? 0 : nextLvlExp - user.Experience;
+            if (user.Experience >= nextLvlExp)
             {
                 user.Level = user.Level + 1;
                 levelup = true;
@@ -253,6 +255,7 @@ namespace JamesAPokemonDSSA.Controllers
             ViewData["LevelUp"] = levelup;
             ViewData["Level"] = user.Level;
             ViewData["ExpGain"] = areaExp;
+            ViewData["ExpLeft"] = expToLvl;
             return PartialView("_CaughtPokemon", model);
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

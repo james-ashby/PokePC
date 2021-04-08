@@ -11,6 +11,10 @@
     <p>You caught a shiny @Model.PokemonName!</p>
     <p>@ViewData["ExpGain"] Exp gained!</p>
     <p>@ViewData["PrevExperience"] ➔ @ViewData["NewExperience"] Total Exp</p>
+    if ((double)ViewData["ExpLeft"] != 0)
+    {
+        <p>@ViewData["ExpLeft"]xp left until level @(level+1) </p>
+    }
     if ((bool)ViewData["LevelUp"])
     {
         <p>Level up!</p>
@@ -24,6 +28,10 @@ else
     <p>You caught @Model.PokemonName!</p>
     <p>@ViewData["ExpGain"] Exp gained!</p>
     <p>@ViewData["PrevExperience"] ➔ @ViewData["NewExperience"] Total Exp</p>
+    if ((double)ViewData["ExpLeft"] != 0)
+    {
+        <p>@ViewData["ExpLeft"]xp left until level @(level+1) </p>
+    }
     if ((bool)ViewData["LevelUp"])
     {
         <p>Level up!</p>
