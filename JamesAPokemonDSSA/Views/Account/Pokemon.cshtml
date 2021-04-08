@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "My Pokémon";
     List<string> typeList = (List<string>)ViewData["Types"];
-    string query = Context.Request.Path + Context.Request.QueryString.ToString();
+    string query = Context.Request.QueryString.ToString();
 }
 <div class="center">
     <div id="myModal" class="modal">

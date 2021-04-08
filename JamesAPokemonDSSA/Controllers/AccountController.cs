@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
+using Microsoft.AspNetCore.Routing;
 
 namespace JamesAPokemonDSSA.Controllers
 {
@@ -257,7 +259,11 @@ namespace JamesAPokemonDSSA.Controllers
             _context.CaughtPokemon.Remove(pokemon);
             _userContext.SaveChanges();
             _context.SaveChanges();
-            return Redirect(model.queryString);
+            var parsed = HttpUtility.ParseQueryString(model.queryString);
+            Dictionary<string, object> 
+            querystringDic = parsed.AllKeys.ToDictionary(k => k, k => (object)parsed[k]);
+
+            return RedirectToAction("Pokemon", new RouteValueDictionary(querystringDic));
         }
     }
 }
