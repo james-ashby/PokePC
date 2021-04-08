@@ -78,10 +78,8 @@
   $(function () {
     $(".releasePoke").click(function () {
       var pokemonID = $(this).data("id");
-      var queryUrl = $(this).data("query");
       var data = {
         id: pokemonID,
-        query: queryUrl,
       };
       $.ajax({
         type: "POST",

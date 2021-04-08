@@ -259,11 +259,7 @@ namespace JamesAPokemonDSSA.Controllers
             _context.CaughtPokemon.Remove(pokemon);
             _userContext.SaveChanges();
             _context.SaveChanges();
-            var parsed = HttpUtility.ParseQueryString(model.queryString);
-            Dictionary<string, object> 
-            querystringDic = parsed.AllKeys.ToDictionary(k => k, k => (object)parsed[k]);
-
-            return RedirectToAction("Pokemon", new RouteValueDictionary(querystringDic));
+            return RedirectToAction("Pokemon", "Account");
         }
     }
 }
