@@ -94,6 +94,7 @@ namespace JamesAPokemonDSSA.Controllers
             Pokemon model = _context.Pokemon.Find(id);
             try
             {
+                // Connects to the Pokémon API and retrieves the official artwork (if available) for the Pokémon number selected
                 using (var httpClient = new HttpClient())
                 {
                     using (var response = await httpClient.GetAsync($"https://pokeapi.co/api/v2/pokemon/" + model.PokedexNum))
@@ -141,6 +142,9 @@ namespace JamesAPokemonDSSA.Controllers
                 TempData["Denied"] = area.Name + " requires level " + levelReq;
                 return RedirectToAction("Areas", "PokePC");
             }
+
+
+            // Order the Pokémon by rarity on the Area Details page
             List<AreasPokemon> areaPoke = await _context.AreaPokemon.Include(p => p.Pokemon).Where(a => a.AreaId == id).OrderBy(p => p.Pokemon.Rarity == "Legendary")
             .ThenBy(p => p.Pokemon.Rarity == "Rare").ThenBy(p => p.Pokemon.Rarity == "Uncommon").ThenBy(p => p.Pokemon.Rarity == "Common").ToListAsync();
             if (areaPoke.Count == 0)
@@ -165,6 +169,7 @@ namespace JamesAPokemonDSSA.Controllers
                 return RedirectToAction("Areas", "PokePC");
             }
             Random rand = new Random(DateTime.Now.Millisecond);
+            // Roll a number between 1 and 1000 to calculate rarity for Wild Pokémon <= 5 for Legendary, <=60 for Rare, <= 200 for Uncommon, <= 700 for Common, with the remaining 300 for no Pokémon appeared
             var roll = rand.Next(1, 1001);
             var shinyRoll = rand.Next(1, 150); 
             List<AreasPokemon> areaPoke = await _context.AreaPokemon.Include(c => c.Pokemon).Where(a => a.AreaId == id).ToListAsync();
@@ -196,10 +201,12 @@ namespace JamesAPokemonDSSA.Controllers
             {
                 if (_context.CaughtPokemon.Where(u => u.UserID == _userManager.GetUserId(User) && u.PokemonName == rolledPoke.Pokemon.PokemonName).FirstOrDefault() != null)
                 {
+                    // Send temporary data of whether the user has already caught the Pokémon before, if they have, show a Pokéball next to the name
                     TempData["Caught"] = true;
                 }
                 try
                 {
+                    // Connect to the Pokémon api and retrieve a gif for the Pokémon that is found, if an animated gif for the Pokémon is found, use that for the wild encounter
                     using (var httpClient = new HttpClient())
                     {
                         using (var response = await httpClient.GetAsync($"https://pokeapi.co/api/v2/pokemon/" + rolledPoke.Pokemon.PokemonName.ToLower()))
@@ -238,9 +245,16 @@ namespace JamesAPokemonDSSA.Controllers
             ViewData["PrevExperience"] = user.Experience;
             var levelup = false;
             int areaExp = _context.Areas.Find(areaId).ExpPerCatch;
+            // Calculate the experience that the player's next level requires
             double nextLvlExp = (user.Level * 1000) * (1.5);
+
+            // Add the experience from catching the Pokémon
             user.Experience = user.Experience + areaExp;
+
+            // Calculate the experience the user needs to level up // Ternary operator to account for if user experience is over the next level experience, which sets required exp to 0
             double expToLvl = nextLvlExp - user.Experience < 0 ? 0 : nextLvlExp - user.Experience;
+
+            // If the user's experience exceeds the amount required for their next level, level them up by 1
             if (user.Experience >= nextLvlExp)
             {
                 user.Level = user.Level + 1;

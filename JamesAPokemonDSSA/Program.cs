@@ -30,7 +30,7 @@ namespace JamesAPokemonDSSA
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args).ConfigureAppConfiguration((context, config) => {
                 var root = config.Build();
-                config.AddAzureKeyVault($"https://pokepcvault.vault.azure.net/");
+                config.AddAzureKeyVault($"https://pokepcvault.vault.azure.net/");              // Adds azure key vault configuration for live site
             }).ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

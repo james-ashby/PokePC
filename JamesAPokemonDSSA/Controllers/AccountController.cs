@@ -185,6 +185,7 @@ namespace JamesAPokemonDSSA.Controllers
             ViewData["CurrentFilter"] = searchString;
             ViewData["CurrentType"] = typeFilter;
 
+            // Join the User table and caught Pokémon table to display the correct Pokémon caught by the current user
             var caughtPokemon = _context.Pokemon.Join(_context.CaughtPokemon.Where(u => u.UserID == userManager.GetUserId(User)), pokemon => pokemon.PokemonName, caught => caught.PokemonName, (pokemon, caught) => new UserPokemonDetails
             {
                 PokemonId = caught.PokemonID,
@@ -235,6 +236,7 @@ namespace JamesAPokemonDSSA.Controllers
         [Authorize(Roles = "Standard, Admin")]
         public async Task<IActionResult> ConfirmReleasePokemon(int id, string query)
         {
+            // Join the Pokémon table to the Caught Pokémon table to create a model with more information, including date the Pokémon was captured
             UserPokemonDetails model = await _context.Pokemon.Join(_context.CaughtPokemon.Where(p => p.PokemonID == id), pokemon => pokemon.PokemonName, caught => caught.PokemonName, (pokemon, caught) => new UserPokemonDetails
             {
                 PokemonId = caught.PokemonID,

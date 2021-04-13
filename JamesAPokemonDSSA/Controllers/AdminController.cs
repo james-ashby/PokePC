@@ -300,6 +300,8 @@ namespace JamesAPokemonWAD.Controllers
                     string shinyImageUrl = imageUrls[1];
                     Pokemon pokemon = _context.Pokemon.Find(model.PokemonId);
                     string filepath = Path.Combine(webEnvironment.WebRootPath, "images/pokemon");
+
+                    // If the user updated the images, delete the existing ones
                     if (standardUrl != null)
                     {
                         var standardPath = Path.Combine(Directory.GetCurrentDirectory(), filepath, pokemon.Image);
@@ -325,9 +327,12 @@ namespace JamesAPokemonWAD.Controllers
                     pokemon.Height = model.Height;
                     pokemon.Weight = model.Weight;
                     pokemon.Generation = model.Generation;
+
+                    // If the user uploaded a picture for standard/shiny, update the Image/ShinyImage, if not, keep the original.
                     pokemon.Image = standardUrl == null ? pokemon.Image : standardUrl;
                     pokemon.ShinyImage = shinyImageUrl == null ? pokemon.ShinyImage : shinyImageUrl;
                     pokemon.Rarity = model.Rarity;
+
                     // Removes areas that have been deselected
                     _context.AreaPokemon.Where(ap => ap.PokemonId == pokemon.PokemonId).ToList().ForEach(a => _context.AreaPokemon.Remove(a));
                     // Adds areas the have been selected
@@ -372,6 +377,8 @@ namespace JamesAPokemonWAD.Controllers
             var standardPath = Path.Combine(Directory.GetCurrentDirectory(), filepath, pokemon.Image);
             var shinyPath = Path.Combine(Directory.GetCurrentDirectory(), filepath, pokemon.ShinyImage);
 
+            // If the image urls for the Pokémon exist, delete the images from the webserver
+
             if (System.IO.File.Exists(standardPath) && System.IO.File.Exists(shinyPath))
             {
                 System.IO.File.Delete(standardPath);
@@ -392,6 +399,8 @@ namespace JamesAPokemonWAD.Controllers
         {
             Area area = _context.Areas.Find(id.AreaId);
             string filepath = Path.Combine(webEnvironment.WebRootPath, "images/areas");
+
+            // If the image url for the Area exists, delete the image from the webserver
             var areaImgPath = Path.Combine(Directory.GetCurrentDirectory(), filepath, area.Image);
 
             if (System.IO.File.Exists(areaImgPath))
@@ -402,6 +411,8 @@ namespace JamesAPokemonWAD.Controllers
             _context.SaveChanges();
             return RedirectToAction("Areas", "Admin");
         }
+
+        // Save images from AddPokemon model
         private string[] UploadedPokemonImages( AddPokemon model)
         {
             string[] imageUrls = new string[2];
@@ -430,6 +441,8 @@ namespace JamesAPokemonWAD.Controllers
             }
             return imageUrls;
         }
+
+        // Save images from UpdatePokemon model
         private string[] UpdatedPokemonImages(UpdatePokemon model)
         {
             string[] imageUrls = new string[2];
