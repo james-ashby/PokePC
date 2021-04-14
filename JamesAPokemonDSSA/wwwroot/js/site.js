@@ -129,5 +129,7 @@
       $("#myModal").slideUp();
     });
   });
-  
+    function submitform() {
+        $('form').submit();
+    }
 });

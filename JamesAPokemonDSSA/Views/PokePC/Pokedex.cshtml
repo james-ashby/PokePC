@@ -15,7 +15,7 @@
                     <input type="submit" value="Search" class="btn btn-default" />
             </div>
             <div class="split split--filter">
-                <select name="typeFilter">
+                <select name="typeFilter" onchange="this.form.submit()">
                     <option value="@null" selected="selected">None</option>
                     @foreach (string type in typeList)
                     {
@@ -29,9 +29,6 @@
                         }
                     }
                 </select>
-                <div class="form-actions no-color">
-                    <input type="submit" value="Filter by type" class="btn btn--small" />
-                </div>
             </div>
         </form>
         <div class="split split--filter">
