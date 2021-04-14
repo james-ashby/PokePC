@@ -1,0 +1,30 @@
+﻿@{
+    List<string> typeList = (List<string>)ViewData["Types"];
+}
+<div class="form-actions no-color">
+
+    <label class="txt-pokename" for="SearchString">Filter by name: </label>
+    <input type="text" name="SearchString" id="SearchString" placeholder="Enter Pokémon name" value="@ViewData["CurrentFilter"]" />
+    <input type="submit" value="Search" class="btn btn-default" />
+</div>
+<div class="split split--filter">
+    <select name="typeFilter" onchange="this.form.submit()">
+        <option value="@null" selected="selected">All Types</option>
+        @foreach (string type in typeList)
+        {
+            if (type == (string)ViewData["CurrentType"])
+            {
+                <option value="@type" selected="selected">@System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(type)</option>
+            }
+            else
+            {
+                <option value="@type">@System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(type)</option>
+            }
+        }
+    </select>
+</div>
+<div class="split split--filter">
+    <a class="btn btn--small" asp-action="Pokedex" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" asp-route-currentType="@ViewData["CurrentType"]">Sort Alphabetically @((string)ViewData["NameSortParm"] == "name_asc" ? "🠕🠗" : "🠗🠕") </a>
+    <a class="btn btn--small" asp-action="Pokedex" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" asp-route-currentType="@ViewData["CurrentType"]">Sort by Date Added @((string)ViewData["DateSortParm"] == "date_desc" ? "🠕🠗" : "🠗🠕") </a>
+</div>
+<a class="btn btn--xsmall" asp-action="Pokedex">Reset Filter</a>

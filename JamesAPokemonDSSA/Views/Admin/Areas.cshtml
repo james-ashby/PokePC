@@ -3,16 +3,7 @@
 @{
     ViewData["Title"] = "Admin Areas";
 }
-<div class="center">
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <div id="myModalContent"></div>
-            <div id="modelClose">
-                <span id="closeBtn" class="btn">Close</span>
-            </div>
-        </div>
-    </div>
-</div>
+<partial name="_Modal" />
 <div class="center center--areas">
     <div class="split split--areas">
         @foreach (var area in Model)
@@ -27,5 +18,4 @@
     </div>
 </div>
 <section>
-
 </section>
