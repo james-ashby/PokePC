@@ -8,7 +8,7 @@ PokePC features
 
 • Catch Pokémon in various areas
 
-• Levelling system
+• Levelling system to unlock new areas and Pokémon!
 
 • Shiny Pokémon
 
