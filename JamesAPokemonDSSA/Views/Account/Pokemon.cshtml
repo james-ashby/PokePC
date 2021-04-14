@@ -9,6 +9,11 @@
         <p class="txt-pokename">Total Pokémon: @ViewData["TotalPokemon"]</p>
         <form asp-action="Pokemon" method="get">
             <partial name="_SearchFilter" />
+            <div class="split split--filter">
+                <a class="btn btn--small" asp-action="Pokemon" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" asp-route-currentType="@ViewData["CurrentType"]">Sort Alphabetically @((string)ViewData["NameSortParm"] == "name_asc" ? "🠕🠗" : "🠗🠕") </a>
+                <a class="btn btn--small" asp-action="Pokemon" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" asp-route-currentType="@ViewData["CurrentType"]">Sort by Date Added @((string)ViewData["DateSortParm"] == "date_desc" ? "🠕🠗" : "🠗🠕") </a>
+            </div>
+            <a class="btn btn--xsmall" asp-action="Pokemon">Reset Filter</a>
         </form>
     </div>
 </div>
