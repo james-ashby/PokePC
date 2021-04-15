@@ -20,7 +20,7 @@
 
 <div class="split split--pages">
     <div>
-        <a asp-action="Pokedex"
+        <a asp-action="Pokemon"
            asp-route-sortOrder="@ViewData["CurrentSort"]"
            asp-route-pageNumber="@(Model.PageIndex - 1)"
            asp-route-currentFilter="@ViewData["CurrentFilter"]"
@@ -33,7 +33,7 @@
 
 
     <div>
-        <a asp-action="Pokedex"
+        <a asp-action="Pokemon"
            asp-route-sortOrder="@ViewData["CurrentSort"]"
            asp-route-pageNumber="@(Model.PageIndex + 1)"
            asp-route-currentFilter="@ViewData["CurrentFilter"]"

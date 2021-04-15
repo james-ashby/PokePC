@@ -26,6 +26,50 @@
 
     }
 </div>
-<partial name="_SearchPagination" />
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<div class="split">
+    <p class="txt-pokename">@ViewData["Results"] results</p>
+    @if (ViewData["CurrentPage"] == null)
+    {
+        <p class="txt-pokename">
+            Page 1 - @ViewData["Pages"]
+        </p>
+    }
+    else
+    {
+        <p class="txt-pokename">
+            Page @ViewData["CurrentPage"] - @ViewData["Pages"]
+        </p>
+    }
+</div>
+
+<div class="split split--pages">
+    <div>
+        <a asp-action="Pokedex"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex - 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           asp-route-currentType="@ViewData["CurrentType"]"
+           class="btn btn-@prevDisabled">
+            Previous
+        </a>
+    </div>
+
+
+
+    <div>
+        <a asp-action="Pokedex"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex + 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           asp-route-currentType="@ViewData["CurrentType"]"
+           class="btn btn-@nextDisabled">
+            Next
+        </a>
+    </div>
+</div>
 
 
